@@ -1,11 +1,11 @@
-package Be_30.Project.user.dto;
+package Be_30.Project.member.dto;
 
-import Be_30.Project.user.entity.User.UserStatus;
+import Be_30.Project.member.entity.Member.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-public class UserDto {
+public class MemberDto {
     @Getter
     @Setter
     @AllArgsConstructor
@@ -17,7 +17,7 @@ public class UserDto {
 
         private String password;
 
-        private UserStatus userStatus;
+        private MemberStatus userStatus;
 
     }
 
@@ -34,7 +34,7 @@ public class UserDto {
 
         private String password;
 
-        private UserStatus userStatus;
+        private MemberStatus userStatus;
 
     }
 
@@ -50,7 +50,7 @@ public class UserDto {
 
         private String password;
 
-        private UserStatus userStatus;
+        private MemberStatus userStatus;
     }
 
 }
