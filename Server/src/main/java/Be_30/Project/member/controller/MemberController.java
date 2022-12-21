@@ -18,14 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/members")
 public class MemberController {
 
-    MemberRepository memberRepository;
-    MemberMapper memberMapper;
-
-    public MemberController(MemberRepository memberRepository, MemberMapper memberMapper) {
-        this.memberRepository = memberRepository;
-        this.memberMapper = memberMapper;
-    }
-
     @PostMapping
     public ResponseEntity postMember(){
         return ResponseEntity.created(URI.create("/members/1")).build();
@@ -35,7 +27,7 @@ public class MemberController {
     public ResponseEntity patchMember(){
         MemberDto.Response response =
             new MemberDto.Response(1,"heebum@gmail.com",
-                "희범", "1234", MemberStatus.MEMBER_ACTIVE);
+                "희범",MemberStatus.MEMBER_ACTIVE);
         return ResponseEntity.ok(response);
     }
 
@@ -43,7 +35,7 @@ public class MemberController {
     public ResponseEntity getMember(){
         MemberDto.Response response =
             new MemberDto.Response(1,"heebum@gmail.com",
-                "희범", "1234", MemberStatus.MEMBER_ACTIVE);
+                "희범",MemberStatus.MEMBER_ACTIVE);
         return ResponseEntity.ok(response);
     }
 
@@ -56,11 +48,11 @@ public class MemberController {
     public ResponseEntity getMembers(){
         MemberDto.Response response1 =
             new MemberDto.Response(1,"heebum1@gmail.com",
-                "희범1", "1111", MemberStatus.MEMBER_ACTIVE);
+                "희범1",MemberStatus.MEMBER_ACTIVE);
 
         MemberDto.Response response2 =
             new MemberDto.Response(2,"heebum2@gmail.com",
-                "희범2", "2222", MemberStatus.MEMBER_ACTIVE);
+                "희범2",MemberStatus.MEMBER_ACTIVE);
         return ResponseEntity.ok(Arrays.asList(response1, response2));
     }
 }

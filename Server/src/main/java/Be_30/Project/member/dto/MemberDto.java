@@ -17,8 +17,6 @@ public class MemberDto {
 
         private String password;
 
-        private MemberStatus userStatus;
-
     }
 
     @Getter
@@ -26,15 +24,13 @@ public class MemberDto {
     @AllArgsConstructor
     public static class Patch{
 
-        private long userId;
+        private long memberId;
 
         private String email;
 
         private String nickName;
 
-        private String password;
-
-        private MemberStatus userStatus;
+        private MemberStatus memberStatus;
 
     }
 
@@ -42,15 +38,13 @@ public class MemberDto {
     @Setter
     @AllArgsConstructor
     public static class Response{
-        private long userId;
+        private long memberId;
 
         private String email;
 
         private String nickName;
 
-        private String password;
-
-        private MemberStatus userStatus;
+        private MemberStatus memberStatus;
     }
 
 }
