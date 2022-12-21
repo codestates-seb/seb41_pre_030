@@ -16,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static Be_30.Project.util.ApiDocumentUtils.getRequestPreProcessor;
@@ -242,8 +241,6 @@ class QuestionControllerTest {
                 .subject(subject)
                 .content(content)
                 .vote(100)
-                .view(12345)
-                .createdAt(LocalDateTime.now())
-                .modifiedAt(LocalDateTime.now()).build();
+                .view(12345).build();
     }
 }

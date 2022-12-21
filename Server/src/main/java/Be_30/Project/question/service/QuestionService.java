@@ -4,10 +4,13 @@ import Be_30.Project.question.entity.Question;
 import Be_30.Project.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class QuestionService {
 
@@ -15,7 +18,7 @@ public class QuestionService {
 
     public Question createQuestion(Question question) {
         // 질문 생성
-        return null;
+        return questionRepository.save(question);
     }
 
     public void deleteQuestion(long questionId) {
@@ -23,15 +26,12 @@ public class QuestionService {
     }
 
     public Question findQuestion(long questionId) {
-        // 질문 조회
-        // 조회할 때 마다 조회수 + 1
-
-        return null;
+        return questionRepository.findById(questionId)
+                .orElseThrow(() -> new EntityNotFoundException("질문이 없습니다"));
     }
 
     public List<Question> findQuestionList() {
-        // 질문 목록 조회
-        return null;
+        return questionRepository.findAll();
     }
 
     public void voteQuestion() {
@@ -39,7 +39,9 @@ public class QuestionService {
     }
 
     public Question updateQuestion(Question question) {
-        // 질문 수정
-        return null;
+        Question findQuestion = questionRepository.findById(question.getQuestionId())
+                .orElseThrow(() -> new EntityNotFoundException("질문이 없습니다"));
+        findQuestion.updateQuestion(question.getSubject(), question.getContent());
+        return findQuestion;
     }
 }

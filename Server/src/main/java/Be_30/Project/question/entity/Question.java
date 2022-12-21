@@ -1,5 +1,6 @@
 package Be_30.Project.question.entity;
 
+import Be_30.Project.audit.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Question {
+public class Question extends Auditable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long questionId;
@@ -29,9 +30,10 @@ public class Question {
 
     private int view;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime modifiedAt;
+    public void updateQuestion(String subject, String content) {
+        this.subject = subject;
+        this.content = content;
+    }
 
 //    private User user;
 }
