@@ -4,9 +4,12 @@ import Be_30.Project.member.dto.MemberDto;
 import Be_30.Project.member.entity.Member.MemberStatus;
 import Be_30.Project.member.mapper.MemberMapper;
 import Be_30.Project.member.repository.MemberRepository;
+import Be_30.Project.member.service.MemberService;
 import java.net.URI;
 import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,7 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/members")
+@Validated
+@Slf4j
 public class MemberController {
+    private final MemberService memberService;
+    private final MemberMapper mapper;
+
+    public MemberController(MemberService memberService, MemberMapper mapper) {
+        this.memberService = memberService;
+        this.mapper = mapper;
+    }
 
     @PostMapping
     public ResponseEntity postMember(){
