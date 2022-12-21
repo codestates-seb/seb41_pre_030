@@ -17,8 +17,6 @@ public class AnswerDto {
     public static class Post {
         @NotBlank(message = "글을 입력해주세요.")
         private String content;
-        @NotNull
-        private boolean accepted = false;
     }
     @Getter
     @Setter
@@ -26,9 +24,6 @@ public class AnswerDto {
     public static class Patch {
         @NotBlank(message = "글을 입력해주세요.")
         private String content;
-
-        @NotNull
-        private boolean accepted;
     }
     @Getter
     @Setter
@@ -37,6 +32,7 @@ public class AnswerDto {
         private Long answerId;
         private String content;
         private boolean accepted;
+        private int answerVote;
     }
 
 }
