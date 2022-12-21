@@ -18,7 +18,7 @@ public class AnswerDto {
         @NotBlank(message = "글을 입력해주세요.")
         private String content;
         @NotBlank
-        private int vote; // 별도의 Entity로 빼는 것이 좋지 않나? voteCount? notBlank가 옳은가? 0점은?
+        private int vote;
         @NotNull
         private boolean accepted = false;
     }
