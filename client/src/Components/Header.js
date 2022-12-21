@@ -6,8 +6,11 @@ const StyledHeader = styled.header`
   background-color: hsl(210deg 8% 98%);
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   display: grid;
-  grid-template-columns: 200px 1fr 70px 100px;
+  grid-template-columns: 210px 1fr 70px 100px;
   grid-column-gap: 20px;
+  position: sticky;
+  left: 0;
+  top: 0;
 `;
 
 const LogoLink = styled.a`
@@ -24,7 +27,6 @@ const LogoLink = styled.a`
 
   svg {
     margin-top: 8px;
-    display: inline-block;
     float: left;
   }
 
@@ -122,6 +124,7 @@ const Header = () => {
 
   const onChange = (e) => {
     setSearch(e.target.value);
+    console.log(search)
   };
 
   return (

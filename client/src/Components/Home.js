@@ -1,6 +1,10 @@
-
 function Home () {
+   return (
+        <div className="test">
+            test
 
-    return 
+        </div>   
+   )
+
 }
 export default Home

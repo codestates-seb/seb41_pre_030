@@ -4,21 +4,20 @@ import { NavLink } from 'react-router-dom'
 const SideAllbar = styled.div`
   width:200px;
   height: 100vh;
-  margin-left: 164px;
-  margin-top: 50px;
-  border-right: 1px solid black;
+  margin-left: 80px;
   position: fixed;
 `
 
 const SideHomeBar = styled.div`
   margin-left: 20px;
+  margin-top: 40px;
   font-size: 20px;
   display: grid;
 `
 
 const SidePublicBar = styled.div`
   margin-left: 20px;
-  margin-top: 20px;
+  margin-top: 30px;
   font-size: 20px;
   display: grid;
   padding-left:10px;

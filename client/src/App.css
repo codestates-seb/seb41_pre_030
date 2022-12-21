@@ -4,3 +4,12 @@
     margin: 0;
     font-family: 'IBM Plex Sans KR', sans-serif;
   }
+  .App {
+    height: 2000px;
+  }
+  .test{
+    width: 1000px;
+    margin-left: 280px;
+    background-color: yellow;
+    height: 2000px;
+  }
