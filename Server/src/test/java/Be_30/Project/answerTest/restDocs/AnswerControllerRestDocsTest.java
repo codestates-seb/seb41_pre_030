@@ -9,41 +9,41 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(Answer.class)
-@MockBean(JpaMetamodelMappingContext.class)
-@AutoConfigureRestDocs
-public class AnswerControllerRestDocsTest {
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Test
-    public void postAnswerTest() {
-        //given
-        //when
-        //then
-    }
-    @Test
-    public void patchAnswerTest() {
-        //given
-        //when
-        //then
-    }
-    @Test
-    public void getAnswerTest() {
-        //given
-        //when
-        //then
-    }
-    @Test
-    public void getAnswersTest() {
-        //given
-        //when
-        //then
-    }
-    @Test
-    public void deleteAnswerTest() {
-        //given
-        //when
-        //then
-    }
-}
+//@WebMvcTest(Answer.class)
+//@MockBean(JpaMetamodelMappingContext.class)
+//@AutoConfigureRestDocs
+//public class AnswerControllerRestDocsTest {
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @Test
+//    public void postAnswerTest() {
+//        //given
+//        //when
+//        //then
+//    }
+//    @Test
+//    public void patchAnswerTest() {
+//        //given
+//        //when
+//        //then
+//    }
+//    @Test
+//    public void getAnswerTest() {
+//        //given
+//        //when
+//        //then
+//    }
+//    @Test
+//    public void getAnswersTest() {
+//        //given
+//        //when
+//        //then
+//    }
+//    @Test
+//    public void deleteAnswerTest() {
+//        //given
+//        //when
+//        //then
+//    }
+//}

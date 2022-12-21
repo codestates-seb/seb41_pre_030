@@ -1,11 +1,11 @@
-package Be_30.Project.user.dto;
+package Be_30.Project.member.dto;
 
-import Be_30.Project.user.entity.User.UserStatus;
+import Be_30.Project.member.entity.Member.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-public class UserDto {
+public class MemberDto {
     @Getter
     @Setter
     @AllArgsConstructor
@@ -17,8 +17,6 @@ public class UserDto {
 
         private String password;
 
-        private UserStatus userStatus;
-
     }
 
     @Getter
@@ -26,15 +24,13 @@ public class UserDto {
     @AllArgsConstructor
     public static class Patch{
 
-        private long userId;
+        private long memberId;
 
         private String email;
 
         private String nickName;
 
-        private String password;
-
-        private UserStatus userStatus;
+        private MemberStatus memberStatus;
 
     }
 
@@ -42,15 +38,13 @@ public class UserDto {
     @Setter
     @AllArgsConstructor
     public static class Response{
-        private long userId;
+        private long memberId;
 
         private String email;
 
         private String nickName;
 
-        private String password;
-
-        private UserStatus userStatus;
+        private MemberStatus memberStatus;
     }
 
 }
