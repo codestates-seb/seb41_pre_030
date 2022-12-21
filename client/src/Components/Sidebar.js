@@ -1,6 +1,5 @@
-import React, { useState } from "react"
 import styled from "styled-components"
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 const SideAllbar = styled.div`
   width:200px;
@@ -14,6 +13,7 @@ const SideAllbar = styled.div`
 const SideHomeBar = styled.div`
   margin-left: 20px;
   font-size: 20px;
+  display: grid;
 `
 
 const SidePublicBar = styled.div`
@@ -21,30 +21,31 @@ const SidePublicBar = styled.div`
   margin-top: 20px;
   font-size: 20px;
   display: grid;
+  padding-left:10px;
 `
-// Home이나 Users페이지에 들어갔을 때 각각의 페이지 상태를 나타내 주는 표시를 아래 style 적용하면 될 듯
-const UsersClicked = styled(Link)`
-  background-color: whitesmoke;
-  height: 30px;
-  width: 180px;
+// Home or Users 페이지에 들어갈 때 현재 페이지를 나타내는 라벨링 
+const ActiveStyle = styled(NavLink)`
   margin-top: 15px;
-  font-size: 20px;
-  border: 0ch;
-  border-right: 4px solid orange;
-  text-align: left;
   text-decoration: none;
-`;
+  color: inherit;
+  padding-left:10px;
+  height: 30px;
+  &.active {
+    border-right: 4px solid orange;
+    background-color: whitesmoke;
+  }
+`
 
 const Sidebar = () => {
 
   return (
-    <SideAllbar>
+    <SideAllbar>   
       <SideHomeBar>
-        <Link to='/' style={{textDecoration: "none"}}>HOME</Link>
+        <ActiveStyle to='/'>HOME</ActiveStyle>
       </SideHomeBar>
       <SidePublicBar>
         PUBLIC
-          <UsersClicked to='/users' >&nbsp;&nbsp;&nbsp;&nbsp;Users</UsersClicked>
+        <ActiveStyle to='/Users' style={{paddingLeft:"40px"}}>Users</ActiveStyle>
       </SidePublicBar>
     </SideAllbar>  
   )
