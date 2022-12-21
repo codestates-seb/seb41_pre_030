@@ -23,21 +23,21 @@ public class AnswerController {
     @PatchMapping("/{answer-id}")
     public ResponseEntity patchAnswer() {
         AnswerDto.Response response =
-            new AnswerDto.Response(1L, "답변입니다.", 1, false, LocalDateTime.now(), LocalDateTime.now());
+            new AnswerDto.Response(1L, "답변입니다.", false);
         return ResponseEntity.ok(response);
     }
     @GetMapping("/{answer-id}")
     public ResponseEntity getAnswer() {
         AnswerDto.Response response =
-            new AnswerDto.Response(1L, "답변입니다.", 1, false, LocalDateTime.now(), LocalDateTime.now());
+            new AnswerDto.Response(1L, "답변입니다.",false);
         return ResponseEntity.ok(response);
     }
     @GetMapping
     public ResponseEntity getAnswers() {
         AnswerDto.Response response1 =
-            new AnswerDto.Response(1L, "답변입니다.", 1, false, LocalDateTime.now(), LocalDateTime.now());
+            new AnswerDto.Response(1L, "답변입니다.",false);
         AnswerDto.Response response2 =
-            new AnswerDto.Response(2L, "답변", 2, false, LocalDateTime.now(), LocalDateTime.now());
+            new AnswerDto.Response(2L, "답변", false);
         return ResponseEntity.ok(List.of(response1, response2));
     }
     @DeleteMapping("/{answer-id}")

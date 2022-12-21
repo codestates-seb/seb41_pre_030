@@ -17,8 +17,6 @@ public class AnswerDto {
     public static class Post {
         @NotBlank(message = "글을 입력해주세요.")
         private String content;
-        @NotBlank
-        private int vote;
         @NotNull
         private boolean accepted = false;
     }
@@ -28,8 +26,7 @@ public class AnswerDto {
     public static class Patch {
         @NotBlank(message = "글을 입력해주세요.")
         private String content;
-        @NotBlank
-        private int vote;
+
         @NotNull
         private boolean accepted;
     }
@@ -39,10 +36,7 @@ public class AnswerDto {
     public static class Response {
         private Long answerId;
         private String content;
-        private int vote;
         private boolean accepted;
-        private LocalDateTime createdAt = LocalDateTime.now();
-        private LocalDateTime modifiedAt = LocalDateTime.now();
     }
 
 }
