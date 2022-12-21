@@ -1,8 +1,17 @@
+import './App.css';
+import { BrowserRouter as BrowserRouter } from 'react-router-dom';
+import Header from './Components/Header';
+import Signup from './Pages/Signup/Signup';
+
 function App() {
+
   return (
-    <div className="App">
-      default
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Header/>
+        <Signup />
+      </div>
+    </BrowserRouter>
   );
 }
 
