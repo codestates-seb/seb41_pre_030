@@ -35,8 +35,10 @@ public class MemberService {
     }
 
     public Member findMember(long memberId) {
+
         return findVerifiedMember(memberId);
     }
+
 
     public Page<Member> findMembers(int page, int size) {
         return memberRepository.findAll(PageRequest.of(page, size,

@@ -1,20 +1,30 @@
 package Be_30.Project.member.controller;
 
+import Be_30.Project.dto.MultiResponseDto;
 import Be_30.Project.member.dto.MemberDto;
+import Be_30.Project.member.entity.Member;
 import Be_30.Project.member.entity.Member.MemberStatus;
 import Be_30.Project.member.mapper.MemberMapper;
 import Be_30.Project.member.repository.MemberRepository;
 import Be_30.Project.member.service.MemberService;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,40 +41,50 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity postMember(){
-        return ResponseEntity.created(URI.create("/members/1")).build();
+    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post memberDto){
+        Member member = mapper.MemberPostDtoToMember(memberDto);
+
+        Member createdMember = memberService.createMember(member);
+
+        return new ResponseEntity<>(createdMember, HttpStatus.CREATED);
+
     }
 
-    @PatchMapping("/{user-id}")
-    public ResponseEntity patchMember(){
-        MemberDto.Response response =
-            new MemberDto.Response(1,"heebum@gmail.com",
-                "희범",MemberStatus.MEMBER_ACTIVE);
-        return ResponseEntity.ok(response);
+    @PatchMapping("/{member-id}")
+    public ResponseEntity patchMember(@Valid @PathVariable("member-id") int id, @RequestBody MemberDto.Patch memberDto){
+        memberDto.setMemberId(id);
+
+        Member member = memberService.updateMember(mapper.MemberPatchDtoToMember(memberDto));
+        MemberDto.Response response = mapper.MemberToMemberResponseDto(member);
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @GetMapping("/{user-id}")
-    public ResponseEntity getMember(){
-        MemberDto.Response response =
-            new MemberDto.Response(1,"heebum@gmail.com",
-                "희범",MemberStatus.MEMBER_ACTIVE);
-        return ResponseEntity.ok(response);
+    @GetMapping("/{member-id}")
+    public ResponseEntity getMember(@Positive @PathVariable("member-id") int id){
+        Member member = memberService.findMember(id);
+
+        MemberDto.Response response = mapper.MemberToMemberResponseDto(member);
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @DeleteMapping("/{user-id}")
-    public ResponseEntity deleteMember(){
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{member-id}")
+    public ResponseEntity deleteMember(@Positive @PathVariable("member-id") int id){
+        memberService.deleteMember(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping
-    public ResponseEntity getMembers(){
-        MemberDto.Response response1 =
-            new MemberDto.Response(1,"heebum1@gmail.com",
-                "희범1",MemberStatus.MEMBER_ACTIVE);
+    public ResponseEntity getMembers(@Positive @RequestParam int page,
+                                    @Positive @RequestParam int size){
+        Page<Member> pageMembers = memberService.findMembers(page-1, size);
+        List<Member> members = pageMembers.getContent();
 
-        MemberDto.Response response2 =
-            new MemberDto.Response(2,"heebum2@gmail.com",
-                "희범2",MemberStatus.MEMBER_ACTIVE);
-        return ResponseEntity.ok(Arrays.asList(response1, response2));
+        MultiResponseDto multiResponseDto = new MultiResponseDto(mapper.MembersToMemberResponseDtos(members)
+        , pageMembers);
+
+        return new ResponseEntity<>(multiResponseDto,HttpStatus.OK);
     }
 }
