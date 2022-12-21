@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -45,20 +46,35 @@ const Form = styled.form`
 `
 
 const SignupForm = () => {
+  const displayNameRef = useRef('')
+  const emailRef = useRef('')
+  const passwordeRef = useRef('')
+
+  const onSignUpSubmitHandler = (event) => {
+    event.preventDefault();
+    console.log(
+      {
+        displayName: displayNameRef.current.value,
+        email: emailRef.current.value,
+        password:passwordeRef.current.value
+      }
+    )
+  }
+
   return (
     <Container>
-      <Form>
+      <Form onSubmit={(event) => onSignUpSubmitHandler(event)}>
         <div className='input-box'>
-          <label>Display name</label>
-          <input />
+          <label htmlFor='display-name'>Display name</label>
+          <input ref={displayNameRef} type='text' id='display-name' name='display-name' />
         </div>
         <div className='input-box'>
-          <label>Email</label>
-          <input />
+          <label htmlFor='email'>Email</label>
+          <input ref={emailRef} type='text' id='email' name='email' />
         </div>
         <div className='input-box'>
-          <label>Password</label>
-          <input />
+          <label htmlFor='password'>Password</label>
+          <input ref={passwordeRef} type='text' id='password' name='password'/>
           <p>Passwords must contain at least eight characters, including at least 1 letter and 1 number.</p>
         </div>
         <button>SignUp</button>
