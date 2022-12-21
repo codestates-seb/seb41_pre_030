@@ -47,7 +47,7 @@ public class AnswerControllerRestDocsTest {
     @Test
     public void postAnswerTest() throws Exception {
         //given -> postDto
-        AnswerDto.Post post = new AnswerDto.Post("답변입니다.", 1, false);
+        AnswerDto.Post post = new AnswerDto.Post("답변입니다.", false);
 
         String content = gson.toJson(post);
 
@@ -67,7 +67,6 @@ public class AnswerControllerRestDocsTest {
                 requestFields(
                     List.of(
                         fieldWithPath("content").type(JsonFieldType.STRING).description("답변 내용"),
-                        fieldWithPath("vote").type(JsonFieldType.NUMBER).description("추천수"),
                         fieldWithPath("accepted").type(JsonFieldType.BOOLEAN).description("채택 여부")
                     )
                 ),
@@ -81,7 +80,7 @@ public class AnswerControllerRestDocsTest {
     @Test
     public void patchAnswerTest() throws Exception {
         //given -> patchDto
-        AnswerDto.Patch patch = new AnswerDto.Patch("답변입니다.", 1, false);
+        AnswerDto.Patch patch = new AnswerDto.Patch("답변입니다.", false);
 
         String content = gson.toJson(patch);
         //when -> patch
@@ -93,7 +92,6 @@ public class AnswerControllerRestDocsTest {
         //then -> 변경된 값과 같은지
         actions.andExpect(status().isOk())
             .andExpect(jsonPath("$.content").value(patch.getContent()))
-            .andExpect(jsonPath("$.vote").value(patch.getVote()))
             .andExpect(jsonPath("$.accepted").value(patch.isAccepted()))
             .andDo(document("patch-answer",
                 getRequestPreProcessor(),
@@ -101,7 +99,6 @@ public class AnswerControllerRestDocsTest {
                 requestFields(
                     List.of(
                         fieldWithPath("content").type(JsonFieldType.STRING).description("답변 내용"),
-                        fieldWithPath("vote").type(JsonFieldType.NUMBER).description("추천수"),
                         fieldWithPath("accepted").type(JsonFieldType.BOOLEAN).description("채택 여부")
                     )
                 ),
@@ -109,7 +106,6 @@ public class AnswerControllerRestDocsTest {
                     List.of(
                         fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
                         fieldWithPath("content").type(JsonFieldType.STRING).description("답변 내용"),
-                        fieldWithPath("vote").type(JsonFieldType.NUMBER).description("추천수"),
                         fieldWithPath("accepted").type(JsonFieldType.BOOLEAN).description("채택 여부"),
                         fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 시간"),
                         fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("수정 시간")
@@ -122,7 +118,7 @@ public class AnswerControllerRestDocsTest {
     @Test
     public void getAnswerTest() throws Exception {
         //given -> answer 객체?
-        AnswerDto.Post post = new AnswerDto.Post("답변입니다.", 1, false);
+        AnswerDto.Post post = new AnswerDto.Post("답변입니다.",  false);
 
         String content = gson.toJson(post);
         //when -> get
@@ -134,7 +130,6 @@ public class AnswerControllerRestDocsTest {
         //then-> 불러와진값과 비교
         actions.andExpect(status().isOk())
             .andExpect(jsonPath("$.content").value(post.getContent()))
-            .andExpect(jsonPath("$.vote").value(post.getVote()))
             .andExpect(jsonPath("$.accepted").value(post.isAccepted()))
             .andDo(document("get-answer",
                 getResponsePreProcessor(),
@@ -142,7 +137,6 @@ public class AnswerControllerRestDocsTest {
                     List.of(
                         fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
                         fieldWithPath("content").type(JsonFieldType.STRING).description("답변 내용"),
-                        fieldWithPath("vote").type(JsonFieldType.NUMBER).description("추천수"),
                         fieldWithPath("accepted").type(JsonFieldType.BOOLEAN).description("채택 여부"),
                         fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 시간"),
                         fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("수정 시간")
@@ -154,8 +148,8 @@ public class AnswerControllerRestDocsTest {
     @Test
     public void getAnswersTest() throws Exception {
         //given -> post 2개
-        AnswerDto.Post post1 = new AnswerDto.Post("답변입니다.", 1, false);
-        AnswerDto.Post post2 = new AnswerDto.Post("답변", 2, false);
+        AnswerDto.Post post1 = new AnswerDto.Post("답변입니다.", false);
+        AnswerDto.Post post2 = new AnswerDto.Post("답변", false);
         //when -> get
         ResultActions actions =
             mockMvc.perform(get("/answers")
@@ -170,7 +164,6 @@ public class AnswerControllerRestDocsTest {
                         fieldWithPath("[]").type(JsonFieldType.ARRAY).description("답변 목록"),
                         fieldWithPath("[].answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
                         fieldWithPath("[].content").type(JsonFieldType.STRING).description("답변 내용"),
-                        fieldWithPath("[].vote").type(JsonFieldType.NUMBER).description("추천수"),
                         fieldWithPath("[].accepted").type(JsonFieldType.BOOLEAN).description("채택 여부"),
                         fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("생성 시간"),
                         fieldWithPath("[].modifiedAt").type(JsonFieldType.STRING).description("수정 시간")
@@ -182,7 +175,7 @@ public class AnswerControllerRestDocsTest {
     @Test
     public void deleteAnswerTest() throws Exception {
         //given
-        AnswerDto.Post post = new AnswerDto.Post("답변입니다.", 1, false);
+        AnswerDto.Post post = new AnswerDto.Post("답변입니다.", false);
         //when
         ResultActions actions =
             mockMvc.perform(delete("/answers/1")

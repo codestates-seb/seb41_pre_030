@@ -1,4 +1,4 @@
-package Be_30.Project.answer.entity;
+package Be_30.Project.vote.entity;
 
 import Be_30.Project.audit.Auditable;
 import javax.persistence.Entity;
@@ -11,10 +11,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @Entity
-public class Answer extends Auditable {
+public class Vote extends Auditable {
     @Id
-    private Long answerId;
-    private String content;
-    private boolean accepted;
-
+    private Long voteId;
+    private int voteCount;
 }
