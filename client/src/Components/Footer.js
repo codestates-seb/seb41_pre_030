@@ -142,7 +142,7 @@ const Footer = () => {
             <FooterCRListItem><a href={() => false}>LinkedIn</a></FooterCRListItem>
             <FooterCRListItem><a href={() => false}>Instagram</a></FooterCRListItem>
           </FooterCRList>
-          <p> Site design / logo © 2022 Stack Exchange Inc; user contributions licensed under CC BY-SA. <span>rev 2022.12.19.43125</span></p>
+          <p> Site design / logo © 2022 Stack Exchange Inc; user contributions licensed under CC BY-SA.</p>
         </FooterCopyright>
       </FooterContainer>
     </FooterEl>
