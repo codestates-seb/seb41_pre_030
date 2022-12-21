@@ -1,12 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Logo from "../Image/Logo";
+import profileImage from "../Image/profile.png";
 
 const StyledHeader = styled.header`
   background-color: hsl(210deg 8% 98%);
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   display: grid;
-  grid-template-columns: 200px 1fr 70px 100px;
+  grid-template-columns: 200px 1fr 50px 100px;
   grid-column-gap: 20px;
 `;
 
@@ -51,6 +52,21 @@ const SearchInput = styled.input`
   margin-top: 7px;
 `;
 
+const ProfileLink = styled.a`
+  display: inline-block;
+  padding: 7px 5px 0px 5px;
+  margin: auto;
+
+  :hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  img {
+    width: 35px;
+    height: 35px;
+  }
+`;
+
 const LoginLink = styled.a`
   button {
     -webkit-appearance: none;
@@ -76,40 +92,7 @@ const LoginLink = styled.a`
     cursor: pointer;
   }
 
-  .login {
-    background-color: hsl(205deg 46% 92%);
-    color: hsl(205deg 47% 42%);
-    --button-hover-bg-color: hsl(205deg 57% 81%);
-    --button-active-bg-color: hsl(205deg 56% 76%);
-  }
-`;
-
-const SignupLink = styled.a`
-  button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-
-    display: inline-block;
-    height: 36px;
-    padding: 0px 15px;
-    margin-top: 8px;
-    width: auto;
-
-    border: 1px solid hsl(205deg 41% 63%);
-    border-radius: 4px;
-    font-weight: 500;
-
-    :hover {
-      background: var(--button-hover-bg-color);
-    }
-    :active {
-      background: var(--button-active-bg-color);
-    }
-    cursor: pointer;
-  }
-
-  .signUp {
+  .logout {
     background-color: hsl(206deg 100% 52%);
     color: #fff;
     --button-hover-bg-color: hsl(209deg 100% 38%);
@@ -117,7 +100,7 @@ const SignupLink = styled.a`
   }
 `;
 
-const Header = () => {
+const LoginHeader = () => {
   const [search, setSearch] = useState("");
 
   const onChange = (e) => {
@@ -140,13 +123,14 @@ const Header = () => {
           onChange={onChange}
         />
       </form>
+      <ProfileLink href="http://www.naver.com" className="profile">
+        <img src={profileImage} />
+      </ProfileLink>
       <LoginLink href="http://www.naver.com" className="profile">
-        <button className="login">Log in</button>
+        <button className="logout">Log out</button>
       </LoginLink>
-      <SignupLink>
-        <button className="signUp">Sign up</button>
-      </SignupLink>
     </StyledHeader>
   );
 };
-export default Header;
+
+export default LoginHeader;
