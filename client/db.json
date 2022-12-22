@@ -1,0 +1,122 @@
+{
+  "questions": [
+    {
+      "questionId" : 1,
+      "subject" : "안녕하세요",
+      "content" : "introduce me aris from indonesia. I'm learning to use various sem-pls software (such as smart-pls, warp-pls, and r), but I'm having trouble building a model using moderator variables, with warp-pls as the reference model.",
+      "vote" : 100,
+      "view" : 12345,
+      "createdAt" : "2022-12-21T11:14:37.3755914",
+      "modifiedAt" : "2022-12-21T11:14:37.3755914",
+      "answer":
+        [ {
+          "answerId" : 1,
+          "content" : "답변입니다.",
+          "vote" : 1,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        }, {
+          "answerId" : 2,
+          "content" : "답변",
+          "vote" : 2,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        },
+        {
+          "answerId" : 3,
+          "content" : "답변이에요",
+          "vote" : 6,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        } ]
+    },
+    {
+      "questionId" : 2,
+      "subject" : "제 이름은",
+      "content" : "I know catchError = const will compile, but that's not what I want to do. I basically (think I) want catchError in the case of ExceptT being a Right to behave like catchError would on the underlying monad, but in the case of Left catchError does nothing (we'll check have to check the return of ExceptT in this case).I've bashed my head against this but have got stuck wrestling with the type checker. Is there actually a sensible implementation of catchError here or is what I'm trying to do impossible for some reason?",
+      "vote" : 10,
+      "view" : 12,
+      "createdAt" : "2022-12-21T11:14:37.3755914",
+      "modifiedAt" : "2022-12-21T11:14:37.3755914",
+      "answer":
+        [ {
+          "answerId" : 1,
+          "content" : "답변입니다.",
+          "vote" : 1,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        }, {
+          "answerId" : 2,
+          "content" : "답변",
+          "vote" : 2,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        } ]
+    },
+    {
+      "questionId" : 3,
+      "subject" : "김코딩입니다",
+      "content" : "33333",
+      "vote" : 130,
+      "view" : 123,
+      "createdAt" : "2022-12-21T11:14:37.3755914",
+      "modifiedAt" : "2022-12-21T11:14:37.3755914",
+      "answer":
+        [ {
+          "answerId" : 1,
+          "content" : "답변입니다.",
+          "vote" : 1,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        }, {
+          "answerId" : 2,
+          "content" : "답변",
+          "vote" : 2,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        } ]
+    },
+    {
+      "questionId" : 4,
+      "subject" : "더미데이터",
+      "content" : "44444",
+      "answer" : 20,
+      "vote" : 60,
+      "view" : 345,
+      "createdAt" : "2022-12-21T11:14:37.3755914",
+      "modifiedAt" : "2022-12-21T11:14:37.3755914"
+    },
+    {
+      "questionId" : 5,
+      "subject" : "테스트중입니다",
+      "content" : "55555",
+      "vote" : 1,
+      "view" : 125,
+      "createdAt" : "2022-12-21T11:14:37.3755914",
+      "modifiedAt" : "2022-12-21T11:14:37.3755914",
+      "answer":
+        [ {
+          "answerId" : 1,
+          "content" : "답변입니다.",
+          "vote" : 1,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        }, {
+          "answerId" : 2,
+          "content" : "답변",
+          "vote" : 2,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        } ]
+    }
+  ]
+}
