@@ -92,54 +92,54 @@ const Footer = () => {
           <FooterCol>
             <FooterColTitle>stack overflow</FooterColTitle>
             <FooterColList>
-              <FooterColListItem><a href={() => false}>Questions</a></FooterColListItem>
-              <FooterColListItem><a href={() => false}>Help</a></FooterColListItem>
+              <FooterColListItem><a href="{() => false}">Questions</a></FooterColListItem>
+              <FooterColListItem><a href="{() => false}">Help</a></FooterColListItem>
             </FooterColList>
           </FooterCol>
           <FooterCol>
             <FooterColTitle>product</FooterColTitle>
               <FooterColList>
-                <FooterColListItem><a href={() => false}>Teams</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Advertising</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Collectives</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Talent</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Teams</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Advertising</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Collectives</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Talent</a></FooterColListItem>
               </FooterColList>
           </FooterCol>
           <FooterCol>
             <FooterColTitle>company</FooterColTitle>
               <FooterColList>
-                <FooterColListItem><a href={() => false}>About</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Press</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Work Here</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Legal</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Privacy Policy</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Terms of Service</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Contact Us</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Cookie Settings</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Cookie Policy</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">About</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Press</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Work Here</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Legal</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Privacy Policy</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Terms of Service</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Contact Us</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Cookie Settings</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Cookie Policy</a></FooterColListItem>
               </FooterColList>
           </FooterCol>
           <FooterCol>
             <FooterColTitle>stact exchange network</FooterColTitle>
               <FooterColList>
-                <FooterColListItem><a href={() => false}>Technology</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Cultures & recreation</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Life & arts</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Science</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Professional</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Business</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>API</a></FooterColListItem>
-                <FooterColListItem><a href={() => false}>Data</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Technology</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Cultures & recreation</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Life & arts</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Science</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Professional</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Business</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">API</a></FooterColListItem>
+                <FooterColListItem><a href="{() => false}">Data</a></FooterColListItem>
               </FooterColList>
           </FooterCol>
         </FooterNav>
         <FooterCopyright>
           <FooterCRList>
-            <FooterCRListItem margin="0"><a href={() => false}>Blog</a></FooterCRListItem>
-            <FooterCRListItem><a href={() => false}>Facebook</a></FooterCRListItem>
-            <FooterCRListItem><a href={() => false}>Twitter</a></FooterCRListItem>
-            <FooterCRListItem><a href={() => false}>LinkedIn</a></FooterCRListItem>
-            <FooterCRListItem><a href={() => false}>Instagram</a></FooterCRListItem>
+            <FooterCRListItem margin="0"><a href="{() => false}">Blog</a></FooterCRListItem>
+            <FooterCRListItem><a href="{() => false}">Facebook</a></FooterCRListItem>
+            <FooterCRListItem><a href="{() => false}">Twitter</a></FooterCRListItem>
+            <FooterCRListItem><a href="{() => false}">LinkedIn</a></FooterCRListItem>
+            <FooterCRListItem><a href="{() => false}">Instagram</a></FooterCRListItem>
           </FooterCRList>
           <p> Site design / logo © 2022 Stack Exchange Inc; user contributions licensed under CC BY-SA. <span>rev 2022.12.19.43125</span></p>
         </FooterCopyright>
