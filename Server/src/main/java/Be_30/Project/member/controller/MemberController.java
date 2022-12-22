@@ -1,6 +1,7 @@
 package Be_30.Project.member.controller;
 
 import Be_30.Project.dto.MultiResponseDto;
+import Be_30.Project.dto.SingleResponseDto;
 import Be_30.Project.member.dto.MemberDto;
 import Be_30.Project.member.entity.Member;
 import Be_30.Project.member.entity.Member.MemberStatus;
@@ -45,8 +46,11 @@ public class MemberController {
         Member member = mapper.MemberPostDtoToMember(memberDto);
 
         Member createdMember = memberService.createMember(member);
+        MemberDto.Response response = mapper.MemberToMemberResponseDto(createdMember);
 
-        return new ResponseEntity<>(createdMember, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+            new SingleResponseDto<>(response),
+            HttpStatus.CREATED);
 
     }
 
@@ -57,7 +61,9 @@ public class MemberController {
         Member member = memberService.updateMember(mapper.MemberPatchDtoToMember(memberDto));
         MemberDto.Response response = mapper.MemberToMemberResponseDto(member);
 
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(
+            new SingleResponseDto<>(response),
+            HttpStatus.OK);
     }
 
     @GetMapping("/{member-id}")
@@ -66,7 +72,9 @@ public class MemberController {
 
         MemberDto.Response response = mapper.MemberToMemberResponseDto(member);
 
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(
+            new SingleResponseDto<>(response),
+            HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
