@@ -12,5 +12,8 @@ import lombok.Getter;
 public class AnswerVote extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long QuestionVoteId;
+    private Long AnswerVoteId;
+
+    // member 매핑
+    // Answer 매핑
 }
