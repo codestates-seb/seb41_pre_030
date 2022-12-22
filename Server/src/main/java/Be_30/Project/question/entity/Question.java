@@ -33,7 +33,7 @@ public class Question extends Auditable {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany
     private List<Answer> answers;
 
     public void setMember(Member member) {
