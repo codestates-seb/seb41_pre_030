@@ -44,7 +44,7 @@ public class QuestionDto {
         private int views;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-        // private MemberDto.Response member;
-        // private List<AnswerDto.Response> answers;
+        private MemberDto.Response member;
+        private List<AnswerDto.Response> answers;
     }
 }

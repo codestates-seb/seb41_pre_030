@@ -36,6 +36,10 @@ public class Question extends Auditable {
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
 
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
     // 질문 수정 (제목, 본문)
     public void updateQuestion(String subject, String content) {
         this.subject = subject;
