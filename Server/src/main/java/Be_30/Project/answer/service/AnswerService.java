@@ -9,8 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class AnswerService {
     private final AnswerRepository answerRepository;
 
@@ -21,6 +23,9 @@ public class AnswerService {
     public Answer createAnswer(Answer answer) {
         // 해당 답변이 존재하는 지?? 중복 허용을 하기 때문에 존재유뮤 확인 x
         // repo에 저장
+        answer.setAnswerVote(0);
+        answer.setAccepted(false);
+
         Answer savedAnswer = answerRepository.save(answer);
 
         return savedAnswer;
@@ -42,17 +47,18 @@ public class AnswerService {
     // 질문 목록 조회
     public Page<Answer> findAnswers(int page, int size) {
         Page<Answer> answerPage =
-            answerRepository.findAll(PageRequest.of(page-1, size, Sort.by("answer-id")));
+            answerRepository.findAll(PageRequest.of(page-1, size, Sort.by("answerId")));
 
         return answerPage;
     }
     // 질문 삭제
-    public Answer deleteAnswer(long answerId) {
-        return null;
+    public void deleteAnswer(long answerId) {
+        Answer answer = findVerifiedAnswer(answerId);
+        answerRepository.delete(answer);
     }
 
     // 해당 질문 존재 유뮤 검증 findById 사용, 존재하지 않으면 exception
-    private Answer findVerifiedAnswer(long answerId) {
+    public Answer findVerifiedAnswer(long answerId) {
        Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
 
        Answer answer = optionalAnswer.orElseThrow(

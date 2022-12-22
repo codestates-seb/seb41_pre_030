@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -73,7 +74,8 @@ public class AnswerController {
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity getAnswers(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity getAnswers(@Positive @RequestParam int page,
+                                        @Positive @RequestParam int size) {
 
         Page<Answer> answerPage = answerService.findAnswers(page, size);
 
@@ -84,11 +86,11 @@ public class AnswerController {
         return new ResponseEntity<>(new MultiResponseDto<>(responses, answerPage), HttpStatus.OK);
     }
     @DeleteMapping("/{answer-id}")
-    public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAnswer(@PathVariable("answer-id") @Positive long answerId) {
 
         answerService.deleteAnswer(answerId);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

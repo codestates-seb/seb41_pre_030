@@ -14,6 +14,7 @@ public class AnswerDto {
     @Getter
     @Setter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Post {
         @NotBlank(message = "글을 입력해주세요.")
         private String content;
@@ -21,7 +22,9 @@ public class AnswerDto {
     @Getter
     @Setter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Patch {
+        private long answerId;
         @NotBlank(message = "글을 입력해주세요.")
         private String content;
     }
