@@ -146,7 +146,7 @@ const Header = () => {
       <LoginLink href="http://www.naver.com" className="profile">
         <button className="login">Log in</button>
       </LoginLink>
-      <SignupLink>
+      <SignupLink href='/signup'>
         <button className="signUp">Sign up</button>
       </SignupLink>
     </StyledHeader>
