@@ -47,7 +47,7 @@ public class MemberController {
     public ResponseEntity getMember(){
         MemberDto.Response response =
             new MemberDto.Response(1,"heebum@gmail.com",
-                "희범",MemberStatus.MEMBER_ACTIVE);
+                "희범", MemberStatus.MEMBER_ACTIVE);
         return ResponseEntity.ok(response);
     }
 
