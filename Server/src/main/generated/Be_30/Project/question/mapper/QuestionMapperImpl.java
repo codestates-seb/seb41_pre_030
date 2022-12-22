@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-12-22T15:24:57+0900",
+    date = "2022-12-22T18:30:58+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.16.1 (Eclipse Adoptium)"
 )
 @Component
@@ -114,14 +114,14 @@ public class QuestionMapperImpl implements QuestionMapper {
         Long answerId = null;
         String content = null;
         boolean accepted = false;
-        int answerVote = 0;
+        int votes = 0;
 
         answerId = answer.getAnswerId();
         content = answer.getContent();
         accepted = answer.isAccepted();
-        answerVote = answer.getAnswerVote();
+        votes = answer.getVotes();
 
-        Be_30.Project.answer.dto.AnswerDto.Response response = new Be_30.Project.answer.dto.AnswerDto.Response( answerId, content, accepted, answerVote );
+        Be_30.Project.answer.dto.AnswerDto.Response response = new Be_30.Project.answer.dto.AnswerDto.Response( answerId, content, accepted, votes );
 
         return response;
     }
