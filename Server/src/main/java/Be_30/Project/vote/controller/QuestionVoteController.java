@@ -6,13 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/votes")
-public class VoteController {
-    // post
-    @PostMapping
+@RequestMapping("/question/votes")
+public class QuestionVoteController {
+    @PostMapping //("/{question-id}"
     public ResponseEntity postVote() {
-        // post -> boolean? false에서 true?
+        // 사용자 정보와, 추천수를 등록할 질문 id
         return null;
     }
-    // delete
 }
