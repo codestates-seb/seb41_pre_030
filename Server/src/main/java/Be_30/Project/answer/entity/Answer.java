@@ -19,7 +19,6 @@ public class Answer extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
     private String content;
-    private int vote;
     private boolean accepted;
     private int votes;
 

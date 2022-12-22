@@ -14,6 +14,12 @@ public class AnswerVote extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long AnswerVoteId;
 
-    // member 매핑
-    // Answer 매핑
+    // TODO: member 매핑
+    // @ManyToOne
+    // @JoinColumn(name = "MEMBER-ID")
+    // private Member member;
+    // TODO: Answer 매핑
+    // @ManyToOne
+    // @JoinColumn(name = "ANSWER-ID")
+    // private Answer answer;
 }
