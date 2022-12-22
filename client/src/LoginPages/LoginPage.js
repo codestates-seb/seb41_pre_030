@@ -7,6 +7,15 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 
 
+const BgCenter = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 1000px;
+  padding: 24px;
+  background-color:hsl(210,8%,95%);
+`
 
 const Container = styled.div`
   width: 268px;
@@ -123,28 +132,30 @@ class LoginPage extends Component {
 
   render() {
     return (
-      <Container>
-        <UpContainer>
-          <Link to={'/'} className="logo">
-            <Logo className="stackLogo"/>
-          </Link>
-          <GoogleButton>
-            <GoogleLogo />Log in with Google
-          </GoogleButton>
-          <GitButton>
-            <GitLogo />Log in with GitHub
-          </GitButton>
-        </UpContainer>
-        <RowContainer>
-          <LoginHeader>Email</LoginHeader>
-          <LoginInput type="email" value={this.state.email}
-                      onChange={ev => this.setState({email:ev.target.value})}/>
-          <LoginHeader>Password</LoginHeader>
-          <LoginInput type="password" value={this.state.password}
-                      onChange={ev => this.setState({password:ev.target.value})}/>
-          <LoginButton className="login" onClick={() => this.login()}>Log in</LoginButton>
-        </RowContainer>
-      </Container>
+      <BgCenter>
+        <Container>
+          <UpContainer>
+            <Link to={'/'} className="logo">
+              <Logo className="stackLogo"/>
+            </Link>
+            <GoogleButton>
+              <GoogleLogo />Log in with Google
+            </GoogleButton>
+            <GitButton>
+              <GitLogo />Log in with GitHub
+            </GitButton>
+          </UpContainer>
+          <RowContainer>
+            <LoginHeader>Email</LoginHeader>
+            <LoginInput type="email" value={this.state.email}
+                        onChange={ev => this.setState({email:ev.target.value})}/>
+            <LoginHeader>Password</LoginHeader>
+            <LoginInput type="password" value={this.state.password}
+                        onChange={ev => this.setState({password:ev.target.value})}/>
+            <LoginButton className="login" onClick={() => this.login()}>Log in</LoginButton>
+          </RowContainer>
+        </Container>
+      </BgCenter>
     )
   }
 };
