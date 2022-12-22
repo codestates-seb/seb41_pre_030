@@ -35,7 +35,7 @@ public class AnswerDto {
         private Long answerId;
         private String content;
         private boolean accepted;
-        private int answerVote;
+        private int votes;
     }
 
 }

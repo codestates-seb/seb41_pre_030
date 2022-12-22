@@ -1,16 +1,15 @@
 package Be_30.Project.question.entity;
 
+import Be_30.Project.answer.entity.Answer;
 import Be_30.Project.audit.Auditable;
+import Be_30.Project.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Builder
@@ -26,14 +25,39 @@ public class Question extends Auditable {
 
     private String content;
 
-    private int vote;
+    private int votes;
 
-    private int view;
+    private int views;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answers;
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    // 질문 수정 (제목, 본문)
     public void updateQuestion(String subject, String content) {
         this.subject = subject;
         this.content = content;
     }
 
-//    private User user;
+    // 투표 + 1
+    public void makeUpVote() {
+        this.votes++;
+    }
+
+    // 투표 - 1
+    public void makeDownVote() {
+        this.votes--;
+    }
+
+    // 조회수 + 1
+    public void viewQuestion() {
+        this.views++;
+    }
 }

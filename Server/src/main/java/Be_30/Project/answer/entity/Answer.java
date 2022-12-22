@@ -20,11 +20,11 @@ public class Answer extends Auditable {
     private Long answerId;
     private String content;
     private boolean accepted;
-    private int answerVote;
+    private int votes;
 
-    public Answer(String content, boolean accepted, int answerVote) {
+    public Answer(String content, boolean accepted, int votes) {
         this.content = content;
         this.accepted = accepted;
-        this.answerVote = answerVote;
+        this.votes = votes;
     }
 }

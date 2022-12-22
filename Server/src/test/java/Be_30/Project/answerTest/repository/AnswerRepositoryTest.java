@@ -32,7 +32,7 @@ public class AnswerRepositoryTest {
         //then
         assertNotNull(saveAnswer);
         assertThat(answer.getContent(), is(saveAnswer.getContent()));
-        assertThat(answer.getAnswerVote(), is(saveAnswer.getAnswerVote()));
+        assertThat(answer.getVotes(), is(saveAnswer.getVotes()));
         assertThat(answer.isAccepted(), is(saveAnswer.isAccepted()));
     }
     @Test
@@ -48,7 +48,7 @@ public class AnswerRepositoryTest {
         assertNotNull(findAnswer);
         assertThat(saveAnswer.getAnswerId(), is(findAnswer.getAnswerId()));
         assertThat(saveAnswer.getContent(), is(findAnswer.getContent()));
-        assertThat(saveAnswer.getAnswerVote(), is(findAnswer.getAnswerVote()));
+        assertThat(saveAnswer.getVotes(), is(findAnswer.getVotes()));
         assertThat(saveAnswer.isAccepted(), is(findAnswer.isAccepted()));
     }
     @Test

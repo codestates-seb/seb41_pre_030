@@ -100,7 +100,7 @@ public class AnswerControllerTest {
         actions.andExpect(status().isOk())
             .andExpect(jsonPath("$.data.content").value(answer.getContent()))
             .andExpect(jsonPath("$.data.accepted").value(answer.isAccepted()))
-            .andExpect(jsonPath("$.data.answerVote").value(answer.getAnswerVote()));
+            .andExpect(jsonPath("$.data.votes").value(answer.getVotes()));
     }
     @Test
     void getAnswerTest() throws Exception {
@@ -120,7 +120,7 @@ public class AnswerControllerTest {
         actions.andExpect(status().isOk())
             .andExpect(jsonPath("$.data.content").value(answer.getContent()))
             .andExpect(jsonPath("$.data.accepted").value(answer.isAccepted()))
-            .andExpect(jsonPath("$.data.answerVote").value(answer.getAnswerVote()));
+            .andExpect(jsonPath("$.data.votes").value(answer.getVotes()));
     }
     @Test
     void getAnswersTest() throws Exception {
