@@ -1,11 +1,12 @@
 import './App.css';
 import Sidebar from "./Components/Sidebar";
-import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Home from './Components/Home';
 import Users from './Components/Users';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import LoginPage from './LoginPages/LoginPage';
+import Signup from './Pages/Signup/Signup';
 
 
 function App() {
@@ -16,14 +17,15 @@ function App() {
         <Header/>
         <Sidebar/>
           <Routes>
-            <Route path='/' element={<Home/>}/>
+            <Route path='/signup' element={<Signup />}/>
             <Route path='/users' element={<Users />}/>
             <Route path='/login' element={<LoginPage />} />
+            <Route path='/' element={<Home/>}/>
           </Routes>
-          <Footer/>
+        <Footer/>
       </div>
     </BrowserRouter>
   );
 }
 
-export default App;
+  export default App;
