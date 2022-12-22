@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Logo from "../Image/Logo";
+import { Link } from "react-router-dom";
 
 const StyledHeader = styled.header`
   background-color: hsl(210deg 8% 98%);
@@ -11,9 +12,10 @@ const StyledHeader = styled.header`
   position: sticky;
   left: 0;
   top: 0;
+  z-index: 20;
 `;
 
-const LogoLink = styled.a`
+const LogoLink = styled(Link)`
   color: rgba(0, 0, 0);
   text-decoration: none;
   display: inline-block;
@@ -53,7 +55,7 @@ const SearchInput = styled.input`
   margin-top: 7px;
 `;
 
-const LoginLink = styled.a`
+const LoginLink = styled(Link)`
   button {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -86,7 +88,7 @@ const LoginLink = styled.a`
   }
 `;
 
-const SignupLink = styled.a`
+const SignupLink = styled(Link)`
   button {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -129,7 +131,7 @@ const Header = () => {
 
   return (
     <StyledHeader>
-      <LogoLink href="http://www.naver.com" className="logo">
+      <LogoLink to={'/'} className="logo">
         <Logo />
         <span>
           stack<b>overclone</b>
@@ -143,10 +145,10 @@ const Header = () => {
           onChange={onChange}
         />
       </form>
-      <LoginLink href="http://www.naver.com" className="profile">
+      <LoginLink to={"/login"}>
         <button className="login">Log in</button>
       </LoginLink>
-      <SignupLink>
+      <SignupLink to={"/signup"}>
         <button className="signUp">Sign up</button>
       </SignupLink>
     </StyledHeader>
