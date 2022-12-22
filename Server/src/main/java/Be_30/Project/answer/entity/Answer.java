@@ -15,6 +15,7 @@ public class Answer extends Auditable {
     @Id
     private Long answerId;
     private String content;
+    private int vote;
     private boolean accepted;
 
 }
