@@ -79,16 +79,4 @@ public class QuestionController {
         questionService.deleteQuestion(questionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
-    // TODO: 회원 정보를 같이 가져올 수 있어야 함
-    @PostMapping("/{questionId}/vote")
-    public ResponseEntity<?> voteQuestion(@PathVariable long questionId,
-                                          @RequestParam String voteType) {
-        Question question = questionService.voteQuestion(questionId, voteType);
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.questionToQuestionResponseDto(question)),
-                HttpStatus.OK
-        );
-    }
 }

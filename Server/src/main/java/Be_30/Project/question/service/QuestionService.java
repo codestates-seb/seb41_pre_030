@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class QuestionService {
 
-    private final VoteService voteService;
     private final QuestionRepository questionRepository;
 
     public Question createQuestion(Question question) {
@@ -72,20 +71,5 @@ public class QuestionService {
     public void deleteQuestion(long questionId) {
         Question findQuestion = findById(questionId);
         questionRepository.delete(findQuestion);
-    }
-
-    // 게시글 투표
-    public Question voteQuestion(long questionId, String voteType) {
-        Question question = findById(questionId);
-        voteService.makeVote(question, voteType);
-        switch (voteType) {
-            case "up":
-                question.makeUpVote();
-                break;
-            case "down":
-                question.makeDownVote();
-                break;
-        }
-        return question;
     }
 }

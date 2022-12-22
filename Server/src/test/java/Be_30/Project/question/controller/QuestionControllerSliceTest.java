@@ -104,7 +104,7 @@ class QuestionControllerSliceTest {
                                         fieldWithPath("data.answers[].answerId").type(NUMBER).description("답변 ID"),
                                         fieldWithPath("data.answers[].content").type(STRING).description("답변 내용"),
                                         fieldWithPath("data.answers[].accepted").type(BOOLEAN).description("답변 채택 유무"),
-                                        fieldWithPath("data.answers[].answerVote").type(NUMBER).description("답변 투표 수")
+                                        fieldWithPath("data.answers[].votes").type(NUMBER).description("답변 투표 수")
                                 )
                         )
                 ));
@@ -179,7 +179,7 @@ class QuestionControllerSliceTest {
                                         fieldWithPath("data[].answers[].answerId").type(NUMBER).description("답변 ID"),
                                         fieldWithPath("data[].answers[].content").type(STRING).description("답변 내용"),
                                         fieldWithPath("data[].answers[].accepted").type(BOOLEAN).description("답변 채택 유무"),
-                                        fieldWithPath("data[].answers[].answerVote").type(NUMBER).description("답변 투표 수"),
+                                        fieldWithPath("data[].answers[].votes").type(NUMBER).description("답변 투표 수"),
 
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
@@ -298,7 +298,7 @@ class QuestionControllerSliceTest {
                                         fieldWithPath("data.answers[].answerId").type(NUMBER).description("답변 ID"),
                                         fieldWithPath("data.answers[].content").type(STRING).description("답변 내용"),
                                         fieldWithPath("data.answers[].accepted").type(BOOLEAN).description("답변 채택 유무"),
-                                        fieldWithPath("data.answers[].answerVote").type(NUMBER).description("답변 투표 수")
+                                        fieldWithPath("data.answers[].votes").type(NUMBER).description("답변 투표 수")
                                 )
                         )
                 ));
@@ -352,7 +352,7 @@ class QuestionControllerSliceTest {
         answer.setAnswerId(answerId);
         answer.setContent(content);
         answer.setAccepted(accepted);
-        answer.setAnswerVote(30);
+        answer.setVotes(30);
         return answer;
     }
 }

@@ -56,165 +56,165 @@ import org.springframework.test.web.servlet.ResultActions;
 @AutoConfigureRestDocs
 public class UserControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private Gson gson;
-
-    @Test
-    public void postUserTest() throws Exception {
-        MemberDto.Post memberPostDto = new MemberDto.Post("egg30@gmail.com", "달걀한판","1111");
-
-        String content = gson.toJson(memberPostDto);
-
-        ResultActions actions =
-            mockMvc.perform(
-                post("/members")
-                    .accept(MediaType.APPLICATION_JSON)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(content)
-            );
-
-        actions
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", is(startsWith("/members/"))))
-                .andDo(document("post-member",
-                getRequestPreProcessor(),
-                getResponsePreProcessor(),
-                requestFields(
-                    List.of(
-                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-                        fieldWithPath("nickName").type(JsonFieldType.STRING).description("닉네임"),
-                        fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")
-                    )
-                ),
-                responseHeaders(
-                    headerWithName(HttpHeaders.LOCATION).description("Location header. 등록된 리소스의 URI")
-                )
-            ));
-    }
-
-
-    @Test
-    void patchMemberTest() throws  Exception{
-        MemberDto.Patch memberPatchDto = new MemberDto.Patch(1,"heebum@gmail.com",
-            "희범",MemberStatus.MEMBER_ACTIVE);
-
-        String content = gson.toJson(memberPatchDto);
-
-        ResultActions actions =
-            mockMvc.perform(
-                patch("/members/{member-id}",1)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(content)
-            );
-
-        actions
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.email").value(memberPatchDto.getEmail()))
-            .andExpect(jsonPath("$.nickName").value(memberPatchDto.getNickName()))
-            .andDo(document("patch-member",
-                getRequestPreProcessor(),
-                getResponsePreProcessor(),
-                pathParameters(
-                    parameterWithName("member-id").description("회원 식별자")
-                ),
-                requestFields(
-                    List.of(
-                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자").ignored(),
-                        fieldWithPath("email").type(JsonFieldType.STRING).description("이름").optional(),
-                        fieldWithPath("nickName").type(JsonFieldType.STRING).description("휴대폰 번호").optional(),
-                        fieldWithPath("memberStatus").type(JsonFieldType.STRING).description("회원 상태: MEMBER_ACTIVE / MEMBER_SLEEP / MEMBER_QUIT").optional()
-                    )
-                ),
-                responseFields(
-                    List.of(
-                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
-                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-                        fieldWithPath("nickName").type(JsonFieldType.STRING).description("이름"),
-                        fieldWithPath("memberStatus").type(JsonFieldType.STRING).description("회원 상태: 활동중 / 휴면 상태 / 탈퇴 상태")
-                    )
-                )
-            ));
-
-    }
-
-    @Test
-    void getMemberTest() throws Exception {
-
-        MemberDto.Response response = new MemberDto.Response(1,"heebum@gmail.com",
-            "희범",MemberStatus.MEMBER_ACTIVE);
-        String content = gson.toJson(response);
-
-        ResultActions actions =
-            mockMvc.perform(
-                get("/members/{member-id}",1)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(content)
-            );
-
-        actions
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.email").value(response.getEmail()))
-            .andExpect(jsonPath("$.nickName").value(response.getNickName()))
-            .andDo(document("get-member", getRequestPreProcessor(), getResponsePreProcessor(),
-                pathParameters(parameterWithName("member-id").description("회원 식별자"))
-                ,responseFields(
-                    List.of(
-                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
-                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-                        fieldWithPath("nickName").type(JsonFieldType.STRING).description("이름"),
-                        fieldWithPath("memberStatus").type(JsonFieldType.STRING).description("회원 상태: 활동중 / 휴면 상태 / 탈퇴 상태")
-                        )))
-            );
-    }
-
-    @Test
-    void deleteMemberTest() throws Exception{
-
-        ResultActions actions =
-            mockMvc.perform(
-                delete("/members/1")
-            );
-
-
-        actions
-                .andExpect(status().isNoContent())
-                .andDo(document("delete-member"
-            ));
-
-    }
-
-    @Test
-    void getMembersTest() throws Exception{
-
-        ResultActions actions =
-            mockMvc.perform(
-                get("/members")
-                    .accept(MediaType.APPLICATION_JSON)
-            );
-
-
-        actions
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andDo(document("get-members",getResponsePreProcessor(),
-                responseFields(List.of(
-                    fieldWithPath("[]").type(JsonFieldType.ARRAY).description("결과 데이터"),
-                    fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
-                    fieldWithPath("[].email").type(JsonFieldType.STRING).description("이메일"),
-                    fieldWithPath("[].nickName").type(JsonFieldType.STRING).description("닉네임"),
-                    fieldWithPath("[].memberStatus").type(JsonFieldType.STRING).description("회원 상태: 활동중 / 휴면 상태 / 탈퇴 상태")
-                )))
-
-
-
-            );
-
-
-    }
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @Autowired
+//    private Gson gson;
+//
+//    @Test
+//    public void postUserTest() throws Exception {
+//        MemberDto.Post memberPostDto = new MemberDto.Post("egg30@gmail.com", "달걀한판","1111");
+//
+//        String content = gson.toJson(memberPostDto);
+//
+//        ResultActions actions =
+//            mockMvc.perform(
+//                post("/members")
+//                    .accept(MediaType.APPLICATION_JSON)
+//                    .contentType(MediaType.APPLICATION_JSON)
+//                    .content(content)
+//            );
+//
+//        actions
+//                .andExpect(status().isCreated())
+//                .andExpect(header().string("Location", is(startsWith("/members/"))))
+//                .andDo(document("post-member",
+//                getRequestPreProcessor(),
+//                getResponsePreProcessor(),
+//                requestFields(
+//                    List.of(
+//                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+//                        fieldWithPath("nickName").type(JsonFieldType.STRING).description("닉네임"),
+//                        fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")
+//                    )
+//                ),
+//                responseHeaders(
+//                    headerWithName(HttpHeaders.LOCATION).description("Location header. 등록된 리소스의 URI")
+//                )
+//            ));
+//    }
+//
+//
+//    @Test
+//    void patchMemberTest() throws  Exception{
+//        MemberDto.Patch memberPatchDto = new MemberDto.Patch(1,"heebum@gmail.com",
+//            "희범",MemberStatus.MEMBER_ACTIVE);
+//
+//        String content = gson.toJson(memberPatchDto);
+//
+//        ResultActions actions =
+//            mockMvc.perform(
+//                patch("/members/{member-id}",1)
+//                    .accept(MediaType.APPLICATION_JSON)
+//                    .contentType(MediaType.APPLICATION_JSON)
+//                    .content(content)
+//            );
+//
+//        actions
+//            .andExpect(status().isOk())
+//            .andExpect(jsonPath("$.email").value(memberPatchDto.getEmail()))
+//            .andExpect(jsonPath("$.nickName").value(memberPatchDto.getNickName()))
+//            .andDo(document("patch-member",
+//                getRequestPreProcessor(),
+//                getResponsePreProcessor(),
+//                pathParameters(
+//                    parameterWithName("member-id").description("회원 식별자")
+//                ),
+//                requestFields(
+//                    List.of(
+//                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자").ignored(),
+//                        fieldWithPath("email").type(JsonFieldType.STRING).description("이름").optional(),
+//                        fieldWithPath("nickName").type(JsonFieldType.STRING).description("휴대폰 번호").optional(),
+//                        fieldWithPath("memberStatus").type(JsonFieldType.STRING).description("회원 상태: MEMBER_ACTIVE / MEMBER_SLEEP / MEMBER_QUIT").optional()
+//                    )
+//                ),
+//                responseFields(
+//                    List.of(
+//                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+//                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+//                        fieldWithPath("nickName").type(JsonFieldType.STRING).description("이름"),
+//                        fieldWithPath("memberStatus").type(JsonFieldType.STRING).description("회원 상태: 활동중 / 휴면 상태 / 탈퇴 상태")
+//                    )
+//                )
+//            ));
+//
+//    }
+//
+//    @Test
+//    void getMemberTest() throws Exception {
+//
+//        MemberDto.Response response = new MemberDto.Response(1,"heebum@gmail.com",
+//            "희범",MemberStatus.MEMBER_ACTIVE);
+//        String content = gson.toJson(response);
+//
+//        ResultActions actions =
+//            mockMvc.perform(
+//                get("/members/{member-id}",1)
+//                    .accept(MediaType.APPLICATION_JSON)
+//                    .contentType(MediaType.APPLICATION_JSON)
+//                    .content(content)
+//            );
+//
+//        actions
+//            .andExpect(status().isOk())
+//            .andExpect(jsonPath("$.email").value(response.getEmail()))
+//            .andExpect(jsonPath("$.nickName").value(response.getNickName()))
+//            .andDo(document("get-member", getRequestPreProcessor(), getResponsePreProcessor(),
+//                pathParameters(parameterWithName("member-id").description("회원 식별자"))
+//                ,responseFields(
+//                    List.of(
+//                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+//                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+//                        fieldWithPath("nickName").type(JsonFieldType.STRING).description("이름"),
+//                        fieldWithPath("memberStatus").type(JsonFieldType.STRING).description("회원 상태: 활동중 / 휴면 상태 / 탈퇴 상태")
+//                        )))
+//            );
+//    }
+//
+//    @Test
+//    void deleteMemberTest() throws Exception{
+//
+//        ResultActions actions =
+//            mockMvc.perform(
+//                delete("/members/1")
+//            );
+//
+//
+//        actions
+//                .andExpect(status().isNoContent())
+//                .andDo(document("delete-member"
+//            ));
+//
+//    }
+//
+//    @Test
+//    void getMembersTest() throws Exception{
+//
+//        ResultActions actions =
+//            mockMvc.perform(
+//                get("/members")
+//                    .accept(MediaType.APPLICATION_JSON)
+//            );
+//
+//
+//        actions
+//            .andExpect(status().isOk())
+//            .andExpect(jsonPath("$").isArray())
+//            .andDo(document("get-members",getResponsePreProcessor(),
+//                responseFields(List.of(
+//                    fieldWithPath("[]").type(JsonFieldType.ARRAY).description("결과 데이터"),
+//                    fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+//                    fieldWithPath("[].email").type(JsonFieldType.STRING).description("이메일"),
+//                    fieldWithPath("[].nickName").type(JsonFieldType.STRING).description("닉네임"),
+//                    fieldWithPath("[].memberStatus").type(JsonFieldType.STRING).description("회원 상태: 활동중 / 휴면 상태 / 탈퇴 상태")
+//                )))
+//
+//
+//
+//            );
+//
+//
+//    }
 
 }
