@@ -33,9 +33,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 
-@WebMvcTest(AnswerController.class)
-@MockBean(JpaMetamodelMappingContext.class)
-@AutoConfigureRestDocs
+//@WebMvcTest(AnswerController.class)
+//@MockBean(JpaMetamodelMappingContext.class)
+//@AutoConfigureRestDocs
 public class AnswerControllerRestDocsTest {
 
     @Autowired
@@ -47,7 +47,7 @@ public class AnswerControllerRestDocsTest {
     @Test
     public void postAnswerTest() throws Exception {
         //given -> postDto
-        AnswerDto.Post post = new AnswerDto.Post("답변입니다.", false);
+        AnswerDto.Post post = new AnswerDto.Post("답변입니다.");
 
         String content = gson.toJson(post);
 
@@ -80,7 +80,7 @@ public class AnswerControllerRestDocsTest {
     @Test
     public void patchAnswerTest() throws Exception {
         //given -> patchDto
-        AnswerDto.Patch patch = new AnswerDto.Patch("답변입니다.", false);
+        AnswerDto.Patch patch = new AnswerDto.Patch(1L, "답변입니다.");
 
         String content = gson.toJson(patch);
         //when -> patch
@@ -92,7 +92,6 @@ public class AnswerControllerRestDocsTest {
         //then -> 변경된 값과 같은지
         actions.andExpect(status().isOk())
             .andExpect(jsonPath("$.content").value(patch.getContent()))
-            .andExpect(jsonPath("$.accepted").value(patch.isAccepted()))
             .andDo(document("patch-answer",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
@@ -118,7 +117,7 @@ public class AnswerControllerRestDocsTest {
     @Test
     public void getAnswerTest() throws Exception {
         //given -> answer 객체?
-        AnswerDto.Post post = new AnswerDto.Post("답변입니다.",  false);
+        AnswerDto.Post post = new AnswerDto.Post("답변입니다.");
 
         String content = gson.toJson(post);
         //when -> get
@@ -130,7 +129,6 @@ public class AnswerControllerRestDocsTest {
         //then-> 불러와진값과 비교
         actions.andExpect(status().isOk())
             .andExpect(jsonPath("$.content").value(post.getContent()))
-            .andExpect(jsonPath("$.accepted").value(post.isAccepted()))
             .andDo(document("get-answer",
                 getResponsePreProcessor(),
                 responseFields(
@@ -148,8 +146,8 @@ public class AnswerControllerRestDocsTest {
     @Test
     public void getAnswersTest() throws Exception {
         //given -> post 2개
-        AnswerDto.Post post1 = new AnswerDto.Post("답변입니다.", false);
-        AnswerDto.Post post2 = new AnswerDto.Post("답변", false);
+        AnswerDto.Post post1 = new AnswerDto.Post("답변입니다.");
+        AnswerDto.Post post2 = new AnswerDto.Post("답변");
         //when -> get
         ResultActions actions =
             mockMvc.perform(get("/answers")
@@ -175,7 +173,7 @@ public class AnswerControllerRestDocsTest {
     @Test
     public void deleteAnswerTest() throws Exception {
         //given
-        AnswerDto.Post post = new AnswerDto.Post("답변입니다.", false);
+        AnswerDto.Post post = new AnswerDto.Post("답변입니다.");
         //when
         ResultActions actions =
             mockMvc.perform(delete("/answers/1")
