@@ -23,10 +23,10 @@ public class AnswerVote extends Auditable {
 
     // TODO: member 매핑
      @ManyToOne
-     @JoinColumn(name = "MEMBER-ID")
+     @JoinColumn(name = "MEMBER_ID")
      private Member member;
     // TODO: Answer 매핑
      @ManyToOne
-     @JoinColumn(name = "ANSWER-ID")
+     @JoinColumn(name = "ANSWER_ID")
      private Answer answer;
 }

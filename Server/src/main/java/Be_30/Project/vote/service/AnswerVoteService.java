@@ -5,6 +5,7 @@ import Be_30.Project.answer.repository.AnswerRepository;
 import Be_30.Project.answer.service.AnswerService;
 import Be_30.Project.member.entity.Member;
 import Be_30.Project.member.repository.MemberRepository;
+import Be_30.Project.member.service.MemberService;
 import Be_30.Project.vote.entity.AnswerVote;
 import Be_30.Project.vote.repository.AnswerVoteRepository;
 import java.util.List;
@@ -20,22 +21,23 @@ public class AnswerVoteService {
     private final AnswerVoteRepository answerVoteRepository;
     private final MemberRepository memberRepository;
     private final AnswerService answerService;
+    private final MemberService memberService;
 
     public AnswerVoteService(AnswerRepository answerRepository,
         AnswerVoteRepository answerVoteRepository, MemberRepository memberRepository,
-        AnswerService answerService) {
+        AnswerService answerService, MemberService memberService) {
         this.answerRepository = answerRepository;
         this.answerVoteRepository = answerVoteRepository;
         this.memberRepository = memberRepository;
         this.answerService = answerService;
+        this.memberService = memberService;
     }
 
     public AnswerVote addVoteUp(long answerId) {
         // 1. answerId로 answer 가져오기?
         Answer answer = answerService.findVerifiedAnswer(answerId);
         // 삭제해야 함
-        Member member = new Member();
-        member.setMemberId(1L);
+        Member member = memberService.findMember(1L);
 
         // 2. member 객체와 answer 객체를 이용해 이미 추천/비추천 유무 파악
         if (findVerifiedAnswerVoteMember(answer, member) % 2 == 0) {
@@ -60,8 +62,7 @@ public class AnswerVoteService {
     public AnswerVote addVoteDown(long answerId) {
         Answer answer = answerService.findVerifiedAnswer(answerId);
         // 삭제해야 함
-        Member member = new Member();
-        member.setMemberId(1L);
+        Member member = memberService.findMember(1L);
 
         if (findVerifiedAnswerVoteMember(answer, member) % 2 == 0) {
             answer.setVotes(answer.getVotes() - 1);

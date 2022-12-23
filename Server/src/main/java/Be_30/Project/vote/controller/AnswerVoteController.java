@@ -28,8 +28,7 @@ public class AnswerVoteController {
     }
 
     @PostMapping("/{answer-id}/vote-up")
-    public ResponseEntity postVoteUp(
-        @PathVariable("answer-id") @Positive long answerId) { // 추천을 한 사용자의 정보를 받아와야? 지금 누른 사람은 로그인한 사람!
+    public ResponseEntity postVoteUp(@PathVariable("answer-id") @Positive long answerId) {
         // 1. 파라미터로 받은 answerId와 사용자 정보를 파라미터로 하여 서비스 로직을 호출
         AnswerVote answerVote = answerVoteService.addVoteUp(answerId);
         // 반환할 값을 .... votes?
@@ -40,6 +39,7 @@ public class AnswerVoteController {
     @PostMapping("/{answer-id}/vote-down")
     public ResponseEntity postVoteDown(@PathVariable("answer-id") @Positive long answerId) {
         AnswerVote answerVote = answerVoteService.addVoteDown(answerId);
+
         AnswerVoteResponseDto response = mapper.AnswerVoteToAnswerVoteResponseDto(answerVote);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
