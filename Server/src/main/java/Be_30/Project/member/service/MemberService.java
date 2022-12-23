@@ -30,15 +30,18 @@ public class MemberService {
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
 
-        //pw 암호화
-        String encryptedPassword = passwordEncoder.encode(member.getPassword());
-        member.setPassword(encryptedPassword);
+        if(member.getPassword().equals(member.getConfirmedPassword())){
+            //pw 암호화
+            String encryptedPassword = passwordEncoder.encode(member.getPassword());
+            member.setPassword(encryptedPassword);
 
-        List<String> roles = authorityUtils.createRoles(member.getEmail());
-        member.setRoles(roles);
+            List<String> roles = authorityUtils.createRoles(member.getEmail());
+            member.setRoles(roles);
 
-        return memberRepository.save(member);
-
+            return memberRepository.save(member);
+        }else{
+            throw new BusinessLogicException(ExceptionCode.PASSWORD_NOT_CONFIRMED);
+        }
     }
 
     public Member updateMember(Member member) {

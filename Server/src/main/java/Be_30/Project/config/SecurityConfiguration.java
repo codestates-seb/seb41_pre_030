@@ -48,18 +48,31 @@ public class SecurityConfiguration {
             .formLogin().disable()
             .httpBasic().disable()
             .exceptionHandling()
-            .authenticationEntryPoint(new MemberAuthenticationEntryPoint())  // (1) 추가
-            .accessDeniedHandler(new MemberAccessDeniedHandler())            // (2) 추가
+            .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+            .accessDeniedHandler(new MemberAccessDeniedHandler())
             .and()
-            .apply(new CustomFilterConfigurer())   // (1)
+            .apply(new CustomFilterConfigurer())
             .and()
             .authorizeHttpRequests(authorize -> authorize
-                .antMatchers(HttpMethod.POST, "/*/members").permitAll()
-                .antMatchers(HttpMethod.PATCH, "/*/members/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/*/members").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/*/members/**").hasAnyRole("USER","ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/*/members/**").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/members").permitAll()
+                .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/members").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/members/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
+
+                .antMatchers(HttpMethod.POST, "/questions").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/questions/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/questions").permitAll()
+                .antMatchers(HttpMethod.GET, "/questions/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/questions/**").hasAnyRole("USER", "ADMIN")
+
+                .antMatchers(HttpMethod.POST, "/answers").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/answers/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/answers").permitAll()
+                .antMatchers(HttpMethod.GET, "/answers/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/answers/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().permitAll()
+
             );
         return http.build();
     }
@@ -80,12 +93,12 @@ public class SecurityConfiguration {
         return source;
     }
 
-    public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {  // (2-1)
+    public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
         @Override
-        public void configure(HttpSecurity builder) throws Exception {  // (2-2)
-            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);  // (2-3)
+        public void configure(HttpSecurity builder) throws Exception {
+            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);  // (2-4)
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler()); //필터추가
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler()); //필터추가
             jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");

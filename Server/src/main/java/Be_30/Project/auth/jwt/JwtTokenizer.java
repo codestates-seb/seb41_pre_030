@@ -17,6 +17,7 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+//jwt를 생성 및 발급하고 클라이언트의 요청이 들어올 때 마다 전달된 jwt를 검증하는 역할
 @Component
 public class JwtTokenizer {
 
@@ -26,11 +27,11 @@ public class JwtTokenizer {
 
     @Getter
     @Value("${jwt.access-token-expiration-minutes}")
-    private int accessTokenExpirationMinutes;        // (3)
+    private int accessTokenExpirationMinutes;
 
     @Getter
     @Value("${jwt.refresh-token-expiration-minutes}")
-    private int refreshTokenExpirationMinutes;          // (4)
+    private int refreshTokenExpirationMinutes;
 
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -83,7 +84,7 @@ public class JwtTokenizer {
             .parseClaimsJws(jws);
     }
 
-    // (5)
+
     public Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, expirationMinutes);
@@ -99,4 +100,3 @@ public class JwtTokenizer {
         return key;
     }
 }
-

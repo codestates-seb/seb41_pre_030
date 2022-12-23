@@ -46,9 +46,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String authorization = request.getHeader("Authorization");  // (6-1)
+        String authorization = request.getHeader("Authorization");
 
-        return authorization == null || !authorization.startsWith("Bearer");  // (6-2)
+        return authorization == null || !authorization.startsWith("Bearer");
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
