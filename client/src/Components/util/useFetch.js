@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 
 const useFetch = (url) => {
-  const [question, setQuestion] = useState()
-  const [answer, setAnswer] = useState()
+  const [question, setQuestion] = useState("")
 
   useEffect (()=> {
     setTimeout(()=> {
@@ -15,7 +14,6 @@ const useFetch = (url) => {
       })
       .then(data => {
         setQuestion(data)
-        setAnswer(data)
         console.log(data)
       })
       .catch(err => {
@@ -23,7 +21,7 @@ const useFetch = (url) => {
       })
     })
   },[url])
-  return [question,setQuestion, answer, setAnswer]
+  return [question,setQuestion]
 }
 
 export default useFetch

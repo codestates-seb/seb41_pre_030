@@ -2,7 +2,7 @@ import React from "react"
 import { NavLink } from 'react-router-dom'
 import styled from "styled-components"
 
-const All = styled.div`
+export const All = styled.div`
     font-size: 30px;
     margin-left: 280px;
     width: 130vh;
@@ -16,7 +16,7 @@ const QuestionList = styled.div`
     display: grid;
 `
 
-const AllQuestions = styled.div`
+export const AllQuestions = styled.div`
     width: 1100px;
     margin: 40px 40px 0px 40px;
     display: flex;
@@ -30,7 +30,7 @@ const CountQuestions = styled.span`
     margin-bottom: 40px;
 `
 
-const AskQuestionButton = styled(NavLink)`
+export const AskQuestionButton = styled(NavLink)`
     background-color: rgba(0, 60, 255, 0.8);
     color:white;
     border: 1px solid blue;
@@ -114,8 +114,8 @@ function Home ({questions}) {
                             <Count>{question.answer.length} answers</Count>
                             <Count>{question.view} views</Count>
                         </QuestionCount>
-                        <Question key={question.questionId}>
-                            <Detail to={`/questions/${question.questionId}`}>
+                        <Question key={question.id}>
+                            <Detail to={`/questions/${question.id}`}>
                             <ContentsTitle>{question.subject}</ContentsTitle><br/>
                             </Detail>
                             <Contents>{question.content}</Contents>
