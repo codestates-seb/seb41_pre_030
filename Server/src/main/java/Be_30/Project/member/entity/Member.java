@@ -22,10 +22,13 @@ public class Member extends Auditable {
     private String email;
 
     @Column(length = 100, nullable = false)
-    private String nickName;
+    private String password;
 
     @Column(length = 100, nullable = false)
-    private String password;
+    private String confirmedPassword;
+
+    @Column(length = 100, nullable = false)
+    private String nickName;
 
     //user 권한 정보와 관련된 별도의 엔티티 생성 필요 없음
     @ElementCollection(fetch = FetchType.EAGER)
