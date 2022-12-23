@@ -2,6 +2,10 @@ import { All, AllQuestions, AskQuestionButton } from "./Home"
 import styled from "styled-components";
 import useFetch from "./util/useFetch";
 import { useParams } from "react-router-dom";
+import OAuthButton from "../Pages/Signup/OAuthButton";
+import Google from "../Image/Google";
+import GitHub from "../Image/GitHub";
+import Logo from "../Image/Logo";
 
 const Post = styled.div`
   width: auto;
@@ -43,14 +47,24 @@ const Answer = styled.div`
   
 `
 const YourAnswer = styled.div`
-  background-color: darkcyan;
+  margin: 20px;
+  display: grid;
 `
 const PostAnswer = styled.div`
   font-size: 15px;
+  margin: 15px;
+  display: flex;
 `
 
-const Signup = styled.div`
-  background-color: cadetblue;
+const FlexRight = styled.div`
+  display: grid;
+  margin: 20px;
+  font-size: 20px;
+  div.button-group {
+    display: flex !important;
+    flex-direction: column;
+    margin-bottom: 16px;
+  }
 `
 
 
@@ -113,16 +127,35 @@ function QuestionDetail () {
         </AnswerContentView>
       </Answer>
       <YourAnswer>
-        <Signup>
-          Signup
-        </Signup>
+        Your Answer
+        <input>
+        </input>
+      </YourAnswer>
+        <FlexRight>
+          Signup or login
+          <div className='button-group'>
+            <OAuthButton color="rgb(59, 64, 69)">
+              <Google /> 
+              Sign up with Google
+            </OAuthButton>
+            <OAuthButton bg_color="rgb(47, 51, 55)">
+              <GitHub /> 
+              Sign up with GitHub
+            </OAuthButton>
+            <OAuthButton bg_color="rgb(56, 84, 153)">
+              <Logo /> 
+              Sign up using Email and Password
+            </OAuthButton>
+          </div>
+        </FlexRight>
         <PostAnswer>
         <AskQuestionButton>Post Your Answer</AskQuestionButton>
-        <br/>Not the answer you're looking for? ask your own question
+          <span style={{"margin" : "18px"}}>Not the answer you're looking for? ask your own question</span>
         </PostAnswer>
 
-      </YourAnswer>
     </All>
   )
 }
 export default QuestionDetail
+
+//12.26일 css 정리, 답변 작성하는 칸 만들기, 하이퍼링크? d-day, length issue
