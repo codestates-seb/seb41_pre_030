@@ -40,7 +40,7 @@ public class AnswerVoteService {
         Member member = memberService.findMember(1L);
 
         // 2. member 객체와 answer 객체를 이용해 이미 추천/비추천 유무 파악
-        if (findVerifiedAnswerVoteMember(answer, member) % 2 == 0) {
+        if (findCountOfMemberVotesAnswer(answer, member) % 2 == 0) {
             // 추천한 적이 없음 -> answer-> votes++
             answer.setVotes(answer.getVotes() + 1);
         } else {
@@ -50,6 +50,7 @@ public class AnswerVoteService {
 
         // 3. answerVote에 변경된 answer 객체를 주입하고 저장
         Answer saveAnswer = answerRepository.save(answer);
+        // 멤버에 setAnswer 필요??
         Member saveMember = memberRepository.save(member);
 
         AnswerVote answerVote = new AnswerVote();
@@ -64,12 +65,13 @@ public class AnswerVoteService {
         // 삭제해야 함
         Member member = memberService.findMember(1L);
 
-        if (findVerifiedAnswerVoteMember(answer, member) % 2 == 0) {
+        if (findCountOfMemberVotesAnswer(answer, member) % 2 == 0) {
             answer.setVotes(answer.getVotes() - 1);
         } else {
             answer.setVotes(answer.getVotes() + 1);
         }
         Answer saveAnswer = answerRepository.save(answer);
+        // 멤버에 setAnswer 필요??
         Member saveMember = memberRepository.save(member);
         AnswerVote answerVote = new AnswerVote();
         answerVote.setAnswer(saveAnswer);
@@ -79,7 +81,8 @@ public class AnswerVoteService {
     }
 
     // 이미 추천/비추천을 한 회원을 검증하는 메서드
-    private int findVerifiedAnswerVoteMember(Answer answer, Member member) {
+    // find
+    private int findCountOfMemberVotesAnswer(Answer answer, Member member) {
         List<AnswerVote> list =
             answerVoteRepository.findByAnswerAndMember(answer, member);
 
