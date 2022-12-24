@@ -15,6 +15,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint {
+    //Exception 발생으로 인해 SecurityContext에 Authentication이 저장되지 않을 경우
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         Exception exception = (Exception) request.getAttribute("exception");

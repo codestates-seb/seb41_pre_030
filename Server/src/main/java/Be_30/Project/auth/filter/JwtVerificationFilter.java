@@ -30,6 +30,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        //검증 실패했을 때 생기는 SignatureException 과 JWT가 만료될 경우에 생기는 ExpiredJwtException에대한 처리
+
         try{
             Map<String,Object> claims = verifyJws(request);
             setAuthenticationToContext(claims); //Authentication 객체를 securityContext에 저장하기 위한 메서드
@@ -37,6 +39,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             request.setAttribute("exception", se);
         } catch (ExpiredJwtException ee) {
             request.setAttribute("exception", ee);
+            //SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
@@ -46,12 +49,14 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        //jwt가 Authorization header에 포함되지 않았다면 filter 실행하지 않는다.
         String authorization = request.getHeader("Authorization");
 
         return authorization == null || !authorization.startsWith("Bearer");
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
+        // Authentication 객체를 SecurityContext에 저장
         String username = (String) claims.get("username");
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
