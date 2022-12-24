@@ -1,7 +1,10 @@
 package Be_30.Project.member.controller;
 
+import Be_30.Project.auth.userdetails.MemberDetailsService.MemberDetails;
 import Be_30.Project.dto.MultiResponseDto;
 import Be_30.Project.dto.SingleResponseDto;
+import Be_30.Project.exception.BusinessLogicException;
+import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.dto.MemberDto;
 import Be_30.Project.member.entity.Member;
 import Be_30.Project.member.entity.Member.MemberStatus;
@@ -17,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     private final MemberService memberService;
     private final MemberMapper mapper;
+
 
     public MemberController(MemberService memberService, MemberMapper mapper) {
         this.memberService = memberService;
@@ -67,14 +73,16 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}")
-    public ResponseEntity getMember(@Positive @PathVariable("member-id") int id){
-        Member member = memberService.findMember(id);
+    public ResponseEntity getMember(@Positive @PathVariable("member-id") int id
+        ){
 
-        MemberDto.Response response = mapper.MemberToMemberResponseDto(member);
+            Member member = memberService.findMember(id);
 
-        return new ResponseEntity<>(
-            new SingleResponseDto<>(response),
-            HttpStatus.OK);
+            MemberDto.Response response = mapper.MemberToMemberResponseDto(member);
+
+            return new ResponseEntity<>(
+                new SingleResponseDto<>(response),
+                HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
@@ -85,8 +93,8 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity getMembers(@Positive @RequestParam int page,
-                                    @Positive @RequestParam int size){
+    public ResponseEntity getMembers(@Positive @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+        @Positive @RequestParam(name = "page", required = false, defaultValue = "1") int size){
         Page<Member> pageMembers = memberService.findMembers(page-1, size);
         List<Member> members = pageMembers.getContent();
 

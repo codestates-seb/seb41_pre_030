@@ -72,10 +72,8 @@ public class SecurityConfiguration {
 //                .antMatchers(HttpMethod.GET, "/answers").permitAll()
 //                .antMatchers(HttpMethod.GET, "/answers/**").permitAll()
 //                .antMatchers(HttpMethod.DELETE, "/answers/**").hasAnyRole("USER", "ADMIN")
-                .anyRequest().permitAll())
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-                .logoutSuccessUrl("/")
-                .invalidateHttpSession(true).permitAll();
+                .anyRequest().permitAll());
+
 
         return http.build();
     }
