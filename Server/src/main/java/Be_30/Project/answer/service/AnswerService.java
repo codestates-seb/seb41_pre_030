@@ -23,6 +23,7 @@ public class AnswerService {
     public Answer createAnswer(Answer answer) {
         // 해당 답변이 존재하는 지?? 중복 허용을 하기 때문에 존재유뮤 확인 x
         // repo에 저장
+
         answer.setVotes(0);
         answer.setAccepted(false);
 

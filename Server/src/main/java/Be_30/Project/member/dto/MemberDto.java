@@ -22,6 +22,9 @@ public class MemberDto {
         @NotBlank(message = "비밀번호를 정해주세요")
         private String password;
 
+        @NotBlank(message = "비밀번호를 한번 더 확인해주세요")
+        private String confirmedPassword;
+
     }
 
     @Getter
