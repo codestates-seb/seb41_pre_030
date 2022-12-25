@@ -10,6 +10,7 @@ import Be_30.Project.question.service.QuestionService;
 import Be_30.Project.vote.entity.QuestionVote;
 import Be_30.Project.vote.repository.QuestionVoteRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,10 +38,8 @@ public class QuestionVoteService {
         Question question = questionService.findQuestion(questionId);
         Member member = memberService.findMember(1L);
 
-        if(findCountOfMemberVotesQuestion(question, member) % 2 == 0) {
+        if(findCountOfMemberVotesQuestion(question, member)) {
             question.makeUpVote();
-        }else {
-            question.makeDownVote();
         }
         Question saveQuestion = questionRepository.save(question);
         Member saveMember = memberRepository.save(member);
@@ -55,10 +54,8 @@ public class QuestionVoteService {
         Question question = questionService.findQuestion(questionId);
         Member member = memberService.findMember(1L);
 
-        if(findCountOfMemberVotesQuestion(question, member) % 2 == 0) {
+        if(findCountOfMemberVotesQuestion(question, member)) {
             question.makeDownVote();
-        }else {
-            question.makeUpVote();
         }
         Question saveQuestion = questionRepository.save(question);
         Member saveMember = memberRepository.save(member);
@@ -69,10 +66,15 @@ public class QuestionVoteService {
 
         return questionVoteRepository.save(questionVote);
     }
-    private int findCountOfMemberVotesQuestion(Question question, Member member) {
-        List<QuestionVote> list =
+    private boolean findCountOfMemberVotesQuestion(Question question, Member member) {
+        Optional<QuestionVote> optionalQuestionVote =
             questionVoteRepository.findByQuestionAndMember(question, member);
 
-        return list.size();
+        if(optionalQuestionVote.isEmpty()) {
+            return true;
+        }else {
+            questionVoteRepository.delete(optionalQuestionVote.get());
+            return false;
+        }
     }
 }

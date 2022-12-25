@@ -40,12 +40,9 @@ public class AnswerVoteService {
         Member member = memberService.findMember(1L);
 
         // 2. member 객체와 answer 객체를 이용해 이미 추천/비추천 유무 파악
-        if (findCountOfMemberVotesAnswer(answer, member) % 2 == 0) {
+        if (findCountOfMemberVotesAnswer(answer, member)) {
             // 추천한 적이 없음 -> answer-> votes++
             answer.setVotes(answer.getVotes() + 1);
-        } else {
-            // 추천한 적이 있음-> answer-> votes--;
-            answer.setVotes(answer.getVotes() - 1);
         }
 
         // 3. answerVote에 변경된 answer 객체를 주입하고 저장
@@ -65,10 +62,8 @@ public class AnswerVoteService {
         // 삭제해야 함
         Member member = memberService.findMember(1L);
 
-        if (findCountOfMemberVotesAnswer(answer, member) % 2 == 0) {
+        if (findCountOfMemberVotesAnswer(answer, member)) {
             answer.setVotes(answer.getVotes() - 1);
-        } else {
-            answer.setVotes(answer.getVotes() + 1);
         }
         Answer saveAnswer = answerRepository.save(answer);
         // 멤버에 setAnswer 필요??
@@ -82,10 +77,16 @@ public class AnswerVoteService {
 
     // 이미 추천/비추천을 한 회원을 검증하는 메서드
     // find
-    private int findCountOfMemberVotesAnswer(Answer answer, Member member) {
-        List<AnswerVote> list =
+    private boolean findCountOfMemberVotesAnswer(Answer answer, Member member) {
+        Optional<AnswerVote> optionalAnswerVote =
             answerVoteRepository.findByAnswerAndMember(answer, member);
 
-        return list.size();
+        if(optionalAnswerVote.isEmpty()) {
+            return true;
+        } else {
+            // db에 존재하는 내역을 삭제하고 false 반환
+            answerVoteRepository.delete(optionalAnswerVote.get());
+            return false;
+        }
     }
 }
