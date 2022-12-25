@@ -48,7 +48,7 @@ public class AnswerService {
     // 질문 목록 조회
     public Page<Answer> findAnswers(int page, int size) {
         Page<Answer> answerPage =
-            answerRepository.findAll(PageRequest.of(page-1, size, Sort.by("answerId")));
+            answerRepository.findAll(PageRequest.of(page-1, size, Sort.by("votes").ascending()));
 
         return answerPage;
     }
