@@ -6,5 +6,16 @@
 </head>
 <body>
     <h3>SEB_Pre_30 API 서버입니다 :D</h3>
+
+    <hr>
+    <h5>유저 프로필 사진 전송 테스트</h5>
+    <form method="post" action="/files" enctype="multipart/form-data">
+        <div class="mb-3">
+            <input class="form-control" type="file" id="file" name="file" multiple>
+            <input type="hidden" name="memberId" value="1">
+        </div>
+        <hr>
+        <button>등록</button>
+    </form>
 </body>
 </html>
