@@ -29,3 +29,21 @@ jwt:
   secret-key: ${JWT_SECRET_KEY}           # 민감한 정보는 시스템 환경 변수에서 로드한다.
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev # dev 환경 전용 설정 (위의 기본 설정을 덮어쓰는 방식)
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${RDS_URL}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PWD}
+  jpa:
+    hibernate:
+      ddl-auto: update # 운영 서버에서는 create 하면 X
+  h2:
+    console:
+      enabled: false
