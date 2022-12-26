@@ -1,10 +1,15 @@
 package Be_30.Project.answer.service;
 
+import static java.lang.Boolean.TRUE;
+import static java.lang.Boolean.valueOf;
+
 import Be_30.Project.answer.entity.Answer;
 import Be_30.Project.answer.repository.AnswerRepository;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,7 +30,7 @@ public class AnswerService {
         // repo에 저장
 
         answer.setVotes(0);
-        answer.setAccepted(false);
+        answer.setAdopt(false);
 
         Answer savedAnswer = answerRepository.save(answer);
 
@@ -56,6 +61,34 @@ public class AnswerService {
     public void deleteAnswer(long answerId) {
         Answer answer = findVerifiedAnswer(answerId);
         answerRepository.delete(answer);
+    }
+    // 질문 채택
+    public Answer adoptAnswer(long answerId) {
+        // 1. answer 존재 유무 검증
+        Answer findAnswer = findVerifiedAnswer(answerId);
+        // 2. answer.getQuestion().getAnswers
+        // 3. 각 answer에 accepted 값 확인
+        List<Answer> list = findAnswer
+            .getQuestion()
+            .getAnswers()
+            .stream()
+            .filter(answer -> valueOf(answer.isAdopt()).equals(TRUE))
+            .collect(Collectors.toList());
+
+        if(list.isEmpty()) {
+            findAnswer.setAdopt(true);
+        } else {
+            // list에 answer가 존재한다면,
+            // 1. answerId가 동일한 것 -> 채택 취소
+            // 2. answerId가 동일하지 않은 것 -> exception 던지기
+            boolean adopt = list.stream().allMatch(answer -> answer.getAnswerId().equals(answerId));
+            if(adopt) {
+                findAnswer.setAdopt(false);
+            } else {
+                throw new BusinessLogicException(ExceptionCode.ADOPT_NOT_ALLOWED);
+            }
+        }
+        return answerRepository.save(findAnswer);
     }
 
     // 해당 질문 존재 유뮤 검증 findById 사용, 존재하지 않으면 exception

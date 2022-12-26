@@ -8,6 +8,7 @@ public enum ExceptionCode {
 
     PASSWORD_NOT_CONFIRMED(404, "Password not confirmed"),
     ANSWER_NOT_FOUND(404, "Answer Not Found"),
+    ADOPT_NOT_ALLOWED(405, "Adopt not allowed"),
 
     INVALID_MEMBER_STATUS(400, "Invalid member status"),
     QUESTION_NOT_FOUND(404, "Question not found"),

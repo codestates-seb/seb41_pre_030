@@ -34,7 +34,7 @@ public class AnswerDto {
     public static class Response {
         private Long answerId;
         private String content;
-        private boolean accepted;
+        private boolean adopt;
         private int votes;
     }
 
