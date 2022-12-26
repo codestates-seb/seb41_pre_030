@@ -1,12 +1,12 @@
 import './App.css';
 import Sidebar from "./Components/Sidebar";
 import { Routes, Route, useLocation } from 'react-router-dom';
-import Home from './Components/Home';
+import Home from './Pages/Home/Home';
 import Users from './Components/Users';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import useFetch from './Components/util/useFetch';
-import LoginPage from './LoginPages/LoginPage';
+import LoginPage from './Pages/LoginPages/LoginPage';
 import Signup from './Pages/Signup/Signup';
 
 function App() {

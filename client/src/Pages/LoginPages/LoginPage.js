@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Logo from "../Image/Logo";
-import GoogleLogo from "../Image/GoogleLogo";
-import GitLogo from "../Image/GitLogo";
+import Logo from "../../Image/Logo";
+import GoogleLogo from "../../Image/GoogleLogo";
+import GitLogo from "../../Image/GitLogo";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
