@@ -6,18 +6,19 @@ const All = styled.main`
     font-size: 30px;
     margin-left: 280px;
     width: 130vh;
-    border-left: 1px solid black;
+    border-left: 1px solid hsl(210,8%,85%);
     display: grid;
 `
 
 const QuestionList = styled.div`
     font-size: 30px;
-    width: 130vh;
+    width: 100vh;
     display: grid;
 `
 
 const AllQuestions = styled.div`
     width: 1100px;
+    height: 40px;
     margin: 40px 40px 0px 40px;
     display: flex;
     justify-content: space-between;
@@ -31,24 +32,26 @@ const CountQuestions = styled.span`
 `
 
 const AskQuestionButton = styled(NavLink)`
-    background-color: rgba(0, 60, 255, 0.8);
-    color:white;
-    border: 1px solid blue;
-    border-radius: 7px;
     width: 120px;
     height: 40px;
+    padding-top: 10px;
     font-size: 17px;
     margin-top: 10px;
     text-align: center;
     text-decoration: none;
+    border: 1px solid hsl(205deg 41% 63%);
+    border-radius: 4px;
+    font-weight: 500;
+    background-color: hsl(206deg 100% 52%);
+    color: #fff;
     :hover {
-      background-color: blue;
+      background-color: hsl(209deg 100% 38%);
     }
 `
 
 const Questions = styled.div `
     display: flex;
-    border-top: 1px solid black;
+    border-top: 1px solid hsl(210,8%,85%);;
 `
 const QuestionCount = styled.div`
     font-size: 15px;
@@ -77,38 +80,41 @@ const Detail = styled(NavLink)`
 
 const ContentsTitle = styled.span`
     font-size: 20px;
-    color: blue;
+    color: hsl(206,100%,52%);;
     :hover {
       color: skyblue;
     }
 `
 
 const Contents = styled.span`
-    font-size: 18px;
+    display: -webkit-box;
+    font-size: 15px;
     color: black;
-    margin-top: 20px;
-    overflow: hidden;
+    height: 35px;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: pre-wrap;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    hyphens: auto !important;
 `
 const Pagenation = styled.span`
     background-color: aliceblue;
-
 `
 
-function Home ({questions}) {
+const Home = ({questions}) => {
     if(!questions) return null
 
    return (
        <All>
-                <QuestionList>
-                    <AllQuestions>
-                        All Questions
-                        <AskQuestionButton to='/AskQuestion'>Ask Question</AskQuestionButton>
-                    </AllQuestions>
-                    <CountQuestions>{questions.length} questions</CountQuestions>
-                    {questions.map(question => 
-                    <Questions>
+            <QuestionList>
+                <AllQuestions>
+                    All Questions
+                    <AskQuestionButton to='/AskQuestion'>Ask Question</AskQuestionButton>
+                </AllQuestions>
+                <CountQuestions>{questions.length} questions</CountQuestions>
+                {questions.map(question => 
+                    <Questions key={question.id}>
                         <QuestionCount>
                             <Count>{question.vote} votes</Count>
                             <Count>{question.answer.length} answers</Count>
@@ -121,8 +127,8 @@ function Home ({questions}) {
                             <Contents>{question.content}</Contents>
                         </Question>
                     </Questions>
-                    )}
-                </QuestionList>
+                )}
+            </QuestionList>
             <Pagenation>
                 pagenation 1,2,3
             </Pagenation>
@@ -131,5 +137,5 @@ function Home ({questions}) {
 
 }
 
-//pagenation, css- box안에 중간정렬, sidebar옆으로 이동할 때 고정 안되는 점, 글이 너무 길어지면 ...과 함께 생략하기(2줄...)
-export default Home
+//pagenation
+export default Home;

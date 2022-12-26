@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   background-color: white;
@@ -46,24 +48,40 @@ const Form = styled.form`
 `
 
 const SignupForm = () => {
-  const displayNameRef = useRef('')
-  const emailRef = useRef('')
-  const passwordeRef = useRef('')
+  const displayNameRef = useRef('');
+  const emailRef = useRef('');
+  const passwordeRef = useRef('');
+  const navigate = useNavigate();
 
-  const onSignUpSubmitHandler = (event) => {
-    event.preventDefault();
-    console.log(
-      {
-        displayName: displayNameRef.current.value,
-        email: emailRef.current.value,
-        password:passwordeRef.current.value
-      }
-    )
+
+  const onSignUpSubmitHandler = async () => {
+    const jsonData = JSON.stringify({
+      displayName: displayNameRef.current.value,
+      email: emailRef.current.value,
+      password:passwordeRef.current.value
+    });
+
+    if(displayNameRef === '' || emailRef === '' || passwordeRef === '') {
+      alert("이메일이나 패스워드를 확인하세요");
+      return
+    }
+
+    await axios
+    .post("API", jsonData)
+    .then((res) => {
+      alert("Signup");
+      navigate("/login");
+      // 현재 로그인 요청 보내면 로그인페이지 -> 회원가입 페이지로 되돌아옴
+      // url에 인풋 데이터는 남아있는 상태로 돌아옴
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   return (
     <Container>
-      <Form onSubmit={(event) => onSignUpSubmitHandler(event)}>
+      <Form onSubmit={onSignUpSubmitHandler}>
         <div className='input-box'>
           <label htmlFor='display-name'>Display name</label>
           <input ref={displayNameRef} type='text' id='display-name' name='display-name' />
