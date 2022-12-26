@@ -8,6 +8,7 @@ import Be_30.Project.vote.service.AnswerVoteService;
 import javax.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,20 +29,31 @@ public class AnswerVoteController {
     }
 
     @PostMapping("/{answer-id}/vote-up")
-    public ResponseEntity postVoteUp(@PathVariable("answer-id") @Positive long answerId) {
-        // 1. 파라미터로 받은 answerId와 사용자 정보를 파라미터로 하여 서비스 로직을 호출
-        AnswerVote answerVote = answerVoteService.addVoteUp(answerId);
-        // 반환할 값을 .... votes?
-        AnswerVoteResponseDto response = mapper.AnswerVoteToAnswerVoteResponseDto(answerVote);
-        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+    public ResponseEntity postVoteUp(@PathVariable("answer-id") @Positive long answerId,
+        @AuthenticationPrincipal MemberAdapter memberAdapter) {
+
+        if(memberAdapter != null) {
+            AnswerVote answerVote = answerVoteService.addVoteUp(answerId, memberAdapter.getMember());
+
+            AnswerVoteResponseDto response = mapper.AnswerVoteToAnswerVoteResponseDto(answerVote);
+
+            return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/{answer-id}/vote-down")
-    public ResponseEntity postVoteDown(@PathVariable("answer-id") @Positive long answerId) {
-        AnswerVote answerVote = answerVoteService.addVoteDown(answerId);
+    public ResponseEntity postVoteDown(@PathVariable("answer-id") @Positive long answerId,
+        @AuthenticationPrincipal MemberAdapter memberAdapter) {
+        if(memberAdapter != null) {
+            AnswerVote answerVote = answerVoteService.addVoteDown(answerId, memberAdapter.getMember());
 
-        AnswerVoteResponseDto response = mapper.AnswerVoteToAnswerVoteResponseDto(answerVote);
+            AnswerVoteResponseDto response = mapper.AnswerVoteToAnswerVoteResponseDto(answerVote);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+            return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -34,35 +34,35 @@ public class QuestionVoteService {
         this.memberService = memberService;
     }
 
-    public QuestionVote addVoteUp(long questionId) {
+    public QuestionVote addVoteUp(long questionId, Member member) {
         Question question = questionService.findQuestion(questionId);
-        Member member = memberService.findMember(1L);
 
         if(findCountOfMemberVotesQuestion(question, member)) {
             question.makeUpVote();
-        }
-        Question saveQuestion = questionRepository.save(question);
-        Member saveMember = memberRepository.save(member);
-
-        QuestionVote questionVote = new QuestionVote();
-        questionVote.setQuestion(saveQuestion);
-        questionVote.setMember(saveMember);
-
-        return questionVoteRepository.save(questionVote);
-    }
-    public QuestionVote addVoteDown(long questionId) {
-        Question question = questionService.findQuestion(questionId);
-        Member member = memberService.findMember(1L);
-
-        if(findCountOfMemberVotesQuestion(question, member)) {
+        } else {
             question.makeDownVote();
         }
         Question saveQuestion = questionRepository.save(question);
-        Member saveMember = memberRepository.save(member);
 
         QuestionVote questionVote = new QuestionVote();
         questionVote.setQuestion(saveQuestion);
-        questionVote.setMember(saveMember);
+        questionVote.setMember(member);
+
+        return questionVoteRepository.save(questionVote);
+    }
+    public QuestionVote addVoteDown(long questionId, Member member) {
+        Question question = questionService.findQuestion(questionId);
+
+        if(findCountOfMemberVotesQuestion(question, member)) {
+            question.makeDownVote();
+        }else {
+            question.makeUpVote();
+        }
+        Question saveQuestion = questionRepository.save(question);
+
+        QuestionVote questionVote = new QuestionVote();
+        questionVote.setQuestion(saveQuestion);
+        questionVote.setMember(member);
 
         return questionVoteRepository.save(questionVote);
     }
