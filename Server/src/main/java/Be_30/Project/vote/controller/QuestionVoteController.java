@@ -23,29 +23,29 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class QuestionVoteController {
 
-    private final QuestionVoteService questionVoteService;
-    private final QuestionVoteMapper mapper;
-
-    public QuestionVoteController(QuestionVoteService questionVoteService, QuestionVoteMapper mapper) {
-        this.questionVoteService = questionVoteService;
-        this.mapper = mapper;
-    }
-
-    @PostMapping("/{question-id}/vote-up")
-    public ResponseEntity postVoteUp(@PathVariable("question-id") @Positive long questionId) {
-        QuestionVote questionVote = questionVoteService.addVoteUp(questionId);
-
-        QuestionVoteResponseDto response = mapper.QuestionVoteToQuestionVoteResponseDto(questionVote);
-
-        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
-    }
-
-    @PostMapping("/{question-id}/vote-down")
-    public ResponseEntity postVoteDown(@PathVariable("question-id") @Positive long questionId) {
-        QuestionVote questionVote = questionVoteService.addVoteDown(questionId);
-
-        QuestionVoteResponseDto response = mapper.QuestionVoteToQuestionVoteResponseDto(questionVote);
-
-        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
-    }
+//    private final QuestionVoteService questionVoteService;
+//    private final QuestionVoteMapper mapper;
+//
+//    public QuestionVoteController(QuestionVoteService questionVoteService, QuestionVoteMapper mapper) {
+//        this.questionVoteService = questionVoteService;
+//        this.mapper = mapper;
+//    }
+//
+//    @PostMapping("/{question-id}/vote-up")
+//    public ResponseEntity postVoteUp(@PathVariable("question-id") @Positive long questionId) {
+//        QuestionVote questionVote = questionVoteService.addVoteUp(questionId);
+//
+//        QuestionVoteResponseDto response = mapper.QuestionVoteToQuestionVoteResponseDto(questionVote);
+//
+//        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+//    }
+//
+//    @PostMapping("/{question-id}/vote-down")
+//    public ResponseEntity postVoteDown(@PathVariable("question-id") @Positive long questionId) {
+//        QuestionVote questionVote = questionVoteService.addVoteDown(questionId);
+//
+//        QuestionVoteResponseDto response = mapper.QuestionVoteToQuestionVoteResponseDto(questionVote);
+//
+//        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+//    }
 }

@@ -9,6 +9,7 @@ import Be_30.Project.member.repository.MemberRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,8 +23,8 @@ public class MemberService {
     private CustomAuthorityUtils authorityUtils;
     private final JwtTokenizer jwtTokenizer;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
-        CustomAuthorityUtils authorityUtils, JwtTokenizer jwtTokenizer) {
+    public MemberService(@Lazy MemberRepository memberRepository, @Lazy PasswordEncoder passwordEncoder,
+        @Lazy CustomAuthorityUtils authorityUtils, @Lazy JwtTokenizer jwtTokenizer) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityUtils = authorityUtils;

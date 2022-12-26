@@ -8,9 +8,12 @@ import Be_30.Project.auth.handler.MemberAccessDeniedHandler;
 import Be_30.Project.auth.handler.MemberAuthenticationEntryPoint;
 import Be_30.Project.auth.handler.MemberAuthenticationFailureHandler;
 import Be_30.Project.auth.handler.MemberAuthenticationSuccessHandler;
+import Be_30.Project.auth.handler.OAuth2MemberSuccessHandler;
 import Be_30.Project.auth.jwt.JwtTokenizer;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
+import Be_30.Project.member.service.MemberService;
 import java.util.Arrays;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,21 +23,18 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
+@RequiredArgsConstructor
 @Configuration
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
-
-    public SecurityConfiguration(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils) {
-        this.jwtTokenizer = jwtTokenizer;
-        this.authorityUtils = authorityUtils;
-    }
+    private final MemberService memberService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -55,24 +55,26 @@ public class SecurityConfiguration {
             .apply(new CustomFilterConfigurer())
             .and()
             .authorizeHttpRequests(authorize -> authorize
-                .antMatchers(HttpMethod.POST, "/members").permitAll()
-                .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/members").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/members/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
-
-                .antMatchers(HttpMethod.POST, "/questions").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.PATCH, "/questions/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/questions").permitAll()
-                .antMatchers(HttpMethod.GET, "/questions/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/questions/**").hasAnyRole("USER", "ADMIN")
-
-                .antMatchers(HttpMethod.POST, "/answers").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.PATCH, "/answers/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/answers").permitAll()
-                .antMatchers(HttpMethod.GET, "/answers/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/answers/**").hasAnyRole("USER", "ADMIN")
+//                .antMatchers(HttpMethod.POST, "/members").permitAll()
+//                .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
+//                .antMatchers(HttpMethod.GET, "/members").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET, "/members/**").hasAnyRole("USER", "ADMIN")
+//                .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
+//
+//                .antMatchers(HttpMethod.POST, "/questions").hasAnyRole("USER", "ADMIN")
+//                .antMatchers(HttpMethod.PATCH, "/questions/**").hasAnyRole("USER", "ADMIN")
+//                .antMatchers(HttpMethod.GET, "/questions").permitAll()
+//                .antMatchers(HttpMethod.GET, "/questions/**").permitAll()
+//                .antMatchers(HttpMethod.DELETE, "/questions/**").hasAnyRole("USER", "ADMIN")
+//
+//                .antMatchers(HttpMethod.POST, "/answers").hasAnyRole("USER", "ADMIN")
+//                .antMatchers(HttpMethod.PATCH, "/answers/**").hasAnyRole("USER", "ADMIN")
+//                .antMatchers(HttpMethod.GET, "/answers").permitAll()
+//                .antMatchers(HttpMethod.GET, "/answers/**").permitAll()
+//                .antMatchers(HttpMethod.DELETE, "/answers/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().permitAll());
+
+
 
 
         return http.build();
@@ -103,6 +105,7 @@ public class SecurityConfiguration {
         @Override
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
+
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler()); //success 필터추가
