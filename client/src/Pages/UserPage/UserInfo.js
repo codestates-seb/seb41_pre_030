@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import profileImage from "../../Image/profile.png";
 
@@ -53,6 +54,8 @@ const EditProfile = styled.div`
         padding: 5px;
         color: rgb(106, 115, 124);
         border: 1px solid hsl(210,8%,95%);
+        text-decoration: none;
+        background: none;
         border-radius: 5px !important;
         box-shadow:  0 1px 2px hsla(0,0%,0%,0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05), 0 2px 8px hsla(0, 0%, 0%, 0.05);
         border-radius: 5px !important;
@@ -60,7 +63,7 @@ const EditProfile = styled.div`
     }
 `
 
-const UserTopInfo = () => {
+const UserInfo = () => {
     return (
         <TopViewContainer>
             <TopView>
@@ -79,11 +82,11 @@ const UserTopInfo = () => {
                     </ul>
                 </TopViewInfo>
                 <EditProfile> 
-                    <a>⚙️ Edit profile</a>
+                    <Link to={'/member/edit'}>⚙️ Edit profile</Link>
                 </EditProfile>
             </TopView>
         </TopViewContainer>
     )
 }
 
-export default UserTopInfo;
+export default UserInfo;

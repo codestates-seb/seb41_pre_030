@@ -1,6 +1,6 @@
 import './App.css';
 import Sidebar from "./Components/Sidebar";
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Route, useLocation, Routes } from 'react-router-dom';
 import Home from './Components/Home';
 import Users from './Components/Users';
 import Header from './Components/Header';
@@ -19,11 +19,11 @@ function App() {
         <Header/>
         {!excludedRoutes.includes(location.pathname) && <Sidebar />}
         <Routes>
-          <Route path='/userpage' element={<UserPage />}/>
+          <Route path='/member/*' element={<UserPage />}/>
           <Route path='/signup' element={<Signup />}/>
           <Route path='/users' element={<Users />}/>
           <Route path='/login' element={<LoginPage />} />
-          <Route path='/' element={<Home questions={question}/>}/>
+          <Route exact path='/' element={<Home questions={question}/>}/>
         </Routes>
         {!excludedRoutes.includes(location.pathname) && <Footer />}
     </div>

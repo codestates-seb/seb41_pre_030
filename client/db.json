@@ -12,6 +12,7 @@
         [ {
           "answerId" : 1,
           "content" : "답변입니다.",
+          "author" : "John Doe",
           "vote" : 1,
           "accepted" : false,
           "createdAt" : "2022-12-21T11:14:19.0378343",
@@ -45,6 +46,7 @@
         [ {
           "answerId" : 1,
           "content" : "답변입니다.",
+          "author" : "John Doe",
           "vote" : 1,
           "accepted" : false,
           "createdAt" : "2022-12-21T11:14:19.0378343",
@@ -70,6 +72,7 @@
         [ {
           "answerId" : 1,
           "content" : "답변입니다.",
+          "author" : "John Doe",
           "vote" : 1,
           "accepted" : false,
           "createdAt" : "2022-12-21T11:14:19.0378343",
@@ -87,7 +90,7 @@
       "questionId" : 4,
       "subject" : "더미데이터",
       "content" : "44444",
-      "answer" : 20,
+      "answer" : [],
       "vote" : 60,
       "view" : 345,
       "createdAt" : "2022-12-21T11:14:37.3755914",
@@ -98,6 +101,111 @@
       "subject" : "테스트중입니다",
       "content" : "55555",
       "vote" : 1,
+      "view" : 125,
+      "createdAt" : "2022-12-21T11:14:37.3755914",
+      "modifiedAt" : "2022-12-21T11:14:37.3755914",
+      "answer":
+        [ {
+          "answerId" : 1,
+          "content" : "답변입니다.",
+                    "author" : "John Doe",
+          "vote" : 1,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        }, {
+          "answerId" : 2,
+          "content" : "답변",
+          "vote" : 2,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        } ]
+    },
+    {
+      "questionId" : 6,
+      "subject" : "존도 테스트",
+      "author" : "John Doe",
+      "content" : "55555",
+      "vote" : 5,
+      "view" : 125,
+      "createdAt" : "2022-12-21T11:14:37.3755914",
+      "modifiedAt" : "2022-12-21T11:14:37.3755914",
+      "answer":
+        [ {
+          "answerId" : 1,
+          "content" : "답변입니다.",
+          "vote" : 1,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        }, {
+          "answerId" : 2,
+          "content" : "답변",
+          "vote" : 2,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        } ]
+    },
+    {
+      "questionId" : 7,
+      "subject" : "테스트중입니다",
+      "author" : "John Doe",
+      "content" : "55555",
+      "vote" : 6,
+      "view" : 125,
+      "createdAt" : "2022-12-21T11:14:37.3755914",
+      "modifiedAt" : "2022-12-21T11:14:37.3755914",
+      "answer":
+        [ {
+          "answerId" : 1,
+          "content" : "답변입니다.",
+          "vote" : 1,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        }, {
+          "answerId" : 2,
+          "content" : "답변",
+          "vote" : 2,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        } ]
+    },
+    {
+      "questionId" : 8,
+      "subject" : "유저별로 데이터를 어떻게 받아오지",
+      "author" : "John Doe",
+      "content" : "55555",
+      "vote" : 32,
+      "view" : 125,
+      "createdAt" : "2022-12-21T11:14:37.3755914",
+      "modifiedAt" : "2022-12-21T11:14:37.3755914",
+      "answer":
+        [ {
+          "answerId" : 1,
+          "content" : "답변입니다.",
+          "vote" : 1,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        }, {
+          "answerId" : 2,
+          "content" : "답변",
+          "vote" : 2,
+          "accepted" : false,
+          "createdAt" : "2022-12-21T11:14:19.0378343",
+          "modifiedAt" : "2022-12-21T11:14:19.0378343"
+        } ]
+    },
+    {
+      "questionId" : 9,
+      "subject" : "고민이네요",
+      "author" : "John Doe",
+      "content" : "55555",
+      "vote" : 6,
       "view" : 125,
       "createdAt" : "2022-12-21T11:14:37.3755914",
       "modifiedAt" : "2022-12-21T11:14:37.3755914",

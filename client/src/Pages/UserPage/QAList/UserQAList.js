@@ -28,7 +28,6 @@ const ButtonWrap = styled.div`
         background-color: rgb(244, 130, 37);
         color: white;
     }
-
 `
 
 const UserQAList = () => {

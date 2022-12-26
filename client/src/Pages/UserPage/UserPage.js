@@ -1,8 +1,11 @@
+import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
-import UserQAList from './UserQAList';
-import UserTopInfo from './UserTopInfo';
+import UserInfoEdit from './UserInfoEdit';
+import UserQAList from './QAList/UserQAList';
+import UserTopInfo from './UserInfo';
 
 const Container = styled.div`
+    min-height: 900px;
     max-width: 1100px;
     width: calc(100% - 164px);
     background-color: white;
@@ -20,7 +23,10 @@ const UserPage = () => {
     return (
         <Container>
             <UserTopInfo />
-            <UserQAList />
+            <Routes>
+                <Route path='*' element={<UserQAList />} />
+                <Route path='/edit' element={<UserInfoEdit />} />
+            </Routes>
         </Container>
     )
 }
