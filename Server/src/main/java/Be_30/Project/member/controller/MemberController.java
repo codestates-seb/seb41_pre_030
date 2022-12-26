@@ -1,5 +1,6 @@
 package Be_30.Project.member.controller;
 
+import Be_30.Project.auth.jwt.JwtTokenizer;
 import Be_30.Project.auth.userdetails.MemberDetailsService.MemberDetails;
 import Be_30.Project.dto.MultiResponseDto;
 import Be_30.Project.dto.SingleResponseDto;
@@ -14,6 +15,7 @@ import Be_30.Project.member.service.MemberService;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import lombok.extern.slf4j.Slf4j;
@@ -40,14 +42,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     private final MemberService memberService;
     private final MemberMapper mapper;
+    private final JwtTokenizer jwtTokenizer;
 
 
-    public MemberController(MemberService memberService, MemberMapper mapper) {
+    public MemberController(MemberService memberService, MemberMapper mapper,
+        JwtTokenizer jwtTokenizer) {
         this.memberService = memberService;
         this.mapper = mapper;
+        this.jwtTokenizer = jwtTokenizer;
     }
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post memberDto){
         Member member = mapper.MemberPostDtoToMember(memberDto);
 
@@ -61,10 +66,31 @@ public class MemberController {
     }
 
     @PatchMapping("/{member-id}")
-    public ResponseEntity patchMember(@Valid @PathVariable("member-id") int id, @RequestBody MemberDto.Patch memberDto){
-        memberDto.setMemberId(id);
+    public ResponseEntity patchMember(  @Valid @PathVariable("member-id") int id,
+                                        @RequestBody MemberDto.Patch memberDto,
+                                        HttpServletRequest request) {
+        Member member = mapper.MemberPatchDtoToMember(memberDto);
+        String email = getEmailByRequest(request);
 
-        Member member = memberService.updateMember(mapper.MemberPatchDtoToMember(memberDto));
+        Member updatedMember = memberService.updateMember(member,email);
+
+        MemberDto.Response response = mapper.MemberToMemberResponseDto(updatedMember);
+
+        return new ResponseEntity<>(
+            new SingleResponseDto<>(response),
+            HttpStatus.CREATED);
+
+    }
+
+
+    @GetMapping("/{member-id}")
+    public ResponseEntity getMember(@Positive @PathVariable("member-id") int id
+        , HttpServletRequest request) {
+
+        String email = getEmailByRequest(request);
+
+        Member member = memberService.findMember(id,email);
+
         MemberDto.Response response = mapper.MemberToMemberResponseDto(member);
 
         return new ResponseEntity<>(
@@ -72,29 +98,18 @@ public class MemberController {
             HttpStatus.OK);
     }
 
-    @GetMapping("/{member-id}")
-    public ResponseEntity getMember(@Positive @PathVariable("member-id") int id
-        ){
-
-            Member member = memberService.findMember(id);
-
-            MemberDto.Response response = mapper.MemberToMemberResponseDto(member);
-
-            return new ResponseEntity<>(
-                new SingleResponseDto<>(response),
-                HttpStatus.OK);
-    }
-
     @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(@Positive @PathVariable("member-id") int id){
-        memberService.deleteMember(id);
+    public ResponseEntity deleteMember(@Positive @PathVariable("member-id") int id, HttpServletRequest request){
+        String email = getEmailByRequest(request);
+
+        memberService.deleteMember(id,email);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping
     public ResponseEntity getMembers(@Positive @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-        @Positive @RequestParam(name = "page", required = false, defaultValue = "1") int size){
+        @Positive @RequestParam(name = "size", required = false, defaultValue = "15") int size){
         Page<Member> pageMembers = memberService.findMembers(page-1, size);
         List<Member> members = pageMembers.getContent();
 
@@ -102,5 +117,15 @@ public class MemberController {
         , pageMembers);
 
         return new ResponseEntity<>(multiResponseDto,HttpStatus.OK);
+    }
+
+    private String getEmailByRequest(HttpServletRequest request) {
+
+        String jws = request.getHeader("Authorization").replace("Bearer","");
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+        System.out.println(jwtTokenizer.getClaims(jws,base64EncodedSecretKey).getBody());
+        System.out.println(jwtTokenizer.getClaims(jws,base64EncodedSecretKey).getBody().getSubject());
+        return jwtTokenizer.getClaims(jws,base64EncodedSecretKey).getBody().getSubject();
+
     }
 }

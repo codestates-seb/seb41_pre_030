@@ -33,6 +33,7 @@ public class MemberDetailsService implements UserDetailsService {
         return new MemberDetails(findMember);
     }
 
+
     public final class MemberDetails extends Member implements UserDetails {
 
         MemberDetails(Member member) {

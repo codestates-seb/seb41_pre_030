@@ -26,11 +26,11 @@ public class JwtTokenizerTest {
     private String base64EncodedSecretKey;
 
     @BeforeAll
-    public void init(){
-        jwtTokenizer = new JwtTokenizer();
-        secretKey = "heebum1231232143434142434123124214124124214";
-        base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(secretKey);
-    }
+//    public void init(){
+//        jwtTokenizer = new JwtTokenizer();
+//        secretKey = "heebum1231232143434142434123124214124124214";
+//        base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(secretKey);
+//    }
 
     @Test
     public void encodeBase64SecretKeyTest() {

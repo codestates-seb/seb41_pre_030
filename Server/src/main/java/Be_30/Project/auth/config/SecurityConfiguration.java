@@ -55,23 +55,23 @@ public class SecurityConfiguration {
             .apply(new CustomFilterConfigurer())
             .and()
             .authorizeHttpRequests(authorize -> authorize
-//                .antMatchers(HttpMethod.POST, "/members").permitAll()
-//                .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
-//                .antMatchers(HttpMethod.GET, "/members").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.GET, "/members/**").hasAnyRole("USER", "ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
-//
-//                .antMatchers(HttpMethod.POST, "/questions").hasAnyRole("USER", "ADMIN")
-//                .antMatchers(HttpMethod.PATCH, "/questions/**").hasAnyRole("USER", "ADMIN")
-//                .antMatchers(HttpMethod.GET, "/questions").permitAll()
-//                .antMatchers(HttpMethod.GET, "/questions/**").permitAll()
-//                .antMatchers(HttpMethod.DELETE, "/questions/**").hasAnyRole("USER", "ADMIN")
-//
-//                .antMatchers(HttpMethod.POST, "/answers").hasAnyRole("USER", "ADMIN")
-//                .antMatchers(HttpMethod.PATCH, "/answers/**").hasAnyRole("USER", "ADMIN")
-//                .antMatchers(HttpMethod.GET, "/answers").permitAll()
-//                .antMatchers(HttpMethod.GET, "/answers/**").permitAll()
-//                .antMatchers(HttpMethod.DELETE, "/answers/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/members").permitAll()
+                .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/members").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/members/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
+
+                .antMatchers(HttpMethod.POST, "/questions").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/questions/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/questions").permitAll()
+                .antMatchers(HttpMethod.GET, "/questions/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/questions/**").hasAnyRole("USER", "ADMIN")
+
+                .antMatchers(HttpMethod.POST, "/answers").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/answers/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/answers").permitAll()
+                .antMatchers(HttpMethod.GET, "/answers/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/answers/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().permitAll());
 
 
@@ -88,10 +88,14 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE"));
+//        configuration.setExposedHeaders(Arrays.asList("*"));
+//        configuration.setAllowedHeaders(Arrays.asList("*"));
         //===========정책 설정
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         //===========정책 적용
+
         return source;
     }
     //작성한 filter 적용하는 메서드 여기선 jwtAuthenticationFilter 적용
@@ -103,7 +107,7 @@ public class SecurityConfiguration {
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler()); //success 필터추가
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler()); //failure 필터추가
-            jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
+            jwtAuthenticationFilter.setFilterProcessesUrl("/members/login");
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
 

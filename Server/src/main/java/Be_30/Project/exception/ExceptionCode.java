@@ -13,7 +13,8 @@ public enum ExceptionCode {
 
     QUESTION_EXISTS(409, "Question exists"),
 
-    NOT_AUTHORIZED(404, "not authorized");
+    NOT_AUTHORIZED(404, "not authorized"),
+    TOKEN_NOT_FOUND(404, "token not found");
 
     @Getter
     private int status;
