@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { NavLink } from 'react-router-dom'
 
-const SideAllbar = styled.div`
+const SideAllbar = styled.nav`
   width:200px;
   height: 100vh;
   margin-left: 80px;
@@ -29,6 +29,7 @@ const ActiveStyle = styled(NavLink)`
   color: inherit;
   padding-left:10px;
   height: 30px;
+  padding-top:4px;
   &.active {
     border-right: 4px solid orange;
     background-color: whitesmoke;

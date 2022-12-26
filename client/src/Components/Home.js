@@ -1,6 +1,7 @@
 import React from "react"
 import { NavLink } from 'react-router-dom'
 import styled from "styled-components"
+import Pagination from "react-js-pagination";
 
 export const All = styled.div`
     font-size: 30px;
@@ -8,6 +9,7 @@ export const All = styled.div`
     width: 130vh;
     border-left: 1px solid black;
     display: grid;
+    min-height: 100vh;
 `
 
 const QuestionList = styled.div`
@@ -100,25 +102,25 @@ function Home ({questions}) {
     if(!questions) return null
 
    return (
-       <All>
-                <QuestionList>
-                    <AllQuestions>
-                        All Questions
-                        <AskQuestionButton to='/AskQuestion'>Ask Question</AskQuestionButton>
-                    </AllQuestions>
-                    <CountQuestions>{questions.length} questions</CountQuestions>
-                    {questions.map(question => 
-                    <Questions>
-                        <QuestionCount>
-                            <Count>{question.vote} votes</Count>
-                            <Count>{question.answer.length} answers</Count>
-                            <Count>{question.view} views</Count>
-                        </QuestionCount>
-                        <Question key={question.id}>
-                            <Detail to={`/questions/${question.id}`}>
-                            <ContentsTitle>{question.subject}</ContentsTitle><br/>
-                            </Detail>
-                            <Contents>{question.content}</Contents>
+        <All>
+            <QuestionList>
+                <AllQuestions>
+                    All Questions
+                    <AskQuestionButton to='/AskQuestion'>Ask Question</AskQuestionButton>
+                </AllQuestions>
+                <CountQuestions>{questions.length} questions</CountQuestions>
+                {questions.map(question => 
+                <Questions>
+                    <QuestionCount>
+                        <Count>{question.vote} votes</Count>
+                        <Count>{question.answer.length} answers</Count>
+                        <Count>{question.view} views</Count>
+                    </QuestionCount>
+                    <Question key={question.id}>
+                        <Detail to={`/questions/${question.id}`}>
+                        <ContentsTitle>{question.subject}</ContentsTitle><br/>
+                        </Detail>
+                        <Contents>{question.content}</Contents>
                         </Question>
                     </Questions>
                     )}
@@ -131,5 +133,5 @@ function Home ({questions}) {
 
 }
 
-//pagenation, css- box안에 중간정렬, sidebar옆으로 이동할 때 고정 안되는 점, 글이 너무 길어지면 ...과 함께 생략하기(2줄...)
+//pagenation, 글이 너무 길어지면 ...과 함께 생략하기(2줄...)
 export default Home

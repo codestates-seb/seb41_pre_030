@@ -10,14 +10,14 @@
       "modifiedAt" : "2022-12-21T11:14:37.3755914",
       "answer":
         [ {
-          "answerId" : 1,
+          "id" : 1,
           "content" : "Notice that you define the path with this :id notation, that means that the id will be the param in this specific case. Then you create a Link component.",
           "vote" : 1,
           "accepted" : false,
           "createdAt" : "2022-12-21T11:14:19.0378343",
           "modifiedAt" : "2022-12-21T11:14:19.0378343"
         }, {
-          "answerId" : 2,
+          "id" : 2,
           "content" : "Alright, I think I figured it out so I'll type the answer that worked for me because I doubt I'm the same one running into the issue. The solution turned out to be a fix my brother (who's going through the course and has this part working) told me to try. ",
           "vote" : 2,
           "accepted" : false,
@@ -25,7 +25,7 @@
           "modifiedAt" : "2022-12-21T11:14:19.0378343"
         },
         {
-          "answerId" : 3,
+          "id" : 3,
           "content" : "답변이에요",
           "vote" : 6,
           "accepted" : false,
@@ -43,14 +43,14 @@
       "modifiedAt" : "2022-12-21T11:14:37.3755914",
       "answer":
         [ {
-          "answerId" : 1,
+          "id" : 1,
           "content" : "답변입니다.",
           "vote" : 1,
           "accepted" : false,
           "createdAt" : "2022-12-21T11:14:19.0378343",
           "modifiedAt" : "2022-12-21T11:14:19.0378343"
         }, {
-          "answerId" : 2,
+          "id" : 2,
           "content" : "답변",
           "vote" : 2,
           "accepted" : false,
@@ -68,14 +68,14 @@
       "modifiedAt" : "2022-12-21T11:14:37.3755914",
       "answer":
         [ {
-          "answerId" : 1,
+          "id" : 1,
           "content" : "답변입니다.",
           "vote" : 1,
           "accepted" : false,
           "createdAt" : "2022-12-21T11:14:19.0378343",
           "modifiedAt" : "2022-12-21T11:14:19.0378343"
         }, {
-          "answerId" : 2,
+          "id" : 2,
           "content" : "답변",
           "vote" : 2,
           "accepted" : false,
@@ -87,11 +87,14 @@
       "id" : 4,
       "subject" : "더미데이터",
       "content" : " am learning useParams hook in react. I have a url like this and need to be able to extract the letter 9 from it.",
-      "answer" : 20,
       "vote" : 60,
       "view" : 345,
       "createdAt" : "2022-12-21T11:14:37.3755914",
-      "modifiedAt" : "2022-12-21T11:14:37.3755914"
+      "modifiedAt" : "2022-12-21T11:14:37.3755914",
+      "answer":
+      [{
+        
+      }]
     },
     {
       "id" : 5,
@@ -103,20 +106,34 @@
       "modifiedAt" : "2022-12-21T11:14:37.3755914",
       "answer":
         [ {
-          "answerId" : 1,
+          "id" : 1,
           "content" : "답변입니다.",
           "vote" : 1,
           "accepted" : false,
           "createdAt" : "2022-12-21T11:14:19.0378343",
           "modifiedAt" : "2022-12-21T11:14:19.0378343"
         }, {
-          "answerId" : 2,
+          "id" : 2,
           "content" : "답변",
           "vote" : 2,
           "accepted" : false,
           "createdAt" : "2022-12-21T11:14:19.0378343",
           "modifiedAt" : "2022-12-21T11:14:19.0378343"
         } ]
+    }
+  ],
+  "members" : [
+    {
+    "id" : 1,
+    "email" : "heebum1@gmail.com",
+    "nickName" : "희범1",
+    "memberStatus" : "MEMBER_ACTIVE"
+    },
+    {
+    "id" : 2,
+    "email" : "heebum2@gmail.com",
+    "nickName" : "희범2",
+    "memberStatus" : "MEMBER_ACTIVE"
     }
   ]
 }
