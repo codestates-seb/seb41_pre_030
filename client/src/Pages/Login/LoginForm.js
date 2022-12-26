@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Logo from "../Image/Logo";
-import GoogleLogo from "../Image/GoogleLogo";
-import GitLogo from "../Image/GitLogo";
+import Logo from "../../Image/Logo";
+import GoogleLogo from "../../Image/GoogleLogo"
+import GitLogo from "../../Image/GitLogo";
 import { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
@@ -38,7 +38,7 @@ const RowContainer = styled.div`
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 
-const LoginHeader = styled.h2`
+const LoginHeader = styled.h1`
   font-size: 1.2rem;
 `;
 

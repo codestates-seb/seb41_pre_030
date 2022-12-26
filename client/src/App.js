@@ -6,8 +6,9 @@ import Users from './Components/Users';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import useFetch from './Components/util/useFetch';
-import LoginPage from './LoginPages/LoginPage';
+import LoginPage from './Pages/Login/LoginForm';
 import Signup from './Pages/Signup/Signup';
+import AskPage from './Pages/AskPages/AskForm';
 
 function App() {
   const [question] = useFetch('http://localhost:3001/questions/')
@@ -16,11 +17,13 @@ function App() {
   return (
     <div className="App">
         <Header/>
+        <AskPage/>
         {!excludedRoutes.includes(location.pathname) && <Sidebar />}
         <Routes>
           <Route path='/signup' element={<Signup />}/>
           <Route path='/users' element={<Users />}/>
           <Route path='/login' element={<LoginPage />} />
+          <Route path="/ask" element={<AskPage />}/>
           <Route path='/' element={<Home questions={question}/>}/>
         </Routes>
         {!excludedRoutes.includes(location.pathname) && <Footer />}
