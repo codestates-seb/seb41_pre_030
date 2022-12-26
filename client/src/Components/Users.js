@@ -1,8 +1,8 @@
 function Users () {
     return (
-        <div>
+        <main>
             users
-        </div>
+        </main>
     )
 
 }

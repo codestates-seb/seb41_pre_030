@@ -2,7 +2,7 @@ import React from "react"
 import { NavLink } from 'react-router-dom'
 import styled from "styled-components"
 
-const All = styled.div`
+const All = styled.main`
     font-size: 30px;
     margin-left: 280px;
     width: 130vh;
@@ -100,7 +100,7 @@ function Home ({questions}) {
     if(!questions) return null
 
    return (
-       <All className='min-view'>
+       <All>
                 <QuestionList>
                     <AllQuestions>
                         All Questions

@@ -1,7 +1,7 @@
 function QuestionDetail () {
 
   return(
-    <div className='min-view'>
+    <div>
       
     </div>
   )

@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { NavLink } from 'react-router-dom'
 
-const SideAllbar = styled.div`
+const SideAllbar = styled.nav`
   width:200px;
   height: 100vh;
   margin-left: 80px;
