@@ -100,7 +100,7 @@ function Home ({questions}) {
     if(!questions) return null
 
    return (
-       <All>
+       <All className='min-view'>
                 <QuestionList>
                     <AllQuestions>
                         All Questions

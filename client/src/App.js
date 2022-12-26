@@ -19,7 +19,7 @@ function App() {
         {!excludedRoutes.includes(location.pathname) && <Sidebar />}
         <Routes>
           <Route path='/signup' element={<Signup />}/>
-          <Route path='/users' element={<Users />}/>
+          <Route path='/members' element={<Users />}/>
           <Route path='/login' element={<LoginPage />} />
           <Route path='/' element={<Home questions={question}/>}/>
         </Routes>
@@ -28,4 +28,4 @@ function App() {
   );
 }
 
-  export default App;
+export default App;

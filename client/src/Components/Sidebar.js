@@ -44,7 +44,7 @@ const Sidebar = () => {
       </SideHomeBar>
       <SidePublicBar>
         PUBLIC
-        <ActiveStyle to='/Users' style={{paddingLeft:"40px"}}>Users</ActiveStyle>
+        <ActiveStyle to='/members' style={{paddingLeft:"40px"}}>Users</ActiveStyle>
       </SidePublicBar>
     </SideAllbar>  
   )
