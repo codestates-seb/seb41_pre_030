@@ -1,6 +1,9 @@
 package Be_30.Project.question.controller;
 
 import Be_30.Project.answer.entity.Answer;
+import Be_30.Project.auth.jwt.JwtTokenizer;
+import Be_30.Project.auth.utils.CustomAuthorityUtils;
+import Be_30.Project.config.SecurityConfiguration;
 import Be_30.Project.member.entity.Member;
 import Be_30.Project.question.dto.QuestionDto;
 import Be_30.Project.question.entity.Question;
@@ -20,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -39,7 +43,11 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Import(QuestionMapperImpl.class)
+@Import({QuestionMapperImpl.class,
+        SecurityConfiguration.class,
+        CustomAuthorityUtils.class,
+        JwtTokenizer.class}
+)
 @MockBean(JpaMetamodelMappingContext.class)
 @WebMvcTest(QuestionController.class)
 @AutoConfigureRestDocs
@@ -168,18 +176,13 @@ class QuestionControllerSliceTest {
                                         fieldWithPath("data[].views").type(NUMBER).description("조회수"),
                                         fieldWithPath("data[].createdAt").type(STRING).description("생성 시각"),
                                         fieldWithPath("data[].modifiedAt").type(STRING).description("수정 시각"),
+                                        fieldWithPath("data[].answerCount").type(NUMBER).description("답변 개수"),
 
                                         fieldWithPath("data[].member").type(OBJECT).description("질문 작성자"),
                                         fieldWithPath("data[].member.memberId").type(NUMBER).description("질문 작성자 ID"),
                                         fieldWithPath("data[].member.email").type(STRING).description("질문 작성자 이메일"),
                                         fieldWithPath("data[].member.nickName").type(STRING).description("질문 작성자 닉네임"),
                                         fieldWithPath("data[].member.memberStatus").type(STRING).description(STRING).description("질문 작성자 상태"),
-
-                                        fieldWithPath("data[].answers[]").type(ARRAY).description("질문에 속한 답변 목록"),
-                                        fieldWithPath("data[].answers[].answerId").type(NUMBER).description("답변 ID"),
-                                        fieldWithPath("data[].answers[].content").type(STRING).description("답변 내용"),
-                                        fieldWithPath("data[].answers[].accepted").type(BOOLEAN).description("답변 채택 유무"),
-                                        fieldWithPath("data[].answers[].votes").type(NUMBER).description("답변 투표 수"),
 
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
@@ -193,6 +196,7 @@ class QuestionControllerSliceTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void createQuestionTest() throws Exception {
         // Given
         QuestionDto.Post post = new QuestionDto.Post("질문 제목", "질문 내용");
@@ -245,6 +249,7 @@ class QuestionControllerSliceTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void updateQuestionTest() throws Exception {
         // Given
         long questionId = 1L;
@@ -305,6 +310,7 @@ class QuestionControllerSliceTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void deleteQuestionTest() throws Exception {
         // Given
         long questionId = 1L;

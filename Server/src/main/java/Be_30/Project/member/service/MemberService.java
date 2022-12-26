@@ -1,5 +1,6 @@
 package Be_30.Project.member.service;
 
+import Be_30.Project.auth.jwt.JwtTokenizer;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
@@ -18,13 +19,15 @@ import org.springframework.stereotype.Service;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final CustomAuthorityUtils authorityUtils;
+    private CustomAuthorityUtils authorityUtils;
+    private final JwtTokenizer jwtTokenizer;
 
     public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
-        CustomAuthorityUtils authorityUtils) {
+        CustomAuthorityUtils authorityUtils, JwtTokenizer jwtTokenizer) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityUtils = authorityUtils;
+        this. jwtTokenizer = jwtTokenizer;
     }
 
     public Member createMember(Member member) {
@@ -35,6 +38,9 @@ public class MemberService {
             String encryptedPassword = passwordEncoder.encode(member.getPassword());
             member.setPassword(encryptedPassword);
 
+            String encryptedConfirmedPassword = passwordEncoder.encode(member.getConfirmedPassword());
+            member.setConfirmedPassword(encryptedConfirmedPassword);
+
             List<String> roles = authorityUtils.createRoles(member.getEmail());
             member.setRoles(roles);
 
@@ -44,8 +50,13 @@ public class MemberService {
         }
     }
 
-    public Member updateMember(Member member) {
-        Member findMember = findVerifiedMember(member.getMemberId());
+
+    public Member updateMember(Member member, String email) {
+        Member findMember = findVerifiedMember(member.getMemberId(),email);
+
+//        if(!findMember.getEmail().equals(email)){
+//            throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+//        }
 
         Optional.ofNullable(member.getNickName())
             .ifPresent(name -> findMember.setNickName(name));
@@ -55,9 +66,9 @@ public class MemberService {
         return memberRepository.save(findMember);
     }
 
-    public Member findMember(long memberId) {
+    public Member findMember(long memberId, String email) {
 
-        return findVerifiedMember(memberId);
+        return findVerifiedMember(memberId,email);
     }
 
 
@@ -66,19 +77,23 @@ public class MemberService {
             Sort.by("memberId").descending()));
     }
 
-    public void deleteMember(long memberId) {
-        Member findMember = findVerifiedMember(memberId);
+    public void deleteMember(long memberId, String email) {
+        Member findMember = findVerifiedMember(memberId,email);
 
         memberRepository.delete(findMember);
     }
 
-    public Member findVerifiedMember(long memberId) {
+    public Member findVerifiedMember(long memberId, String email) {
         Optional<Member> optionalMember =
             memberRepository.findById(memberId);
         Member findMember =
             optionalMember.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        return findMember;
+        if(findMember.getEmail().equals(email)){
+            return findMember;
+        }else {
+            throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+        }
     }
 
     private void verifyExistsEmail(String email) {

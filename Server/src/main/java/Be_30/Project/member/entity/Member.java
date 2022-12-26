@@ -13,8 +13,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity //확인하기
+@Entity
 public class Member extends Auditable {
+
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long memberId;
