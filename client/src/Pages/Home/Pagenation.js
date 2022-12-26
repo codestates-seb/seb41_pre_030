@@ -12,11 +12,11 @@ const Pagenation = (props) => {
 
 
     const handlePageClick = (event) => {
-      const newOffset = (event.selected * props.itemsPerPage) % props.questions.length;
-      console.log(
+        const newOffset = (event.selected * props.itemsPerPage) % props.questions.length;
+        console.log(
         `User requested page number ${event.selected}, which is offset ${newOffset}`
-      );
-      setItemOffset(newOffset);
+        );
+        setItemOffset(newOffset);
     };
 
     return (
@@ -28,8 +28,8 @@ const Pagenation = (props) => {
                         <Count>{question.answer.length} answers</Count>
                         <Count>{question.view} views</Count>
                     </QuestionCount>
-                    <Question key={question.questionId}>
-                        <Detail to={`/questions/${question.questionId}`}>
+                    <Question>
+                        <Detail to={`/questions/${question.id}`}>
                         <ContentsTitle>{question.subject}</ContentsTitle><br/>
                         </Detail>
                         <Contents>{question.content}</Contents>

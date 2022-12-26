@@ -14,6 +14,7 @@ const All = styled.main`
         flex-direction: row;
         justify-content: center;
         list-style: none;
+        margin-bottom: 30px;
         li {
             font-size: 18px;
             width: 30px;
@@ -68,7 +69,7 @@ const AskQuestionButton = styled(NavLink)`
     background-color: hsl(206deg 100% 52%);
     color: #fff;
     :hover {
-      background-color: hsl(209deg 100% 38%);
+        background-color: hsl(209deg 100% 38%);
     }
 `
 
@@ -105,7 +106,7 @@ export const ContentsTitle = styled.span`
     font-size: 20px;
     color: hsl(206,100%,52%);;
     :hover {
-      color: skyblue;
+        color: skyblue;
     }
 `
 
@@ -121,9 +122,6 @@ export const Contents = styled.span`
     overflow: hidden;
     hyphens: auto !important;
 `
-// const Pagenation = styled.span`
-//     background-color: aliceblue;
-// `
 
 const Home = ({questions}) => {
     return (
@@ -134,23 +132,8 @@ const Home = ({questions}) => {
                     <AskQuestionButton to='/AskQuestion'>Ask Question</AskQuestionButton>
                 </AllQuestions>
                 <CountQuestions>{questions && questions.length} questions</CountQuestions>
-                    {/* {questions && questions.map(question => 
-                        <Questions key={question.id}>
-                            <QuestionCount>
-                                <Count>{question.vote} votes</Count>
-                                <Count>{question.answer.length} answers</Count>
-                                <Count>{question.view} views</Count>
-                            </QuestionCount>
-                            <Question key={question.questionId}>
-                                <Detail to={`/questions/${question.questionId}`}>
-                                <ContentsTitle>{question.subject}</ContentsTitle><br/>
-                                </Detail>
-                                <Contents>{question.content}</Contents>
-                            </Question>
-                        </Questions>
-                    )} */}
             </QuestionList>
-            {questions && <Pagenation questions={questions} itemsPerPage={2} />}
+            {questions && <Pagenation questions={questions} itemsPerPage={10} />}
         </All>
     )
 }
