@@ -1,8 +1,8 @@
 import React from "react"
 import { NavLink } from 'react-router-dom'
 import styled from "styled-components"
-import Pagination from "react-js-pagination";
 
+//홈 필요 없을듯?
 export const All = styled.div`
     font-size: 30px;
     margin-left: 280px;
@@ -25,13 +25,6 @@ export const AllQuestions = styled.div`
     justify-content: space-between;
 `
 
-const CountQuestions = styled.span`
-    font-size: 20px;
-    color: gray;
-    margin-left: 40px;
-    margin-bottom: 40px;
-`
-
 export const AskQuestionButton = styled(NavLink)`
     background-color: rgba(0, 60, 255, 0.8);
     color:white;
@@ -48,56 +41,6 @@ export const AskQuestionButton = styled(NavLink)`
     }
 `
 
-const Questions = styled.div `
-    display: flex;
-    border-top: 1px solid black;
-`
-const QuestionCount = styled.div`
-    font-size: 15px;
-    color: gray;
-    width: 150px;
-    text-align: right;
-    margin: 15px 0px 20px 10px;
-`
-
-const Question = styled.div`
-    width: 1000px;
-    display: grid; 
-    font-size: 20px;
-    margin: 20px;
-
-`
-const Count = styled.div`
-    margin-left: 10px;
-    margin-top: 20px;
-`
-
-const Detail = styled(NavLink)`
-    text-decoration: none;
-    margin-top: 20px;
-`
-
-const ContentsTitle = styled.span`
-    font-size: 20px;
-    color: blue;
-    :hover {
-      color: skyblue;
-    }
-`
-
-const Contents = styled.span`
-    font-size: 18px;
-    color: black;
-    margin-top: 20px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-`
-const Pagenation = styled.span`
-    background-color: aliceblue;
-
-`
-
 function Home ({questions}) {
     if(!questions) return null
 
@@ -108,7 +51,7 @@ function Home ({questions}) {
                     All Questions
                     <AskQuestionButton to='/AskQuestion'>Ask Question</AskQuestionButton>
                 </AllQuestions>
-                <CountQuestions>{questions.length} questions</CountQuestions>
+                {/* <CountQuestions>{questions.length} questions</CountQuestions>
                 {questions.map(question => 
                 <Questions>
                     <QuestionCount>
@@ -123,15 +66,14 @@ function Home ({questions}) {
                         <Contents>{question.content}</Contents>
                         </Question>
                     </Questions>
-                    )}
+                    )} */}
                 </QuestionList>
-            <Pagenation>
+            {/* <Pagenation>
                 pagenation 1,2,3
-            </Pagenation>
+            </Pagenation> */}
         </All>
    )
 
 }
 
-//pagenation, 글이 너무 길어지면 ...과 함께 생략하기(2줄...)
 export default Home
