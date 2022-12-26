@@ -7,6 +7,15 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 
+const BgCenter = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 1000px;
+  padding: 24px;
+  background-color:hsl(210,8%,95%);
+`
 
 const Container = styled.div`
   width: 268px;
@@ -132,34 +141,36 @@ const LoginPage = () => {
   }
 
   return (
-    <Container>
-      <UpContainer>
-        <Link to={'/'} className="logo">
-          <Logo className="stackLogo"/>
-        </Link>
-        <GoogleButton>
-          <GoogleLogo />Log in with Google
-        </GoogleButton>
-        <GitButton>
-          <GitLogo />Log in with GitHub
-        </GitButton>
-      </UpContainer>
-      <RowContainer>
-        <LoginHeader>Email</LoginHeader>
-        <LoginInput type="email" value={info.email}
-                    onChange={ev => setInfo({
-                      ...info,
-                      email: ev.target.value
-                    })}/>
-        <LoginHeader>Password</LoginHeader>
-        <LoginInput type="password" value={info.password}
-                    onChange={ev => setInfo({
-                      ...info,
-                      password: ev.target.value
-                    })}/>
-        <LoginButton className="login" onClick={Login}>Log in</LoginButton>
-      </RowContainer>
-    </Container>
+    <BgCenter>
+      <Container>
+        <UpContainer>
+          <Link to={'/'} className="logo">
+            <Logo className="stackLogo"/>
+          </Link>
+          <GoogleButton>
+            <GoogleLogo />Log in with Google
+          </GoogleButton>
+          <GitButton>
+            <GitLogo />Log in with GitHub
+          </GitButton>
+        </UpContainer>
+        <RowContainer>
+          <LoginHeader>Email</LoginHeader>
+          <LoginInput type="email" value={info.email}
+                      onChange={ev => setInfo({
+                        ...info,
+                        email: ev.target.value
+                      })}/>
+          <LoginHeader>Password</LoginHeader>
+          <LoginInput type="password" value={info.password}
+                      onChange={ev => setInfo({
+                        ...info,
+                        password: ev.target.value
+                      })}/>
+          <LoginButton className="login" onClick={Login}>Log in</LoginButton>
+        </RowContainer>
+      </Container>
+    </BgCenter>
   )
 }
 
