@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import Google from '../../Image/Google'
 import GitHub from '../../Image/GitHub'
-import Facebook from '../../Image/Facebook'
 import OAuthButton from './OAuthButton';
 import SignupExplain from './SignupExplain';
 import SignupForm from './SignupForm';
@@ -56,10 +55,10 @@ const Signup = () => {
               <GitHub /> 
               Sign up with GitHub
             </OAuthButton>
-            <OAuthButton bg_color="rgb(56, 84, 153)">
+            {/* <OAuthButton bg_color="rgb(56, 84, 153)">
               <Facebook /> 
               Sign up with Facebook
-            </OAuthButton>
+            </OAuthButton> */}
           </div>
           <SignupForm />
         </FlexRight>

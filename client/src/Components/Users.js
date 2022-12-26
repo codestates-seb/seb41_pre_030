@@ -1,6 +1,10 @@
 function Users () {
+    return (
+        <main>
+            users
+        </main>
+    )
 
-    return
 }
 
 export default Users
