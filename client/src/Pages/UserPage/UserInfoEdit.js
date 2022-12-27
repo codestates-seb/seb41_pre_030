@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import profileImage from "../../Image/profile.png";
+import axios from 'axios';
 
 const Container = styled.div`
     position: absolute;
@@ -90,10 +91,11 @@ const InputCotainer = styled.div`
 
 const UserInfoEdit = () => {
     const [image, setImage] = useState(profileImage)
+    const [nickname, setNickname] = useState('')
     const fileInput = useRef(null)
     const nicknameInput = useRef(null)
 
-    const onImageChangeHandler = (e) => {
+    const onImageReviewHandler = (e) => {
         if(!e.target.files[0]){
             setImage(profileImage);
             return;
@@ -106,14 +108,31 @@ const UserInfoEdit = () => {
             }
         }
         reader.readAsDataURL(e.target.files[0])
-        console.log(image)
+        // console.log(image)
     }
 
-    const onSubmitHandler = () => {
-
+    const onSubmitHandler = async (event) => {
+        event.preventDefault();
+        const formData = new FormData();
+        
+        formData.append("file", fileInput.current.files[0]);
+    
+        const value = {nickName: nickname};
+        const blob = new Blob([JSON.stringify(value)], {type: "application/json"}) ;
+        
+        formData.append("data", blob);
+        await axios({
+            method: "POST",
+            url: `API`,
+            headers: {
+                "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
+            },
+            data: formData, // data 전송시에 반드시 생성되어 있는 formData 객체만 전송 하여야 한다.
+        });
     }
+
     const onDeleteAccountHandler = () => {
-
+        
     }
 
     return (
@@ -121,7 +140,7 @@ const UserInfoEdit = () => {
             <EditTitle>
                 <h1>Edit your profile</h1>
             </EditTitle>
-            <Form onSubmit={onSubmitHandler}>
+            <Form onSubmit={event => onSubmitHandler(event)}>
                 <ImageContainer>
                     <div>
                         <img src={image} alt="user avatar" onClick={()=>{fileInput.current.click()}}/>
@@ -133,17 +152,19 @@ const UserInfoEdit = () => {
                         name='profile_img'
                         style={{display:'none'}}
                         accept="image/jpg, image/png, image/jpeg"
-                        onChange={(e)=>onImageChangeHandler(e)}
+                        onChange={(e)=>onImageReviewHandler(e)}
                         ref={fileInput}
                     />
                 </ImageContainer>
                 <InputCotainer>
                     <label htmlFor='nickname'>Nickname</label>
                     <input
+                        value={nickname}
                         type='text' 
                         id='nickname'
                         name='nickname'
-                        ref={nicknameInput}
+                        onChange={event => setNickname(event.target.value)}
+                        // ref={nicknameInput}
                     />
                 </InputCotainer>
                 <button>Edit profile</button>
