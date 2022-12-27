@@ -5,6 +5,10 @@
     font-family: 'IBM Plex Sans KR', sans-serif;
   }
 
+<<<<<<< HEAD
+.min-view {
+=======
 main {
+>>>>>>> 246c7071dab613a0d352b0816102fb87ee38321d
   min-height: 100vh;
 }

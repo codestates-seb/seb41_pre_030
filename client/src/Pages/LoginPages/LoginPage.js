@@ -47,7 +47,7 @@ const RowContainer = styled.div`
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 
-const LoginHeader = styled.h2`
+const LoginHeader = styled.h1`
   font-size: 1.2rem;
 `;
 
