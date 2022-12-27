@@ -6,7 +6,8 @@ public enum ExceptionCode {
     MEMBER_NOT_FOUND(404, "Member not found"),
     MEMBER_EXISTS(409, "Member exists"),
     PASSWORD_NOT_CONFIRMED(404, "Password not confirmed"),
-    ANSWER_NOT_FOUND(404, "Answer Not Found"),
+    ANSWER_NOT_FOUND(404, "Answer not found"),
+    VOTE_NOT_FOUND(404, "Vote not found"),
     ADOPT_NOT_ALLOWED(405, "Adopt not allowed"),
 
     INVALID_MEMBER_STATUS(400, "Invalid member status"),

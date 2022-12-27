@@ -1,5 +1,6 @@
 package Be_30.Project.vote.controller;
 
+import Be_30.Project.auth.userdetails.MemberDetailsService.MemberDetails;
 import Be_30.Project.dto.SingleResponseDto;
 import Be_30.Project.vote.dto.AnswerVoteResponseDto;
 import Be_30.Project.vote.dto.QuestionVoteResponseDto;
@@ -35,11 +36,11 @@ public class QuestionVoteController {
 
     @PostMapping("/{question-id}/vote-up")
     public ResponseEntity postVoteUp(@PathVariable("question-id") @Positive long questionId,
-        @AuthenticationPrincipal MemberAdapter memberAdapter) {
+        @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        if (memberAdapter != null) {
+        if (memberDetails != null) {
             QuestionVote questionVote = questionVoteService.addVoteUp(questionId,
-                memberAdapter.getMember());
+                memberDetails.getMemberId());
             QuestionVoteResponseDto response = mapper.QuestionVoteToQuestionVoteResponseDto(
                 questionVote);
             return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
@@ -50,11 +51,11 @@ public class QuestionVoteController {
 
     @PostMapping("/{question-id}/vote-down")
     public ResponseEntity postVoteDown(@PathVariable("question-id") @Positive long questionId,
-        @AuthenticationPrincipal MemberAdapter memberAdapter) {
+        @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        if (memberAdapter != null) {
+        if (memberDetails != null) {
             QuestionVote questionVote = questionVoteService.addVoteDown(questionId,
-                memberAdapter.getMember());
+                memberDetails.getMemberId());
             QuestionVoteResponseDto response = mapper.QuestionVoteToQuestionVoteResponseDto(
                 questionVote);
             return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);

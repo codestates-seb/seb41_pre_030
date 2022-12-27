@@ -1,5 +1,6 @@
 package Be_30.Project.vote.controller;
 
+import Be_30.Project.auth.userdetails.MemberDetailsService.MemberDetails;
 import Be_30.Project.dto.SingleResponseDto;
 import Be_30.Project.vote.dto.AnswerVoteResponseDto;
 import Be_30.Project.vote.entity.AnswerVote;
@@ -30,13 +31,11 @@ public class AnswerVoteController {
 
     @PostMapping("/{answer-id}/vote-up")
     public ResponseEntity postVoteUp(@PathVariable("answer-id") @Positive long answerId,
-        @AuthenticationPrincipal MemberAdapter memberAdapter) {
+        @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        if(memberAdapter != null) {
-            AnswerVote answerVote = answerVoteService.addVoteUp(answerId, memberAdapter.getMember());
-
+        if(memberDetails != null) {
+            AnswerVote answerVote = answerVoteService.addVoteUp(answerId, memberDetails.getMemberId());
             AnswerVoteResponseDto response = mapper.AnswerVoteToAnswerVoteResponseDto(answerVote);
-
             return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -45,12 +44,10 @@ public class AnswerVoteController {
 
     @PostMapping("/{answer-id}/vote-down")
     public ResponseEntity postVoteDown(@PathVariable("answer-id") @Positive long answerId,
-        @AuthenticationPrincipal MemberAdapter memberAdapter) {
-        if(memberAdapter != null) {
-            AnswerVote answerVote = answerVoteService.addVoteDown(answerId, memberAdapter.getMember());
-
+        @AuthenticationPrincipal MemberDetails memberDetails) {
+        if(memberDetails != null) {
+            AnswerVote answerVote = answerVoteService.addVoteDown(answerId, memberDetails.getMemberId());
             AnswerVoteResponseDto response = mapper.AnswerVoteToAnswerVoteResponseDto(answerVote);
-
             return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
