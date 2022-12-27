@@ -12,7 +12,7 @@ import QuestionDetail from './Pages/Question/QuestionDetail';
 import UserPage from './Pages/UserPage/UserPage';
 
 function App() {
-  const [question] = useFetch('http://localhost:3001/questions/')
+  const [question] = useFetch('http://13.125.30.88:8080/questions/')
   const location = useLocation();
   return (
     <div className="App">

@@ -126,8 +126,8 @@ function QuestionDetail () {
 
 
 
-  const [question] = useFetch(`http://localhost:3001/questions/${id}`,request)
-  const [member] = useFetch(`http://localhost:3001/members/${id}`,request)
+  const [question] = useFetch(`http://13.125.30.88:8080/questions/${id}`,request)
+  const [member] = useFetch(`http://13.125.30.88:8080/members/${id}`,request)
 
   const [value, setValue] = useState('');
 

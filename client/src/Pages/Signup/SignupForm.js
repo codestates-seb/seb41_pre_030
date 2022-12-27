@@ -67,7 +67,7 @@ const SignupForm = () => {
     }
 
     await axios
-    .post("API", jsonData)
+    .post("http://13.125.30.88:8080/members", jsonData)
     .then((res) => {
       alert("Signup");
       navigate("/login");

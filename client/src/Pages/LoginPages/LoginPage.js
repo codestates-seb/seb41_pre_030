@@ -130,7 +130,7 @@ const LoginPage = () => {
     }
 
     await axios
-    .post("API", jsonData)
+    .post("http://13.125.30.88:8080/", jsonData)
     .then((res) => {
       alert("Login");
       navigate("/");

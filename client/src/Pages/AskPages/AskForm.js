@@ -172,7 +172,7 @@ const AskPage = () => {
 			console.log(bodyJSON)
 
 			await axios
-				.post("/api", JSON.stringify(bodyJSON))
+				.post("http://13.125.30.88:8080/questions/", JSON.stringify(bodyJSON))
 				.then((res) => {
 					alert("Question added successfully");
 					navigate("/");

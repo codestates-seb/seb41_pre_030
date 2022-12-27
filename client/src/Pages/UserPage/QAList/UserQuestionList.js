@@ -3,7 +3,7 @@ import useFetch from '../../../Components/util/useFetch';
 import UserPageListItem from './UserPageListItem';
 
 const UserQuestionList = () => {
-    const [question] = useFetch('http://localhost:3001/questions/');
+    const [question] = useFetch('http://13.125.30.88:8080/questions/');
     
     return (
         <Fragment>
