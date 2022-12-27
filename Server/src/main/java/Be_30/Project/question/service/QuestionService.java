@@ -2,6 +2,8 @@ package Be_30.Project.question.service;
 
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
+import Be_30.Project.member.entity.Member;
+import Be_30.Project.member.service.MemberService;
 import Be_30.Project.question.entity.Question;
 import Be_30.Project.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class QuestionService {
 
+    private final MemberService memberService;
     private final QuestionRepository questionRepository;
 
-    public Question createQuestion(Question question) {
+    public Question createQuestion(Question question, long memberId, String email) {
+        Member findMember = memberService.findMember(memberId, email);
+        question.setMember(findMember);
+        findMember.getQuestions().add(question);
         return questionRepository.save(question);
     }
 
@@ -70,6 +76,7 @@ public class QuestionService {
 
     public void deleteQuestion(long questionId) {
         Question findQuestion = findById(questionId);
+        findQuestion.getMember().getQuestions().remove(findQuestion);
         questionRepository.delete(findQuestion);
     }
 }
