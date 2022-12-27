@@ -41,6 +41,10 @@ public class Question extends Auditable {
     @OneToMany(mappedBy = "question")
     private List<QuestionVote> questionVotes = new ArrayList<>();
 
+    public int getAnswerCount() {
+        return answers.size();
+    }
+
     public void setMember(Member member) {
         this.member = member;
     }

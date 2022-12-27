@@ -1,70 +1,83 @@
-package Be_30.Project.controller;
-
-
-import static Be_30.Project.util.ApiDocumentUtils.getRequestPreProcessor;
-import static Be_30.Project.util.ApiDocumentUtils.getResponsePreProcessor;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
-
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import Be_30.Project.member.controller.MemberController;
-import Be_30.Project.member.dto.MemberDto;
-import Be_30.Project.member.entity.Member.MemberStatus;
-
-import com.google.gson.Gson;
-import com.jayway.jsonpath.JsonPath;
-import java.util.List;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-
-
-@WebMvcTest(MemberController.class)
-@MockBean(JpaMetamodelMappingContext.class)
-@AutoConfigureRestDocs
-public class UserControllerTest {
-
+//package Be_30.Project.controller;
+//
+//
+//import static Be_30.Project.util.ApiDocumentUtils.getRequestPreProcessor;
+//import static Be_30.Project.util.ApiDocumentUtils.getResponsePreProcessor;
+//import static org.hamcrest.MatcherAssert.assertThat;
+//import static org.hamcrest.Matchers.is;
+//import static org.hamcrest.Matchers.startsWith;
+//
+//import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+//import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+//import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+//import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+//import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+//import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+//import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+//import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+////import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+//import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+////import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+//import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+////import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+//import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+//import static org.springframework.restdocs.request.RequestDocumentation.*;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+//
+//import Be_30.Project.auth.jwt.JwtTokenizer;
+//import Be_30.Project.auth.utils.CustomAuthorityUtils;
+//import Be_30.Project.config.SecurityConfiguration;
+//import Be_30.Project.member.controller.MemberController;
+//import Be_30.Project.member.dto.MemberDto;
+//import Be_30.Project.member.entity.Member.MemberStatus;
+//
+//import Be_30.Project.member.service.MemberService;
+//import Be_30.Project.question.mapper.QuestionMapperImpl;
+//import com.google.gson.Gson;
+//import com.jayway.jsonpath.JsonPath;
+//import java.util.List;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+//
+//import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.boot.test.mock.mockito.MockBean;
+//import org.springframework.context.annotation.Import;
+//import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+//import org.springframework.http.HttpHeaders;
+//import org.springframework.http.MediaType;
+//import org.springframework.restdocs.payload.JsonFieldType;
+//import org.springframework.test.web.servlet.MockMvc;
+//import org.springframework.test.web.servlet.MvcResult;
+//import org.springframework.test.web.servlet.ResultActions;
+//
+//@Import({
+//        SecurityConfiguration.class,
+//        CustomAuthorityUtils.class,
+//        JwtTokenizer.class}
+//)
+//@WebMvcTest(MemberController.class)
+//@MockBean(JpaMetamodelMappingContext.class)
+//@AutoConfigureRestDocs
+//public class UserControllerTest {
+//
 //    @Autowired
 //    private MockMvc mockMvc;
+//
+//    @Autowired
+//    private MemberService memberService;
 //
 //    @Autowired
 //    private Gson gson;
 //
 //    @Test
 //    public void postUserTest() throws Exception {
-//        MemberDto.Post memberPostDto = new MemberDto.Post("egg30@gmail.com", "달걀한판","1111");
+//        MemberDto.Post memberPostDto = new MemberDto.Post("egg30@gmail.com", "달걀한판","1111", "1111");
 //
 //        String content = gson.toJson(memberPostDto);
 //
@@ -216,5 +229,5 @@ public class UserControllerTest {
 //
 //
 //    }
-
-}
+//
+//}
