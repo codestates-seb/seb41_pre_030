@@ -3,6 +3,7 @@ package Be_30.Project.auth.filter;
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
+import Be_30.Project.member.entity.Member;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -56,9 +57,12 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
+
+
         // Authentication 객체를 SecurityContext에 저장
         String username = (String) claims.get("username");
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));
+        Member member = new Member();
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

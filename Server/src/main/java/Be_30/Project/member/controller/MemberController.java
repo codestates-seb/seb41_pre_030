@@ -1,7 +1,6 @@
 package Be_30.Project.member.controller;
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
-import Be_30.Project.auth.userdetails.MemberDetailsService.MemberDetails;
 import Be_30.Project.dto.MultiResponseDto;
 import Be_30.Project.dto.SingleResponseDto;
 import Be_30.Project.exception.BusinessLogicException;

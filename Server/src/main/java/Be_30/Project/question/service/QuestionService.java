@@ -3,8 +3,10 @@ package Be_30.Project.question.service;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.entity.Member;
+import Be_30.Project.member.repository.MemberRepository;
 import Be_30.Project.question.entity.Question;
 import Be_30.Project.question.repository.QuestionRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,9 +21,13 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
+    private final MemberRepository memberRepository;
+
     public Question createQuestion(Question question) {
-        Member findmemeber = question.getMember();
-        findmemeber.addQuestion(question);
+//        Optional<Member> findMember = memberRepository.findByEmail(email);
+//        findMember.ifPresent(q -> q.addQuestion(question));
+//        question.setMember(findMember.get());
+
         return questionRepository.save(question);
     }
 

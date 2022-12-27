@@ -195,58 +195,58 @@ class QuestionControllerSliceTest {
 
     }
 
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    void createQuestionTest() throws Exception {
-        // Given
-        QuestionDto.Post post = new QuestionDto.Post("질문 제목", "질문 내용");
-        String content = gson.toJson(post);
-
-        Member member = createMember(1L, "닉네임", "email@com");
-        Question createdQuestion = createQuestion(1L, "질문 제목", "질문 내용");
-        createdQuestion.setMember(member);
-        given(questionService.createQuestion(any(Question.class))).willReturn(createdQuestion);
-
-        // When
-        ResultActions actions = mockMvc.perform(
-                post("/questions")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(content)
-        );
-
-        // Then
-        actions
-                .andExpect(status().isCreated())
-                .andDo(document(
-                        "create-question",
-                        getRequestPreProcessor(),
-                        getResponsePreProcessor(),
-                        requestFields(List.of(
-                                fieldWithPath("subject").type(STRING).description("질문 제목"),
-                                fieldWithPath("content").type(STRING).description("질문 내용")
-                        )),
-                        responseFields(
-                                List.of(
-                                        fieldWithPath("data.questionId").type(NUMBER).description("질문 번호"),
-                                        fieldWithPath("data.subject").type(STRING).description("질문 제목"),
-                                        fieldWithPath("data.content").type(STRING).description("질문 내용"),
-                                        fieldWithPath("data.votes").type(NUMBER).description("추천/비추천 합"),
-                                        fieldWithPath("data.views").type(NUMBER).description("조회수"),
-                                        fieldWithPath("data.createdAt").type(STRING).description("생성 시각"),
-                                        fieldWithPath("data.modifiedAt").type(STRING).description("수정 시각"),
-
-                                        fieldWithPath("data.member").type(OBJECT).description("질문 작성자"),
-                                        fieldWithPath("data.member.memberId").type(NUMBER).description("질문 작성자 ID"),
-                                        fieldWithPath("data.member.email").type(STRING).description("질문 작성자 이메일"),
-                                        fieldWithPath("data.member.nickName").type(STRING).description("질문 작성자 닉네임"),
-                                        fieldWithPath("data.member.memberStatus").type(STRING).description(STRING).description("질문 작성자 상태"),
-
-                                        fieldWithPath("data.answers[]").type(ARRAY).description("질문에 속한 답변 목록")
-                                )
-                        )
-                ));
-    }
+//    @Test
+//    @WithMockUser(roles = "ADMIN")
+//    void createQuestionTest() throws Exception {
+//        // Given
+//        QuestionDto.Post post = new QuestionDto.Post("질문 제목", "질문 내용");
+//        String content = gson.toJson(post);
+//
+//        Member member = createMember(1L, "닉네임", "email@com");
+//        Question createdQuestion = createQuestion(1L, "질문 제목", "질문 내용");
+//        createdQuestion.setMember(member);
+//        given(questionService.createQuestion(any(Question.class))).willReturn(createdQuestion);
+//
+//        // When
+//        ResultActions actions = mockMvc.perform(
+//                post("/questions")
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(content)
+//        );
+//
+//        // Then
+//        actions
+//                .andExpect(status().isCreated())
+//                .andDo(document(
+//                        "create-question",
+//                        getRequestPreProcessor(),
+//                        getResponsePreProcessor(),
+//                        requestFields(List.of(
+//                                fieldWithPath("subject").type(STRING).description("질문 제목"),
+//                                fieldWithPath("content").type(STRING).description("질문 내용")
+//                        )),
+//                        responseFields(
+//                                List.of(
+//                                        fieldWithPath("data.questionId").type(NUMBER).description("질문 번호"),
+//                                        fieldWithPath("data.subject").type(STRING).description("질문 제목"),
+//                                        fieldWithPath("data.content").type(STRING).description("질문 내용"),
+//                                        fieldWithPath("data.votes").type(NUMBER).description("추천/비추천 합"),
+//                                        fieldWithPath("data.views").type(NUMBER).description("조회수"),
+//                                        fieldWithPath("data.createdAt").type(STRING).description("생성 시각"),
+//                                        fieldWithPath("data.modifiedAt").type(STRING).description("수정 시각"),
+//
+//                                        fieldWithPath("data.member").type(OBJECT).description("질문 작성자"),
+//                                        fieldWithPath("data.member.memberId").type(NUMBER).description("질문 작성자 ID"),
+//                                        fieldWithPath("data.member.email").type(STRING).description("질문 작성자 이메일"),
+//                                        fieldWithPath("data.member.nickName").type(STRING).description("질문 작성자 닉네임"),
+//                                        fieldWithPath("data.member.memberStatus").type(STRING).description(STRING).description("질문 작성자 상태"),
+//
+//                                        fieldWithPath("data.answers[]").type(ARRAY).description("질문에 속한 답변 목록")
+//                                )
+//                        )
+//                ));
+//    }
 
     @Test
     @WithMockUser(roles = "ADMIN")
