@@ -3,6 +3,8 @@ package Be_30.Project.question.entity;
 import Be_30.Project.answer.entity.Answer;
 import Be_30.Project.audit.Auditable;
 import Be_30.Project.member.entity.Member;
+import Be_30.Project.vote.entity.QuestionVote;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,6 +37,9 @@ public class Question extends Auditable {
 
     @OneToMany
     private List<Answer> answers;
+
+    @OneToMany(mappedBy = "question")
+    private List<QuestionVote> questionVotes = new ArrayList<>();
 
     public void setMember(Member member) {
         this.member = member;

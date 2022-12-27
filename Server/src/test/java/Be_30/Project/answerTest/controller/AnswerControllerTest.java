@@ -18,6 +18,7 @@ import Be_30.Project.answer.dto.AnswerDto.Response;
 import Be_30.Project.answer.entity.Answer;
 import Be_30.Project.answer.mapper.AnswerMapper;
 import Be_30.Project.answer.service.AnswerService;
+import Be_30.Project.member.entity.Member;
 import com.google.gson.Gson;
 import com.jayway.jsonpath.JsonPath;
 import java.util.ArrayList;
@@ -99,7 +100,7 @@ public class AnswerControllerTest {
         //then
         actions.andExpect(status().isOk())
             .andExpect(jsonPath("$.data.content").value(answer.getContent()))
-            .andExpect(jsonPath("$.data.accepted").value(answer.isAccepted()))
+            .andExpect(jsonPath("$.data.accepted").value(answer.isAdopt()))
             .andExpect(jsonPath("$.data.votes").value(answer.getVotes()));
     }
     @Test
@@ -119,7 +120,7 @@ public class AnswerControllerTest {
         //then
         actions.andExpect(status().isOk())
             .andExpect(jsonPath("$.data.content").value(answer.getContent()))
-            .andExpect(jsonPath("$.data.accepted").value(answer.isAccepted()))
+            .andExpect(jsonPath("$.data.accepted").value(answer.isAdopt()))
             .andExpect(jsonPath("$.data.votes").value(answer.getVotes()));
     }
     @Test
