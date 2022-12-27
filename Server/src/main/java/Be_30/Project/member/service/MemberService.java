@@ -1,6 +1,5 @@
 package Be_30.Project.member.service;
 
-import Be_30.Project.auth.jwt.JwtTokenizer;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
@@ -8,27 +7,22 @@ import Be_30.Project.member.entity.Member;
 import Be_30.Project.member.repository.MemberRepository;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.context.ApplicationEventPublisher;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class MemberService {
+
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private CustomAuthorityUtils authorityUtils;
-    private final JwtTokenizer jwtTokenizer;
+    private final CustomAuthorityUtils authorityUtils;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
-        CustomAuthorityUtils authorityUtils, JwtTokenizer jwtTokenizer) {
-        this.memberRepository = memberRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authorityUtils = authorityUtils;
-        this. jwtTokenizer = jwtTokenizer;
-    }
 
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
