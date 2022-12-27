@@ -70,7 +70,7 @@
       "answer":
         [ {
           "id" : 1,
-          "content" : "답변입니다.",
+          "content" : "Basically what I want is to encode a video using QMediaRecorder by supplying as a source a sequence of QImages that I generate in custom code at run-time.So far I have found no easy way to do this, and everything points at the solution where I have to somehow implement my own subclass of QMediaService and/or QMediaControl that takes QImage as input, register them and somehow make QMediaRecorder use them. But according to this page in the official Qt documentation on the subject, this is a road less traveled and I am on my own In general, implementing a QMediaService is outside of the scope of this documentation and support on the relevant mailing lists or IRC channels should be sought.I am with this post hoping someone who possesses this knowledge may shed some light on how this would be done. I think documenting this set of features will open up many useful possibilities for the users of Qt5.Update 2020-06-16: It has been almost 4 years and still not a single answer. I will put a bounty on this question and accept the best answer with working example code for recent Qt5.",
           "vote" : 1,
           "accepted" : false,
           "createdAt" : "2022-12-21T11:14:19.0378343",
@@ -130,14 +130,14 @@
       "answer":
         [ {
           "id" : 1,
-          "content" : "답변입니다.",
+          "content" : "Notice that you define the path with this :id notation, that means that the id will be the param in this specific case. Then you create a Link component.",
           "vote" : 1,
           "accepted" : false,
           "createdAt" : "2022-12-21T11:14:19.0378343",
           "modifiedAt" : "2022-12-21T11:14:19.0378343"
         }, {
           "id" : 2,
-          "content" : "답변",
+          "content" : "Alright, I think I figured it out so I'll type the answer that worked for me because I doubt I'm the same one running into the issue. The solution turned out to be a fix my brother (who's going through the course and has this part working) told me to try. ",
           "vote" : 2,
           "accepted" : false,
           "createdAt" : "2022-12-21T11:14:19.0378343",
@@ -189,7 +189,7 @@
       "answer":
         [ {
           "id" : 1,
-          "content" : "답변입니다.",
+          "content" : "Basically what I want is to encode a video using QMediaRecorder by supplying as a source a sequence of QImages that I generate in custom code at run-time.So far I have found no easy way to do this, and everything points at the solution where I have to somehow implement my own subclass of QMediaService and/or QMediaControl that takes QImage as input, register them and somehow make QMediaRecorder use them. But according to this page in the official Qt documentation on the subject, this is a road less traveled and I am on my own In general, implementing a QMediaService is outside of the scope of this documentation and support on the relevant mailing lists or IRC channels should be sought.I am with this post hoping someone who possesses this knowledge may shed some light on how this would be done. I think documenting this set of features will open up many useful possibilities for the users of Qt5.Update 2020-06-16: It has been almost 4 years and still not a single answer. I will put a bounty on this question and accept the best answer with working example code for recent Qt5.",
           "author" : "John Doe",
           "vote" : 1,
           "accepted" : false,
@@ -303,14 +303,14 @@
       "modifiedAt" : "2022-12-21T11:14:37.3755914",
       "answer":
         [ {
-          "answerId" : 1,
+          "id" : 1,
           "content" : "답변입니다.",
           "vote" : 1,
           "accepted" : false,
           "createdAt" : "2022-12-21T11:14:19.0378343",
           "modifiedAt" : "2022-12-21T11:14:19.0378343"
         }, {
-          "answerId" : 2,
+          "id" : 2,
           "content" : "답변",
           "vote" : 2,
           "accepted" : false,
@@ -319,7 +319,7 @@
         } ]
     },
     {
-      "questionId" : 9,
+      "id" : 4,
       "subject" : "고민이네요",
       "author" : "John Doe",
       "content" : "55555",
@@ -430,12 +430,15 @@
     {
       "id" : 14,
       "subject" : "더미데이터",
-      "content" : "44444",
-      "answer" : 20,
+      "content" : " am learning useParams hook in react. I have a url like this and need to be able to extract the letter 9 from it.",
       "vote" : 60,
       "view" : 345,
       "createdAt" : "2022-12-21T11:14:37.3755914",
-      "modifiedAt" : "2022-12-21T11:14:37.3755914"
+      "modifiedAt" : "2022-12-21T11:14:37.3755914",
+      "answer":
+      [{
+        
+      }]
     },
     {
       "id" : 15,
@@ -554,6 +557,20 @@
       "view" : 345,
       "createdAt" : "2022-12-21T11:14:37.3755914",
       "modifiedAt" : "2022-12-21T11:14:37.3755914"
+    }
+  ],
+  "members" : [
+    {
+    "id" : 1,
+    "email" : "heebum1@gmail.com",
+    "nickName" : "희범1",
+    "memberStatus" : "MEMBER_ACTIVE"
+    },
+    {
+    "id" : 2,
+    "email" : "heebum2@gmail.com",
+    "nickName" : "희범2",
+    "memberStatus" : "MEMBER_ACTIVE"
     }
   ]
 }

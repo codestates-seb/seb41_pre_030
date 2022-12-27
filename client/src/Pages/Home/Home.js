@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import styled from "styled-components"
 import Pagenation from './Pagenation'
 
-const All = styled.main`
+export const All = styled.main`
     font-size: 30px;
     margin-left: 280px;
     width: 100vh;
@@ -40,7 +40,7 @@ const QuestionList = styled.div`
     display: grid;
 `
 
-const AllQuestions = styled.div`
+export const AllQuestions = styled.div`
     width: 1100px;
     height: 40px;
     margin: 40px 40px 0px 40px;
@@ -55,7 +55,7 @@ const CountQuestions = styled.span`
     margin-bottom: 40px;
 `
 
-const AskQuestionButton = styled(NavLink)`
+export const AskQuestionButton = styled(NavLink)`
     width: 120px;
     height: 40px;
     padding-top: 10px;
@@ -90,7 +90,6 @@ export const Question = styled.div`
     display: grid; 
     font-size: 20px;
     margin: 20px;
-
 `
 export const Count = styled.div`
     margin-left: 10px;

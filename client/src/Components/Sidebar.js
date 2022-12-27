@@ -44,6 +44,7 @@ const ActiveStyle = styled(NavLink)`
   color: inherit;
   padding-left:10px;
   height: 30px;
+  padding-top:4px;
   &.active {
     border-right: 4px solid orange;
     background-color: whitesmoke;
