@@ -15,6 +15,5 @@ public interface QuestionMapper {
 
     QuestionDto.Response questionToQuestionResponseDto(Question question);
 
-
     List<QuestionDto.ResponseWithoutAnswers> questionsToQuestionResponseDtos(List<Question> questions);
 }
