@@ -2,12 +2,12 @@ import styled from "styled-components";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 // import { useSelector } from 'react-redux'
 
 
-const Container = styled.div`
+const Container = styled.main`
 	display: block;
 	max-width: 1000px;
 	padding: 30px 20px;
@@ -96,9 +96,33 @@ const Button = styled.button`
 	cursor: pointer;
 `;
 
+
+
+
+
 const AskPage = () => {
 
 	// const user = useSelector();
+
+	// const imageHandler = () => {
+	// 	const input = document.createElement('input');
+	
+	// 	input.setAttribute('type', 'file');
+	// 	input.setAttribute('accept', 'image/*');
+	// 	input.click();
+	
+	// 	input.addEventListener('change', async () => {
+	// 		console.log('온체인지');
+	// 		const file = input.files[0];
+
+	// 		const id = await webclient.uploadFile(file);
+	// 		console.log(quillRef)
+	// 		// const range = this.quill.getSelection();
+	// 		// const link = `${ROOT_URL}/file/${id}`;
+
+	// 		console.log()
+	// 	});
+	// }
 
 	const toolbarOptions = [
 		["bold", "italic", "underline"], // toggled buttons
@@ -108,16 +132,28 @@ const AskPage = () => {
 
 		[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
 
-		["link", "image", "video"]
+		["link", "image"]
 		];
+
+	// const modules = useMemo(() => {
+	// 	return {
+	// 	toolbar: {
+	// 		container: toolbarOptions,
+	// 		handlers: {
+	// 			image: imageHandler,
+	// 		}
+	// 	}
+	// }
+	// },[]);
 
 	const modules = {
 		toolbar: toolbarOptions,
-	};
+	}
 
 	const [title, setTitle] = useState("");
 	const [body, setBody] = useState("");
 	const navigate = useNavigate();
+	const quillRef = useRef();
 
 	const handleQuill = (value) => {
 		setBody(value);
@@ -133,12 +169,13 @@ const AskPage = () => {
 				// user: user,
 			};
 
+			console.log(bodyJSON)
+
 			await axios
-				.post("/api", bodyJSON)
+				.post("/api", JSON.stringify(bodyJSON))
 				.then((res) => {
-					// console.log(res.data);
 					alert("Question added successfully");
-					navigate.push("/");
+					navigate("/");
 			})
 
 			.catch((err) => {
@@ -176,6 +213,7 @@ const AskPage = () => {
 			</SmallContainer>
 			<SmallContainer>
 				<QuestionTextares 
+					ref={quillRef}
 					value={body}
 					onChange={handleQuill}
 					modules={modules}

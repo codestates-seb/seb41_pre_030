@@ -12,18 +12,17 @@ import AskPage from './Pages/AskPages/AskForm';
 
 function App() {
   const [question] = useFetch('http://localhost:3001/questions/')
-  const excludedRoutes = ['/signup', '/login'];
+  const excludedRoutes = ['/signup', '/login', '/ask'];
   const location = useLocation();
   return (
     <div className="App">
         <Header/>
-        <AskPage/>
         {!excludedRoutes.includes(location.pathname) && <Sidebar />}
         <Routes>
           <Route path='/signup' element={<Signup />}/>
           <Route path='/users' element={<Users />}/>
           <Route path='/login' element={<LoginPage />} />
-          <Route path="/ask" element={<AskPage />}/>
+          <Route path='/ask' element={<AskPage />}/>
           <Route path='/' element={<Home questions={question}/>}/>
         </Routes>
         {!excludedRoutes.includes(location.pathname) && <Footer />}
