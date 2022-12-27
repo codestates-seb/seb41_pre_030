@@ -78,6 +78,8 @@ public class MemberService {
             Sort.by("memberId").descending()));
     }
 
+
+
     public void deleteMember(long memberId, String email) {
         Member findMember = findVerifiedMember(memberId,email);
 

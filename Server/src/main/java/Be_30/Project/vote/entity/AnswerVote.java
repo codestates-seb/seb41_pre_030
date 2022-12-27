@@ -29,4 +29,5 @@ public class AnswerVote extends Auditable {
      @ManyToOne
      @JoinColumn(name = "ANSWER_ID")
      private Answer answer;
+
 }

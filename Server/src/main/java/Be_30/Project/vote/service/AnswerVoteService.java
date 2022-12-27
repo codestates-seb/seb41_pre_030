@@ -33,59 +33,56 @@ public class AnswerVoteService {
         this.memberService = memberService;
     }
 
-//    public AnswerVote addVoteUp(long answerId) {
-//        // 1. answerId로 answer 가져오기?
-//        Answer answer = answerService.findVerifiedAnswer(answerId);
-//        // 삭제해야 함
-//        Member member = memberService.findMember(1L);
-//
-//        // 2. member 객체와 answer 객체를 이용해 이미 추천/비추천 유무 파악
-//        if (findCountOfMemberVotesAnswer(answer, member) % 2 == 0) {
-//            // 추천한 적이 없음 -> answer-> votes++
-//            answer.setVotes(answer.getVotes() + 1);
-//        } else {
-//            // 추천한 적이 있음-> answer-> votes--;
-//            answer.setVotes(answer.getVotes() - 1);
-//        }
-//
-//        // 3. answerVote에 변경된 answer 객체를 주입하고 저장
-//        Answer saveAnswer = answerRepository.save(answer);
-//        // 멤버에 setAnswer 필요??
-//        Member saveMember = memberRepository.save(member);
-//
-//        AnswerVote answerVote = new AnswerVote();
-//        answerVote.setAnswer(saveAnswer);
-//        answerVote.setMember(saveMember);
-//
-//        return answerVoteRepository.save(answerVote);
-//    }
-//
-//    public AnswerVote addVoteDown(long answerId) {
-//        Answer answer = answerService.findVerifiedAnswer(answerId);
-//        // 삭제해야 함
-//        Member member = memberService.findMember(1L);
-//
-//        if (findCountOfMemberVotesAnswer(answer, member) % 2 == 0) {
-//            answer.setVotes(answer.getVotes() - 1);
-//        } else {
-//            answer.setVotes(answer.getVotes() + 1);
-//        }
-//        Answer saveAnswer = answerRepository.save(answer);
-//        // 멤버에 setAnswer 필요??
-//        Member saveMember = memberRepository.save(member);
-//        AnswerVote answerVote = new AnswerVote();
-//        answerVote.setAnswer(saveAnswer);
-//        answerVote.setMember(saveMember);
-//
-//        return answerVoteRepository.save(answerVote);
-//    }
-//
-//    // 이미 추천/비추천을 한 회원을 검증하는 메서드
-//    // find
-//    private int findCountOfMemberVotesAnswer(Answer answer, Member member) {
-//        List<AnswerVote> list =
-//            answerVoteRepository.findByAnswerAndMember(answer, member);
-//
-//        return list.size();
-//    }
+    public AnswerVote addVoteUp(long answerId, Member member) {
+        // 1. answerId로 answer 가져오기?
+        Answer answer = answerService.findVerifiedAnswer(answerId);
+
+        // 2. member 객체와 answer 객체를 이용해 이미 추천/비추천 유무 파악
+        if (findCountOfMemberVotesAnswer(answer, member)) {
+            // 추천한 적이 없음 -> answer-> votes++
+            answer.setVotes(answer.getVotes() + 1);
+        } else {
+            answer.setVotes(answer.getVotes() - 1);
+        }
+
+        // 3. answerVote에 변경된 answer 객체를 주입하고 저장
+        Answer saveAnswer = answerRepository.save(answer);
+
+        AnswerVote answerVote = new AnswerVote();
+        answerVote.setAnswer(saveAnswer);
+        answerVote.setMember(member);
+
+        return answerVoteRepository.save(answerVote);
+    }
+
+    public AnswerVote addVoteDown(long answerId, Member member) {
+        Answer answer = answerService.findVerifiedAnswer(answerId);
+
+        if (findCountOfMemberVotesAnswer(answer, member)) {
+            answer.setVotes(answer.getVotes() - 1);
+        } else {
+            answer.setVotes(answer.getVotes() + 1);
+        }
+        Answer saveAnswer = answerRepository.save(answer);
+
+        AnswerVote answerVote = new AnswerVote();
+        answerVote.setAnswer(saveAnswer);
+        answerVote.setMember(member);
+
+        return answerVoteRepository.save(answerVote);
+    }
+
+    // 이미 추천/비추천을 한 회원을 검증하는 메서드
+    private boolean findCountOfMemberVotesAnswer(Answer answer, Member member) {
+        Optional<AnswerVote> optionalAnswerVote =
+            answerVoteRepository.findByAnswerAndMember(answer, member);
+
+        if (optionalAnswerVote.isEmpty()) {
+            return true;
+        } else {
+            // db에 존재하는 내역을 삭제하고 false 반환
+            answerVoteRepository.delete(optionalAnswerVote.get());
+            return false;
+        }
+    }
 }

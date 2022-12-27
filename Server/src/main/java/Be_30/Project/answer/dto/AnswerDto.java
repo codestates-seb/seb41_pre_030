@@ -1,5 +1,6 @@
 package Be_30.Project.answer.dto;
 
+import Be_30.Project.member.dto.MemberDto;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -34,7 +35,18 @@ public class AnswerDto {
     public static class Response {
         private Long answerId;
         private String content;
-        private boolean accepted;
+        private boolean adopt;
+        private int votes;
+        private MemberDto.Response member;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class ResponseOnlyAnswer {
+        private Long answerId;
+        private String content;
+        private boolean adopt;
         private int votes;
     }
 

@@ -83,7 +83,7 @@ public class MemberController {
     }
 
 
-    @GetMapping("/{member-id}")
+    @GetMapping("/myPage/{member-id}")
     public ResponseEntity getMember(@Positive @PathVariable("member-id") int id
         , HttpServletRequest request) {
 

@@ -7,6 +7,8 @@ import Be_30.Project.question.dto.QuestionDto.Patch;
 import Be_30.Project.question.dto.QuestionDto.Post;
 import Be_30.Project.question.dto.QuestionDto.Response;
 import Be_30.Project.question.dto.QuestionDto.Response.ResponseBuilder;
+import Be_30.Project.question.dto.QuestionDto.ResponseWithoutAnswers;
+import Be_30.Project.question.dto.QuestionDto.ResponseWithoutAnswers.ResponseWithoutAnswersBuilder;
 import Be_30.Project.question.entity.Question;
 import Be_30.Project.question.entity.Question.QuestionBuilder;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-12-22T18:30:58+0900",
+    date = "2022-12-26T13:36:01+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.16.1 (Eclipse Adoptium)"
 )
 @Component
@@ -73,14 +75,14 @@ public class QuestionMapperImpl implements QuestionMapper {
     }
 
     @Override
-    public List<Response> questionsToQuestionResponseDtos(List<Question> questions) {
+    public List<ResponseWithoutAnswers> questionsToQuestionResponseDtos(List<Question> questions) {
         if ( questions == null ) {
             return null;
         }
 
-        List<Response> list = new ArrayList<Response>( questions.size() );
+        List<ResponseWithoutAnswers> list = new ArrayList<ResponseWithoutAnswers>( questions.size() );
         for ( Question question : questions ) {
-            list.add( questionToQuestionResponseDto( question ) );
+            list.add( questionToResponseWithoutAnswers( question ) );
         }
 
         return list;
@@ -137,5 +139,25 @@ public class QuestionMapperImpl implements QuestionMapper {
         }
 
         return list1;
+    }
+
+    protected ResponseWithoutAnswers questionToResponseWithoutAnswers(Question question) {
+        if ( question == null ) {
+            return null;
+        }
+
+        ResponseWithoutAnswersBuilder responseWithoutAnswers = ResponseWithoutAnswers.builder();
+
+        responseWithoutAnswers.questionId( question.getQuestionId() );
+        responseWithoutAnswers.subject( question.getSubject() );
+        responseWithoutAnswers.content( question.getContent() );
+        responseWithoutAnswers.votes( question.getVotes() );
+        responseWithoutAnswers.views( question.getViews() );
+        responseWithoutAnswers.createdAt( question.getCreatedAt() );
+        responseWithoutAnswers.modifiedAt( question.getModifiedAt() );
+        responseWithoutAnswers.member( memberToResponse( question.getMember() ) );
+        responseWithoutAnswers.answerCount( question.getAnswerCount() );
+
+        return responseWithoutAnswers.build();
     }
 }

@@ -2,6 +2,7 @@ package Be_30.Project.question.service;
 
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
+import Be_30.Project.member.entity.Member;
 import Be_30.Project.question.entity.Question;
 import Be_30.Project.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,8 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
 
     public Question createQuestion(Question question) {
+        Member findmemeber = question.getMember();
+        findmemeber.addQuestion(question);
         return questionRepository.save(question);
     }
 

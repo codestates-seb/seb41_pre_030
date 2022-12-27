@@ -1,11 +1,13 @@
 package Be_30.Project.question.controller;
 
+import Be_30.Project.auth.jwt.JwtTokenizer;
 import Be_30.Project.dto.MultiResponseDto;
 import Be_30.Project.dto.SingleResponseDto;
 import Be_30.Project.question.dto.QuestionDto;
 import Be_30.Project.question.entity.Question;
 import Be_30.Project.question.mapper.QuestionMapper;
 import Be_30.Project.question.service.QuestionService;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final QuestionMapper mapper;
+
 
     @GetMapping
     public ResponseEntity<?> getQuestions(@Positive @RequestParam(defaultValue = "1") int page,
@@ -54,6 +57,7 @@ public class QuestionController {
     // TODO: 질문 작성자 정보 추가
     @PostMapping
     public ResponseEntity<?> createQuestion(@Valid @RequestBody QuestionDto.Post postDto) {
+
         Question question = mapper.questionPostDtoToQuestion(postDto);
         Question createdQuestion = questionService.createQuestion(question);
         return new ResponseEntity<>(
@@ -79,4 +83,5 @@ public class QuestionController {
         questionService.deleteQuestion(questionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }

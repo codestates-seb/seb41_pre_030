@@ -51,19 +51,29 @@ public class AnswerController {
 
         return ResponseEntity.created(location).build();
     }
+
+    // 채택 기능
+    @PostMapping("/{answer-id}/adopt")
+    public ResponseEntity postAdopt(@PathVariable("answer-id") @Positive long answerId) {
+        Answer answer = answerService.adoptAnswer(answerId);
+        AnswerDto.Response response = mapper.answerToAnswerResponseDto(answer);
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+    }
+
     @PatchMapping("/{answer-id}")
     public ResponseEntity patchAnswer(@PathVariable("answer-id") @Positive long answerId,
-                                       @Valid @RequestBody AnswerDto.Patch answerPatchDto) {
+        @Valid @RequestBody AnswerDto.Patch answerPatchDto) {
         // dto -> 객체 -> setId
         Answer answer = mapper.answerPatchDtoToAnswer(answerPatchDto);
         answer.setAnswerId(answerId);
         // 객체 -> service
         Answer updateAnswer = answerService.updateAnswer(answer);
         // 반환받은 객체 -> responseDto
-        AnswerDto.Response response = mapper.answerToAnswerResponseDto(answer);
+        AnswerDto.Response response = mapper.answerToAnswerResponseDto(updateAnswer);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
+
     @GetMapping("/{answer-id}")
     public ResponseEntity getAnswer(@PathVariable("answer-id") @Positive long answerId) {
         // id로 service의 findAnswers 조회
@@ -73,9 +83,10 @@ public class AnswerController {
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
+
     @GetMapping
     public ResponseEntity getAnswers(@Positive @RequestParam int page,
-                                        @Positive @RequestParam int size) {
+        @Positive @RequestParam int size) {
 
         Page<Answer> answerPage = answerService.findAnswers(page, size);
 
@@ -85,6 +96,7 @@ public class AnswerController {
 
         return new ResponseEntity<>(new MultiResponseDto<>(responses, answerPage), HttpStatus.OK);
     }
+
     @DeleteMapping("/{answer-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAnswer(@PathVariable("answer-id") @Positive long answerId) {
