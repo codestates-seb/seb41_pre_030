@@ -10,7 +10,6 @@ import Logo from "../../Image/Logo";
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons' ;
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css';
-import { format } from 'date-fns'
 
 const Post = styled.div`
   width: auto;
@@ -47,6 +46,7 @@ const Vote = styled.div`
   margin: 20px;
   display: grid;
 `
+
 const QuestionEstimation = styled.span`
   font-size: 20px;
   display: flex;
@@ -54,15 +54,13 @@ const QuestionEstimation = styled.span`
   align-items: center;
 `
 
-const AnswerCount = styled.div`
-  margin: 10px 0 10px 25px;
-`
 const Date = styled.div`
   font-size: 15px;
-  margin: 0px 30px 10px 0px;
+  margin: 0px 10px 10px 0px;
 `
 const Answer = styled.div`
-  
+  margin: 10px 0 10px 25px;
+  font-size: 25px;
 `
 const YourAnswer = styled.div`
   margin: 20px;
@@ -76,7 +74,7 @@ const PostAnswer = styled.div`
 
 const FlexRight = styled.div`
   display: grid;
-  margin: 50px 20px 20px 20px;
+  margin: 90px 20px 20px 20px;
   font-size: 20px;
   div.button-group {
     display: flex !important;
@@ -103,7 +101,7 @@ const Writer = styled.div`
   text-decoration: none;
   border-radius: 5px;
   background-color: aliceblue;
-  width: 150px;
+  width: 170px;
   height: 100px;
   display: flex;
   float: right;
@@ -126,6 +124,8 @@ function QuestionDetail () {
   }
   //클라이언트가 서버에게 json 형식의 데이터가 보내지는 것인지 알려주는 설정
 
+
+
   const [question] = useFetch(`http://localhost:3001/questions/${id}`,request)
   const [member] = useFetch(`http://localhost:3001/members/${id}`,request)
 
@@ -142,13 +142,32 @@ function QuestionDetail () {
           [{ 'color': ['#000000', '#e60000', '#ff9900', '#ffff00', '#008a00', '#0066cc', '#9933ff', '#ffffff', '#facccc', '#ffebcc', '#ffffcc', '#cce8cc', '#cce0f5', '#ebd6ff', '#bbbbbb', '#f06666', '#ffc266', '#ffff66', '#66b966', '#66a3e0', '#c285ff', '#888888', '#a10000', '#b26b00', '#b2b200', '#006100', '#0047b2', '#6b24b2', '#444444', '#5c0000', '#663d00', '#666600', '#003700', '#002966', '#3d1466', 'custom-color'] }, { 'background': [] }],
           ['image', 'video'],
           ['clean']  
-        ]
+          ]
     }
-}
+  }
 
-const PlusGood = () => {
-  const [good, setgood] = useState(question.vote)
-}
+  
+  let createDate = new window.Date(question.createdAt) 
+  let modifiedDate = new window.Date(question.modifiedAt)
+  let answerCreateDate = new window.Date(question.createdAt)
+
+  console.log(answerCreateDate)
+
+
+  const timeForToday = (time) => {
+    const today = new window.Date();
+    const timeValue = new window.Date(time);
+    const betweenTimeMin = Math.floor((today.getTime() - timeValue.getTime())/ 1000 / 60)
+    const betweenTimeHour = Math.floor( betweenTimeMin / 60)
+    const betweenTimeDay = Math.floor( betweenTimeMin / 60 / 24)
+
+    if(betweenTimeMin < 1) return "방금 전"
+    if(betweenTimeMin < 60) return `${betweenTimeMin}분전`
+    if(betweenTimeHour < 24) return `${betweenTimeHour} hours ago`
+    if(betweenTimeDay < 365) return `${betweenTimeDay} days ago`
+  
+    return `${Math.floor(betweenTimeDay / 365)} years ago`
+  } 
 
   return(
     <All>
@@ -163,8 +182,8 @@ const PlusGood = () => {
             <AskQuestionButton to='/AskQuestion'>Ask Question</AskQuestionButton>          
           </AllQuestions>
           <At>
-            <Date>Asked {question.createdAt}</Date>
-            <Date>Motified {question.modifiedAt}</Date>
+            <Date>Asked {timeForToday(createDate)}</Date>
+            <Date>Motified {timeForToday(modifiedDate)}</Date>
             <Date>Viewed {question.view}</Date>
           </At>
           <QuestionContentView>
@@ -188,19 +207,19 @@ const PlusGood = () => {
         </Post>
         <Writer>
           <div className="createUser">
-            <Date>Asked {question.createdAt}</Date>
+            <Date>Asked {timeForToday(createDate)}</Date>
             <HyperLink to="/UserPage" style={{"fontSize" : "15px"}}>{member.nickName}</HyperLink>
           </div>
         </Writer>
       </div>
       <Answer>
-        <AnswerCount>{question && question.answer.length} answers</AnswerCount>
+      {question && question.answer.length} answers
         <AnswerContentView>
           {question && question.answer.map(answer =>
           <div className="eachAnswer">
             <div style={{"display" : "flex"}} key={answer.id}>
               <Vote>
-                <button style={{"backgroundColor" : "white", "border" : "none"}} onClick={PlusGood}>
+                <button style={{"backgroundColor" : "white", "border" : "none"}}>
                   <CaretUpOutlined style={{"fontSize" : "30px"}}/>
                 </button>
                 <QuestionEstimation>{answer.vote}</QuestionEstimation>
@@ -214,7 +233,7 @@ const PlusGood = () => {
             </div>
             <Writer>
               <div className="createUser">
-                <Date>answered {question.createdAt}</Date>
+                <Date>answered {timeForToday(answerCreateDate)}</Date>
                 <HyperLink to="/UserPage" style={{"fontSize" : "15px"}}>{member.nickName}</HyperLink>
               </div>
             </Writer>
@@ -246,7 +265,7 @@ const PlusGood = () => {
               Sign up with GitHub
             </OAuthButton>
             <OAuthButton bg_color="rgb(56, 84, 153)">
-              <Logo style={{"height" : "10"}}/> 
+              <Logo style={{"height" : "1px"}}/> 
               Sign up using Email and Password
             </OAuthButton>
           </div>
@@ -262,4 +281,4 @@ const PlusGood = () => {
 }
 export default QuestionDetail
 
-//css 정리, d-day, 답변 post 요청, click 할때마다 views + 1
+//css 정리, 답변 post 요청, click 할때마다 views + 1
