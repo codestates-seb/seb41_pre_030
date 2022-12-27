@@ -9,11 +9,8 @@
     "axios": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD
     "react-quill": "^2.0.0",
-=======
     "react-paginate": "^8.1.4",
->>>>>>> 246c7071dab613a0d352b0816102fb87ee38321d
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.5.0",
     "react-scripts": "5.0.1",
