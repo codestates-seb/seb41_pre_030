@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { NavLink } from 'react-router-dom'
 
-const SideAllbar = styled.div`
+const SideAllbar = styled.nav`
   width:200px;
   height: 100vh;
   margin-left: 80px;
@@ -13,6 +13,13 @@ const SideHomeBar = styled.div`
   margin-top: 40px;
   font-size: 20px;
   display: grid;
+  a {
+    padding-top: 5px;
+    color: rgba(0, 0, 0, 0.5);
+    :hover {
+      color: black;
+    }
+  }
 `
 
 const SidePublicBar = styled.div`
@@ -21,6 +28,14 @@ const SidePublicBar = styled.div`
   font-size: 20px;
   display: grid;
   padding-left:10px;
+  color: rgba(0, 0, 0, 0.5);
+  a {
+    padding-top: 4px;
+    color: rgba(0, 0, 0, 0.5);
+    :hover {
+      color: black;
+    }
+  }
 `
 // Home or Users 페이지에 들어갈 때 현재 페이지를 나타내는 라벨링 
 const ActiveStyle = styled(NavLink)`
@@ -32,6 +47,8 @@ const ActiveStyle = styled(NavLink)`
   &.active {
     border-right: 4px solid orange;
     background-color: whitesmoke;
+    font-weight: bold;
+    color: black;
   }
 `
 
@@ -44,7 +61,7 @@ const Sidebar = () => {
       </SideHomeBar>
       <SidePublicBar>
         PUBLIC
-        <ActiveStyle to='/Users' style={{paddingLeft:"40px"}}>Users</ActiveStyle>
+        <ActiveStyle to='/members' style={{paddingLeft:"40px"}}>Users</ActiveStyle>
       </SidePublicBar>
     </SideAllbar>  
   )

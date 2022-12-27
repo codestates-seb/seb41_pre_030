@@ -1,12 +1,21 @@
 import styled from "styled-components";
 import Logo from "../../Image/Logo";
-import GoogleLogo from "../../Image/GoogleLogo"
+import GoogleLogo from "../../Image/GoogleLogo";
 import GitLogo from "../../Image/GitLogo";
-import { Component } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 
+const BgCenter = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 1000px;
+  padding: 24px;
+  background-color:hsl(210,8%,95%);
+`
 
 const Container = styled.div`
   width: 268px;
@@ -105,24 +114,34 @@ const GitButton = styled(Button)`
     --button-active-bg-color: hsl(210deg 8% 5%);
 `;
 
-class LoginPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
+const LoginPage = () => {
+  const [info, setInfo] = useState({
+    email: '',
+    password: '',
+  })
+  const navigate = useNavigate();
+
+  const Login = async () => {
+    const jsonData = JSON.stringify(info);
+
+    if(info.email === '' || info.password === '') {
+      alert("이메일이나 패스워드를 확인하세요");
+      return
     }
-  }
-  
-  login() {
-    axios.post({url:''}, {data: {
-      email: this.state.email,
-      password: this.state.password,
-    }})
+
+    await axios
+    .post("API", jsonData)
+    .then((res) => {
+      alert("Login");
+      navigate("/");
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
-  render() {
-    return (
+  return (
+    <BgCenter>
       <Container>
         <UpContainer>
           <Link to={'/'} className="logo">
@@ -137,16 +156,22 @@ class LoginPage extends Component {
         </UpContainer>
         <RowContainer>
           <LoginHeader>Email</LoginHeader>
-          <LoginInput type="email" value={this.state.email}
-                      onChange={ev => this.setState({email:ev.target.value})}/>
+          <LoginInput type="email" value={info.email}
+                      onChange={ev => setInfo({
+                        ...info,
+                        email: ev.target.value
+                      })}/>
           <LoginHeader>Password</LoginHeader>
-          <LoginInput type="password" value={this.state.password}
-                      onChange={ev => this.setState({password:ev.target.value})}/>
-          <LoginButton className="login" onClick={() => this.login()}>Log in</LoginButton>
+          <LoginInput type="password" value={info.password}
+                      onChange={ev => setInfo({
+                        ...info,
+                        password: ev.target.value
+                      })}/>
+          <LoginButton className="login" onClick={Login}>Log in</LoginButton>
         </RowContainer>
       </Container>
-    )
-  }
-};
+    </BgCenter>
+  )
+}
 
 export default LoginPage;

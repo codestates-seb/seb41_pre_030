@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Logo from '../Image/Logo';
 
 const FooterEl = styled.footer`
-  width: 100vw;
+  width: 100%;
   height: 322px;
   color: rgb(145, 153, 161);
   background-color: rgb(35, 38, 41);
