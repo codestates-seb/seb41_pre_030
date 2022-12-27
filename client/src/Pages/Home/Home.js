@@ -6,7 +6,7 @@ import Pagenation from './Pagenation'
 export const All = styled.main`
     font-size: 30px;
     margin-left: 280px;
-    width: 130vh;
+    width: 100vh;
     border-left: 1px solid hsl(210,8%,85%);
     display: grid;
     ul {
