@@ -24,15 +24,15 @@ public class RefreshTokenController {
         //====================================
         refreshTokenService.logoutMember(request.getHeader("Refresh"));
 
-        Cookie cookie = new Cookie("RefreshToken", null);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
+//        Cookie cookie = new Cookie("RefreshToken", null);
+//        cookie.setMaxAge(0);
+//        cookie.setPath("/");
+//
+//        Cookie mbCookie = new Cookie("MemberId", null);
+//        mbCookie.setMaxAge(0);
+//        mbCookie.setPath("/");
 
-        Cookie mbCookie = new Cookie("MemberId", null);
-        mbCookie.setMaxAge(0);
-        mbCookie.setPath("/");
-
-        response.addCookie(cookie);
-        response.addCookie(mbCookie);
+        response.setHeader("memberId",null);
+        response.setHeader("Refresh", null);
     }
 }
