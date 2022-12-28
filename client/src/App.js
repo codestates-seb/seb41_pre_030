@@ -10,6 +10,7 @@ import LoginPage from './Pages/LoginPages/LoginPage';
 import Signup from './Pages/Signup/Signup';
 import QuestionDetail from './Pages/Question/QuestionDetail';
 import UserPage from './Pages/UserPage/UserPage';
+import Search from './Pages/Search/Search';
 
 function App() {
   const [question] = useFetch('http://13.125.30.88:8080/questions/')
@@ -19,6 +20,7 @@ function App() {
         <Header/>
         {!['/signup', '/login', '/ask'].includes(location.pathname) && <Sidebar />}
         <Routes>
+          <Route path='/search' element={<Search />} />
           <Route path='/questions/:id' element={<QuestionDetail />}/>
           <Route path='/member/*' element={<UserPage />}/>
           <Route path='/signup' element={<Signup />}/>
