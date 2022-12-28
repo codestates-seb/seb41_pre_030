@@ -11,6 +11,6 @@ public class FileDto {
     public static class Response {
         private String fileName;
         private String src;
-        private MemberDto.Response member;
+        private MemberDto.ResponseOnlyMember member;
     }
 }
