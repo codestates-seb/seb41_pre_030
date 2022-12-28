@@ -1,7 +1,8 @@
 import React from "react"
-import { NavLink } from 'react-router-dom'
+import { NavLink, useSearchParams } from 'react-router-dom'
 import styled from "styled-components"
-import Pagenation from './Pagenation'
+import Pagenation from '../Home/Pagenation'
+import useFetch from '../../Components/util/useFetch';
 
 export const All = styled.main`
     font-size: 30px;
@@ -122,19 +123,24 @@ export const Contents = styled.span`
     hyphens: auto !important;
 `
 
-const Home = ({questions}) => {
+const Search = () => {
+    const [questions] = useFetch('http://13.125.30.88:8080/questions/');
+    const [searchParams, setSearchParams] = useSearchParams();
+    let param = searchParams.get('keyword');
+    let searchResult = questions && questions.data.filter((el, idx) => {return el.subject.includes(param) || el.content.includes(param)})
+
     return (
         <All>
             <QuestionList>
                 <AllQuestions>
-                    All Questions
+                    Search Result
                     <AskQuestionButton to='/AskQuestion'>Ask Question</AskQuestionButton>
                 </AllQuestions>
-                <CountQuestions>{questions && questions.length} questions</CountQuestions>
+                <CountQuestions>{searchResult && searchResult.length} questions</CountQuestions>
             </QuestionList>
-            {questions && <Pagenation questions={questions.data} itemsPerPage={10} />}
+            {searchResult && <Pagenation questions={searchResult} itemsPerPage={10} />}
         </All>
     )
 }
 
-export default Home;
+export default Search;

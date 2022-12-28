@@ -22,14 +22,14 @@ const Pagenation = (props) => {
     return (
         <Fragment>
             {currentItems && currentItems.map(question => 
-                <Questions key={question.id}>
+                <Questions key={question.questionId}>
                     <QuestionCount>
-                        <Count>{question.vote} votes</Count>
-                        <Count>{question.answer.length} answers</Count>
-                        <Count>{question.view} views</Count>
+                        <Count>{question.votes} votes</Count>
+                        {<Count>{question.answer ? question.answer.length : 0} answers</Count>}
+                        <Count>{question.views} views</Count>
                     </QuestionCount>
                     <Question>
-                        <Detail to={`/questions/${question.id}`}>
+                        <Detail to={`/questions/${question.questionId}`}>
                         <ContentsTitle>{question.subject}</ContentsTitle><br/>
                         </Detail>
                         <Contents>{question.content}</Contents>

@@ -126,7 +126,6 @@ const Header = () => {
 
   const onChange = (e) => {
     setSearch(e.target.value);
-    console.log(search)
   };
 
   return (
@@ -137,12 +136,13 @@ const Header = () => {
           stack<b>overclone</b>
         </span>
       </LogoLink>
-      <form action="http://www.naver.com" className="search">
-        <SearchInput
-          type="text"
+      <form action="/search/" method="get">
+        <SearchInput 
+          type="search"
           placeholder="Search..."
           value={search}
           onChange={onChange}
+          name="keyword" 
         />
       </form>
       <LoginLink to={"/login"}>
