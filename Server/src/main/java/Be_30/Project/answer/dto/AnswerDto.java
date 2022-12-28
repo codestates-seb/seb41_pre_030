@@ -18,6 +18,7 @@ public class AnswerDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Post {
+
         @NotBlank(message = "글을 입력해주세요.")
         private String content;
     }
@@ -43,5 +44,4 @@ public class AnswerDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
-
 }
