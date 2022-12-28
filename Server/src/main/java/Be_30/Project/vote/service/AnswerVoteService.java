@@ -3,6 +3,7 @@ package Be_30.Project.vote.service;
 import Be_30.Project.answer.entity.Answer;
 import Be_30.Project.answer.repository.AnswerRepository;
 import Be_30.Project.answer.service.AnswerService;
+import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.entity.Member;
@@ -22,34 +23,32 @@ public class AnswerVoteService {
 
     private final AnswerRepository answerRepository;
     private final AnswerVoteRepository answerVoteRepository;
-    private final MemberRepository memberRepository;
-    private final AnswerService answerService;
     private final MemberService memberService;
+    private final AnswerService answerService;
 
     public AnswerVoteService(AnswerRepository answerRepository,
-        AnswerVoteRepository answerVoteRepository, MemberRepository memberRepository,
-        AnswerService answerService, MemberService memberService) {
+        AnswerVoteRepository answerVoteRepository, MemberService memberService,
+        AnswerService answerService) {
         this.answerRepository = answerRepository;
         this.answerVoteRepository = answerVoteRepository;
-        this.memberRepository = memberRepository;
-        this.answerService = answerService;
         this.memberService = memberService;
+        this.answerService = answerService;
     }
 
-    public AnswerVote addVoteUp(long answerId, long memberId) {
+    public AnswerVote addVoteUp(long answerId, MemberDetails memberDetails) {
         // 1. answerId로 answer 가져오기?
         Answer answer = answerService.findVerifiedAnswer(answerId);
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberService.findMember(memberDetails.getMemberId(), memberDetails.getEmail());
 
         // 2. member 객체와 answer 객체를 이용해 이미 추천/비추천 유무 파악
         if (VerifyOfMemberVotesAnswer(answer, member)) {
             // 추천한 적이 없음 -> answer-> votes++
             answer.setVotes(answer.getVotes() + 1);
         } else { // 추천한 적이 있음-> 추천인지 비추천인지 확인해야 함
-            AnswerVote findAnswerVote = findVerifiedAnswerVote(answer,member);
-            if(findAnswerVote.getVoteStatus().equals(VoteStatus.VOTE_UP)) {
+            AnswerVote findAnswerVote = findVerifiedAnswerVote(answer, member);
+            if (findAnswerVote.getVoteStatus().equals(VoteStatus.VOTE_UP)) {
                 answer.setVotes(answer.getVotes() - 1);
-            }else {
+            } else {
                 answer.setVotes(answer.getVotes() + 2);
             }
             answerVoteRepository.delete(findAnswerVote);
@@ -66,15 +65,15 @@ public class AnswerVoteService {
         return answerVoteRepository.save(answerVote);
     }
 
-    public AnswerVote addVoteDown(long answerId, long memberId) {
+    public AnswerVote addVoteDown(long answerId, MemberDetails memberDetails) {
         Answer answer = answerService.findVerifiedAnswer(answerId);
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberService.findMember(memberDetails.getMemberId(), memberDetails.getEmail());
 
         if (VerifyOfMemberVotesAnswer(answer, member)) {
             answer.setVotes(answer.getVotes() - 1);
         } else {
             AnswerVote findAnswerVote = findVerifiedAnswerVote(answer, member);
-            if(findAnswerVote.getVoteStatus().equals(VoteStatus.VOTE_DOWN)) {
+            if (findAnswerVote.getVoteStatus().equals(VoteStatus.VOTE_DOWN)) {
                 answer.setVotes(answer.getVotes() + 1);
             } else {
                 answer.setVotes(answer.getVotes() - 2);
