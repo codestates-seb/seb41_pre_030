@@ -1,6 +1,7 @@
 package Be_30.Project.vote.service;
 
 import Be_30.Project.answer.entity.Answer;
+import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.entity.Member;
@@ -24,23 +25,21 @@ public class QuestionVoteService {
 
     private final QuestionRepository questionRepository;
     private final QuestionVoteRepository questionVoteRepository;
-    private final MemberRepository memberRepository;
     private final QuestionService questionService;
     private final MemberService memberService;
 
     public QuestionVoteService(QuestionRepository questionRepository,
-        QuestionVoteRepository questionVoteRepository, MemberRepository memberRepository,
+        QuestionVoteRepository questionVoteRepository,
         QuestionService questionService, MemberService memberService) {
         this.questionRepository = questionRepository;
         this.questionVoteRepository = questionVoteRepository;
-        this.memberRepository = memberRepository;
         this.questionService = questionService;
         this.memberService = memberService;
     }
 
-    public QuestionVote addVoteUp(long questionId, long memberId) {
+    public QuestionVote addVoteUp(long questionId, MemberDetails memberDetails) {
         Question question = questionService.findQuestion(questionId);
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberService.findMember(memberDetails.getMemberId(), memberDetails.getEmail());
 
         if(VerifyOfMemberVotesQuestion(question, member)) {
             question.makeUpVote();
@@ -63,9 +62,9 @@ public class QuestionVoteService {
 
         return questionVoteRepository.save(questionVote);
     }
-    public QuestionVote addVoteDown(long questionId, long memberId) {
+    public QuestionVote addVoteDown(long questionId, MemberDetails memberDetails) {
         Question question = questionService.findQuestion(questionId);
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberService.findMember(memberDetails.getMemberId(), memberDetails.getEmail());
 
         if(VerifyOfMemberVotesQuestion(question, member)) {
             question.makeDownVote();

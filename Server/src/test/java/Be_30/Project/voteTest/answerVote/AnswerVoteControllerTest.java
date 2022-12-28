@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import Be_30.Project.answer.entity.Answer;
 import Be_30.Project.auth.filter.JwtAuthenticationFilter;
+import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.member.entity.Member;
 import Be_30.Project.vote.controller.AnswerVoteController;
 import Be_30.Project.vote.dto.AnswerVoteResponseDto;
@@ -56,7 +57,7 @@ public class AnswerVoteControllerTest {
         answerVote.setMember(member);
         answerVote.setAnswerVoteId(1L);
 
-        given(answerVoteService.addVoteUp(Mockito.anyLong(), Mockito.anyLong())).willReturn(answerVote);
+        given(answerVoteService.addVoteUp(Mockito.anyLong(), Mockito.any(MemberDetails.class))).willReturn(answerVote);
 
         AnswerVoteResponseDto response = AnswerVoteResponseDto.builder()
             .answerVoteId(1L)

@@ -1,6 +1,7 @@
 package Be_30.Project.vote.controller;
 
-import Be_30.Project.auth.userdetails.MemberDetailsService.MemberDetails;
+
+import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.dto.SingleResponseDto;
 import Be_30.Project.vote.dto.AnswerVoteResponseDto;
 import Be_30.Project.vote.entity.AnswerVote;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/answers")
+@RequestMapping("/questions")
 @Validated
 public class AnswerVoteController {
 
@@ -29,12 +30,13 @@ public class AnswerVoteController {
         this.mapper = mapper;
     }
 
-    @PostMapping("/{answer-id}/vote-up")
-    public ResponseEntity postVoteUp(@PathVariable("answer-id") @Positive long answerId,
+    @PostMapping("/{question-id}/answers/{answer-id}/vote-up")
+    public ResponseEntity postVoteUp(@PathVariable("question-id") @Positive long questionId,
+        @PathVariable("answer-id") @Positive long answerId,
         @AuthenticationPrincipal MemberDetails memberDetails) {
 
         if(memberDetails != null) {
-            AnswerVote answerVote = answerVoteService.addVoteUp(answerId, memberDetails.getMemberId());
+            AnswerVote answerVote = answerVoteService.addVoteUp(answerId, memberDetails);
             AnswerVoteResponseDto response = mapper.AnswerVoteToAnswerVoteResponseDto(answerVote);
             return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
         } else {
@@ -42,11 +44,12 @@ public class AnswerVoteController {
         }
     }
 
-    @PostMapping("/{answer-id}/vote-down")
-    public ResponseEntity postVoteDown(@PathVariable("answer-id") @Positive long answerId,
+    @PostMapping("/{question-id}/answers/{answer-id}/vote-down")
+    public ResponseEntity postVoteDown(@PathVariable("question-id") @Positive long questionId,
+        @PathVariable("answer-id") @Positive long answerId,
         @AuthenticationPrincipal MemberDetails memberDetails) {
         if(memberDetails != null) {
-            AnswerVote answerVote = answerVoteService.addVoteDown(answerId, memberDetails.getMemberId());
+            AnswerVote answerVote = answerVoteService.addVoteDown(answerId, memberDetails);
             AnswerVoteResponseDto response = mapper.AnswerVoteToAnswerVoteResponseDto(answerVote);
             return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
         } else {
