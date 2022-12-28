@@ -47,6 +47,8 @@ public class AnswerService {
         answer.setMember(member);
         answer.setQuestion(question);
 
+        question.getAnswers().add(answer);
+
         return answerRepository.save(answer);
     }
 
@@ -81,6 +83,7 @@ public class AnswerService {
     // 질문 삭제
     public void deleteAnswer(long answerId, long memberId) {
         Answer answer = findVerifiedAnswer(answerId);
+        answer.getQuestion().getAnswers().remove(answer);
 
         if(answer.getMember().getMemberId() != memberId) {
             throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);

@@ -44,8 +44,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         ObjectMapper objectMapper = new ObjectMapper();
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
-        //아직 인증되지 않은 토큰 생성
 
+        //아직 인증되지 않은 토큰 생성
         UsernamePasswordAuthenticationToken authenticationToken
             = new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword());
 
@@ -77,26 +77,27 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         /**
          * =========수정사항============
+         * 쿠키를 써서 로그아웃을 처리하는것
          */
         jwtTokenizer.saveRefreshToken(refreshToken,member.getEmail(),member.getMemberId());
 
-        //쿠키에 담기 위해 encoding
-        String encodedRefreshToken = URLEncoder.encode(refreshToken, "UTF-8");
-        Cookie RefreshCookie = new Cookie("RefreshToken", encodedRefreshToken);
-        // "/"하위 모든 경로에 cookie 전송
-        RefreshCookie.setPath("/");
-        RefreshCookie.setHttpOnly(false);
-
-        Cookie MemberCookie = new Cookie("MemberId", String.valueOf(member.getMemberId()));
-        MemberCookie.setPath("/");
-        MemberCookie.setHttpOnly(false);
-
-        response.addCookie(RefreshCookie);
-        response.addCookie(MemberCookie);
-
-        response.setHeader("memberId", String.valueOf(member.getMemberId()));
-        response.setHeader("Authorization", "Bearer " + accessToken);
-        response.setHeader("Refresh", refreshToken);
+//        //쿠키에 담기 위해 encoding
+//        String encodedRefreshToken = URLEncoder.encode(refreshToken, "UTF-8");
+//        Cookie RefreshCookie = new Cookie("RefreshToken", encodedRefreshToken);
+//        // "/"하위 모든 경로에 cookie 전송
+//        RefreshCookie.setPath("/");
+//        RefreshCookie.setHttpOnly(false);
+//
+//        Cookie MemberCookie = new Cookie("MemberId", String.valueOf(member.getMemberId()));
+//        MemberCookie.setPath("/");
+//        MemberCookie.setHttpOnly(false);
+//
+//        response.addCookie(RefreshCookie);
+//        response.addCookie(MemberCookie);
+//
+//        response.setHeader("memberId", String.valueOf(member.getMemberId()));
+//        response.setHeader("Authorization", "Bearer " + accessToken);
+//        response.setHeader("Refresh", refreshToken);
 
         //failureHandler는 실패했을 때 자동으로 실행된다
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);

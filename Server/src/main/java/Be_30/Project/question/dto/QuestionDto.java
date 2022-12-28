@@ -46,7 +46,7 @@ public class QuestionDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private MemberDto.ResponseOnlyMember member; // 작성자 데이터
-        private List<AnswerDto.Response> answers; // 질문에 딸린 답변 데이터
+        private List<AnswerDto.ResponseWithoutQuestion> answers; // 질문에 딸린 답변 데이터
     }
     
     @Getter

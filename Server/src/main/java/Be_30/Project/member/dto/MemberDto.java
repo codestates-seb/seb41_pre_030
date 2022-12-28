@@ -80,9 +80,12 @@ public class MemberDto {
     public static class ResponseOnlyMember{
         private long memberId;
 
-        @NotBlank
-        @Email
         private String email;
 
+        private String nickName;
+
+        private MemberStatus memberStatus;
+
+        private String profileImageSrc;
     }
 }
