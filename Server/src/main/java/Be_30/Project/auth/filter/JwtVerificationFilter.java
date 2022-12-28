@@ -31,13 +31,18 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //검증 실패했을 때 생기는 SignatureException 과 JWT가 만료될 경우에 생기는 ExpiredJwtException에대한 처리
         try {
+            //refreshtoken repository에서 토큰 확인
+            String refreshToken = request.getHeader("Refresh");
+            jwtTokenizer.verifiedRefreshToken(refreshToken);
+
             Map<String, Object> claims = verifyJws(request);
             setAuthenticationToContext(claims); //Authentication 객체를 securityContext에 저장하기 위한 메서드
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
+            // 서명 검증에 실패했을 때 SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
         } catch (ExpiredJwtException ee) {
             request.setAttribute("exception", ee);
-            //SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
+            // 만료되었을 때 SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("exception", e);

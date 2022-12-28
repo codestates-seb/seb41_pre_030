@@ -30,14 +30,6 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private void sendSuccessResponse(HttpServletResponse response,Authentication authentication)
         throws IOException {
-//        Gson gson = new Gson();
-//        Member member = (Member)authentication.getPrincipal();
-//        LoginDto.Response responseDto = new Response();
-//        responseDto.setUserId(member.getMemberId());
-//        responseDto.setUsername(member.getNickName());
-//
-//        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//        response.setStatus(HttpStatus.OK.value());
-//        response.getWriter().write(gson.toJson(responseDto, ErrorResponse.class));
+
     }
 }

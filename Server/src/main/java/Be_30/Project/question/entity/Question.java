@@ -36,7 +36,7 @@ public class Question extends Auditable {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany
+    @OneToMany(mappedBy = "question")
     private List<Answer> answers = new ArrayList<>();
 
     @OneToMany(mappedBy = "question")
