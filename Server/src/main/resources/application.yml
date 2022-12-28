@@ -8,7 +8,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-    show-sql: true      # (2) SQL ?? ??
+    show-sql: true
   output:
     ansi:
       enabled: ALWAYS
@@ -17,8 +17,17 @@ spring:
       client:
         registration:
           google:
-            clientId: 
-            clientSecret: 
+            client-id: secret
+            client-secret: secret
+            scope:
+              - email
+              - profile
+          github:
+            client-id: secret
+            client-secret: secret
+            scope:
+              - email
+              - profile
 logging:
   level:
     org:
@@ -33,18 +42,17 @@ mail:
   address:
     admin: admin@gmail.com
 jwt:
-  secret-key: 123           # 민감한 정보는 시스템 환경 변수에서 로드한다.
+  secret-key: j3904hj3bni3nb390bj9380q5jg309qjbi3ej4nb9053qjb90j35q0bjq90j           # 민감한 정보는 시스템 환경 변수에서 로드한다.
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
 cloud:
   aws:
     credentials:
-      accessKey: tmp-access-key
-      secretKey: tmp-secret-key
+      accessKey: secret
+      secretKey: secret
     region.static: ap-northeast-2
     stack.auto: false
     s3.bucketName: my-springboot-build
-
 
 ---
 
@@ -63,6 +71,26 @@ spring:
   h2:
     console:
       enabled: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${OAUTH2_GOOGLE_ID}
+            clientSecret: ${OAUTH2_GOOGLE_SECRET}
+            scope:
+              - email
+              - profile
+          github:
+            clientId: ${OAUTH2_GITHUB_ID}
+            clientSecret: ${OAUTH2_GITHUB_SECRET}
+            scope:
+              - email
+              - profile
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
 cloud:
   aws:
     credentials:

@@ -148,9 +148,4 @@ public class JwtTokenizer {
             throw new BusinessLogicException(ExceptionCode.TOKEN_NOT_FOUND);
     }
 
-
-
-
-
-
 }
