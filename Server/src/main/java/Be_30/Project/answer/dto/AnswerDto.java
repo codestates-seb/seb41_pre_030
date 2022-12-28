@@ -41,8 +41,8 @@ public class AnswerDto {
         private String content;
         private boolean adopt;
         private int votes;
-        private long memberId; // 확인 필요
-        private long questionId; // 확인 필요
+        private MemberDto.ResponseOnlyMember member;
+        private QuestionDto.ResponseWithoutAnswers question;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
