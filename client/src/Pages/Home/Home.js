@@ -128,11 +128,11 @@ const Home = ({questions}) => {
             <QuestionList>
                 <AllQuestions>
                     All Questions
-                    <AskQuestionButton to='/AskQuestion'>Ask Question</AskQuestionButton>
+                    <AskQuestionButton to='/ask'>Ask Question</AskQuestionButton>
                 </AllQuestions>
                 <CountQuestions>{questions && questions.length} questions</CountQuestions>
             </QuestionList>
-            {questions && <Pagenation questions={questions} itemsPerPage={10} />}
+            {questions && <Pagenation questions={questions.data} itemsPerPage={10} />}
         </All>
     )
 }
