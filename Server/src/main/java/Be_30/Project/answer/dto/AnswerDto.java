@@ -41,8 +41,8 @@ public class AnswerDto {
         private String content;
         private boolean adopt;
         private int votes;
-        private MemberDto.ResponseOnlyMember member;
-        private QuestionDto.ResponseOnlyQuestion question;
+        private long memberId;
+        private long questionId;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
