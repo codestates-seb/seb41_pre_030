@@ -1,5 +1,7 @@
 package Be_30.Project.vote.controller;
 
+
+import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.dto.SingleResponseDto;
 import Be_30.Project.vote.dto.AnswerVoteResponseDto;
 import Be_30.Project.vote.dto.QuestionVoteResponseDto;
@@ -33,33 +35,33 @@ public class QuestionVoteController {
         this.mapper = mapper;
     }
 
-//    @PostMapping("/{question-id}/vote-up")
-//    public ResponseEntity postVoteUp(@PathVariable("question-id") @Positive long questionId,
-//        @AuthenticationPrincipal MemberAdapter memberAdapter) {
-//
-//        if (memberAdapter != null) {
-//            QuestionVote questionVote = questionVoteService.addVoteUp(questionId,
-//                memberAdapter.getMember());
-//            QuestionVoteResponseDto response = mapper.QuestionVoteToQuestionVoteResponseDto(
-//                questionVote);
-//            return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//    }
-//
-//    @PostMapping("/{question-id}/vote-down")
-//    public ResponseEntity postVoteDown(@PathVariable("question-id") @Positive long questionId,
-//        @AuthenticationPrincipal MemberAdapter memberAdapter) {
-//
-//        if (memberAdapter != null) {
-//            QuestionVote questionVote = questionVoteService.addVoteDown(questionId,
-//                memberAdapter.getMember());
-//            QuestionVoteResponseDto response = mapper.QuestionVoteToQuestionVoteResponseDto(
-//                questionVote);
-//            return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @PostMapping("/{question-id}/vote-up")
+    public ResponseEntity postVoteUp(@PathVariable("question-id") @Positive long questionId,
+        @AuthenticationPrincipal MemberDetails memberDetails) {
+
+        if (memberDetails != null) {
+            QuestionVote questionVote = questionVoteService.addVoteUp(questionId,
+                memberDetails.getMemberId());
+            QuestionVoteResponseDto response = mapper.QuestionVoteToQuestionVoteResponseDto(
+                questionVote);
+            return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/{question-id}/vote-down")
+    public ResponseEntity postVoteDown(@PathVariable("question-id") @Positive long questionId,
+        @AuthenticationPrincipal MemberDetails memberDetails) {
+
+        if (memberDetails != null) {
+            QuestionVote questionVote = questionVoteService.addVoteDown(questionId,
+                memberDetails.getMemberId());
+            QuestionVoteResponseDto response = mapper.QuestionVoteToQuestionVoteResponseDto(
+                questionVote);
+            return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

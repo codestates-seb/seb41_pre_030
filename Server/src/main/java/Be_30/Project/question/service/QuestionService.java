@@ -4,6 +4,7 @@ import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.entity.Member;
 import Be_30.Project.member.repository.MemberRepository;
+import Be_30.Project.member.service.MemberService;
 import Be_30.Project.question.entity.Question;
 import Be_30.Project.question.repository.QuestionRepository;
 import java.util.Optional;
@@ -23,10 +24,19 @@ public class QuestionService {
 
     private final MemberRepository memberRepository;
 
-    public Question createQuestion(Question question) {
-//        Optional<Member> findMember = memberRepository.findByEmail(email);
-//        findMember.ifPresent(q -> q.addQuestion(question));
-//        question.setMember(findMember.get());
+    private final MemberService memberService;
+
+//    public Question createQuestion(Question question,String email) {
+////        Optional<Member> findMember = memberRepository.findByEmail(email);
+////        findMember.ifPresent(q -> q.addQuestion(question));
+////        question.setMember(findMember.get());
+//
+//        return questionRepository.save(question);
+//    }
+
+    public Question createQuestion(Question question,String email,long id) {
+        Member findMember = memberService.findMember(id,email);
+        findMember.addQuestion(question);
 
         return questionRepository.save(question);
     }

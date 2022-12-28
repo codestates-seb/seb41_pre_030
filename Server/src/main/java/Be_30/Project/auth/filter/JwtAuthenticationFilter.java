@@ -42,8 +42,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      *          -> (내부적으로 해주기에 코드상에 보이진 않음)
      * @Return : 인증이 완료된(권한부여된) Authentication
      */
-
-
     @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response){
@@ -116,6 +114,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private String delegateAccessToken(Member member) {
 
         Map<String, Object> claims = new HashMap<>();
+        claims.put("memberId", member.getMemberId());
         claims.put("username", member.getEmail());
         claims.put("roles", member.getRoles());
 

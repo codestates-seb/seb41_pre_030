@@ -2,6 +2,8 @@ package Be_30.Project.auth.filter;
 
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
+import Be_30.Project.auth.userdetails.MemberDetails;
+import Be_30.Project.auth.userdetails.MemberDetailsService;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
 import Be_30.Project.member.entity.Member;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -42,6 +44,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             request.setAttribute("exception", ee);
             //SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
         } catch (Exception e) {
+            e.printStackTrace();
             request.setAttribute("exception", e);
         }
 
@@ -57,15 +60,21 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
-
-
         // Authentication 객체를 SecurityContext에 저장
-        String username = (String) claims.get("username");
-        List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));
-        Member member = new Member();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        long memberId = Long.parseLong(String.valueOf(claims.get("memberId")));
+        String username = (String) claims.get("username");
+        List<String> roles = (List<String>) claims.get("roles");
+        List<GrantedAuthority> authorities = authorityUtils.createAuthorities(roles);
+
+        Member member = new Member();
+        member.setMemberId(memberId);
+        member.setEmail(username);
+        member.setRoles(roles);
+        MemberDetails memberDetails = new MemberDetails(authorityUtils, member);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(memberDetails, null, authorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private Map<String, Object> verifyJws(HttpServletRequest request) {

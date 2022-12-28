@@ -56,7 +56,7 @@ public class AnswerVoteControllerTest {
         answerVote.setMember(member);
         answerVote.setAnswerVoteId(1L);
 
-        given(answerVoteService.addVoteUp(Mockito.anyLong())).willReturn(answerVote);
+        given(answerVoteService.addVoteUp(Mockito.anyLong(), Mockito.anyLong())).willReturn(answerVote);
 
         AnswerVoteResponseDto response = AnswerVoteResponseDto.builder()
             .answerVoteId(1L)

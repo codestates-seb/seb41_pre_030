@@ -61,9 +61,11 @@ public class QuestionController {
     public ResponseEntity<?> createQuestion(@Valid @RequestBody QuestionDto.Post postDto,@AuthenticationPrincipal
         MemberDetails memberDetails) {
 
+        String email = memberDetails.getEmail();
+        long id = memberDetails.getMemberId();
         Question question = mapper.questionPostDtoToQuestion(postDto);
         //Question createdQuestion = questionService.createQuestion(question,username);
-        Question createdQuestion = questionService.createQuestion(question);
+        Question createdQuestion = questionService.createQuestion(question,email,id);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.questionToQuestionResponseDto(createdQuestion)),
                 HttpStatus.CREATED

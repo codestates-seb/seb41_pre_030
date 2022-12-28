@@ -4,6 +4,7 @@ import Be_30.Project.answer.dto.AnswerDto;
 import Be_30.Project.answer.entity.Answer;
 import Be_30.Project.answer.mapper.AnswerMapper;
 import Be_30.Project.answer.service.AnswerService;
+import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.dto.MultiResponseDto;
 import Be_30.Project.dto.SingleResponseDto;
 import java.net.URI;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +42,8 @@ public class AnswerController {
     }
 
     @PostMapping
-    public ResponseEntity postAnswer(@Valid @RequestBody AnswerDto.Post answerPostDto) {
+    public ResponseEntity postAnswer(@Valid @RequestBody AnswerDto.Post answerPostDto
+    ) {
         // 전달 받은 Dto -> 서비스에 보냄
         Answer answer = answerService.createAnswer(mapper.answerPostDtoToAnswer(answerPostDto));
 
@@ -54,8 +57,9 @@ public class AnswerController {
 
     // 채택 기능
     @PostMapping("/{answer-id}/adopt")
-    public ResponseEntity postAdopt(@PathVariable("answer-id") @Positive long answerId) {
-        Answer answer = answerService.adoptAnswer(answerId);
+    public ResponseEntity postAdopt(@PathVariable("answer-id") @Positive long answerId,
+        @AuthenticationPrincipal MemberDetails memberDetails) {
+        Answer answer = answerService.adoptAnswer(answerId, memberDetails.getMemberId());
         AnswerDto.Response response = mapper.answerToAnswerResponseDto(answer);
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }

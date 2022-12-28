@@ -2,32 +2,43 @@ package Be_30.Project.auth.userdetails;
 
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
 import Be_30.Project.member.entity.Member;
-import java.util.Collection;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 
-public class MemberDetails extends Member implements UserDetails {
-    private final CustomAuthorityUtils authorityUtils;
+@Getter
+public class MemberDetails implements UserDetails {
 
+    private CustomAuthorityUtils authorityUtils;
+    private long memberId;
+    private String email;
+    private String password;
+    private List<String> roles;
 
-    MemberDetails(Member member, CustomAuthorityUtils authorityUtils) {
-        setMemberId(member.getMemberId());
-        setEmail(member.getEmail());
-        setPassword(member.getPassword());
-        setRoles(member.getRoles());
+    public MemberDetails(CustomAuthorityUtils authorityUtils, Member member) {
         this.authorityUtils = authorityUtils;
+        this.memberId = member.getMemberId();
+        this.email = member.getEmail();
+        this.password = member.getPassword();
+        this.roles = member.getRoles();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorityUtils.createAuthorities(this.getRoles());
+        return authorityUtils.createAuthorities(roles);
     }
 
     @Override
     public String getUsername() {
-        return getEmail();
+        return this.email;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
     }
 
     @Override

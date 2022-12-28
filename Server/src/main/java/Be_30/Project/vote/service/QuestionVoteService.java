@@ -1,6 +1,8 @@
 package Be_30.Project.vote.service;
 
 import Be_30.Project.answer.entity.Answer;
+import Be_30.Project.exception.BusinessLogicException;
+import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.entity.Member;
 import Be_30.Project.member.repository.MemberRepository;
 import Be_30.Project.member.service.MemberService;
@@ -8,9 +10,11 @@ import Be_30.Project.question.entity.Question;
 import Be_30.Project.question.repository.QuestionRepository;
 import Be_30.Project.question.service.QuestionService;
 import Be_30.Project.vote.entity.QuestionVote;
+import Be_30.Project.vote.entity.QuestionVote.VoteStatus;
 import Be_30.Project.vote.repository.QuestionVoteRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,47 +38,73 @@ public class QuestionVoteService {
         this.memberService = memberService;
     }
 
-    public QuestionVote addVoteUp(long questionId, Member member) {
+    public QuestionVote addVoteUp(long questionId, long memberId) {
         Question question = questionService.findQuestion(questionId);
+        Member member = memberRepository.findById(memberId).get();
 
-        if(findCountOfMemberVotesQuestion(question, member)) {
+        if(VerifyOfMemberVotesQuestion(question, member)) {
             question.makeUpVote();
         } else {
-            question.makeDownVote();
+            QuestionVote findQuestionVote = findVerifiedQuestionVote(question, member);
+            if(findQuestionVote.getVoteStatus().equals(VoteStatus.VOTE_UP)) {
+                question.makeDownVote();
+            } else {
+                question.makeUpVote();
+                question.makeUpVote();
+            }
+            questionVoteRepository.delete(findQuestionVote);
         }
         Question saveQuestion = questionRepository.save(question);
 
         QuestionVote questionVote = new QuestionVote();
         questionVote.setQuestion(saveQuestion);
         questionVote.setMember(member);
+        questionVote.setVoteStatus(VoteStatus.VOTE_UP);
 
         return questionVoteRepository.save(questionVote);
     }
-    public QuestionVote addVoteDown(long questionId, Member member) {
+    public QuestionVote addVoteDown(long questionId, long memberId) {
         Question question = questionService.findQuestion(questionId);
+        Member member = memberRepository.findById(memberId).get();
 
-        if(findCountOfMemberVotesQuestion(question, member)) {
+        if(VerifyOfMemberVotesQuestion(question, member)) {
             question.makeDownVote();
         }else {
-            question.makeUpVote();
+            QuestionVote findQuestionVote = findVerifiedQuestionVote(question, member);
+            if(findQuestionVote.getVoteStatus().equals(VoteStatus.VOTE_DOWN)) {
+                question.makeUpVote();
+            } else {
+                question.makeDownVote();
+                question.makeDownVote();
+            }
         }
         Question saveQuestion = questionRepository.save(question);
 
         QuestionVote questionVote = new QuestionVote();
         questionVote.setQuestion(saveQuestion);
         questionVote.setMember(member);
+        questionVote.setVoteStatus(VoteStatus.VOTE_DOWN);
 
         return questionVoteRepository.save(questionVote);
     }
-    private boolean findCountOfMemberVotesQuestion(Question question, Member member) {
+    private boolean VerifyOfMemberVotesQuestion(Question question, Member member) {
         Optional<QuestionVote> optionalQuestionVote =
             questionVoteRepository.findByQuestionAndMember(question, member);
 
         if(optionalQuestionVote.isEmpty()) {
             return true;
         }else {
-            questionVoteRepository.delete(optionalQuestionVote.get());
             return false;
         }
+    }
+    private QuestionVote findVerifiedQuestionVote(Question question, Member member) {
+        Optional<QuestionVote> optionalQuestionVote =
+            questionVoteRepository.findByQuestionAndMember(question, member);
+
+        QuestionVote questionVote =
+            optionalQuestionVote.orElseThrow(
+                ()->new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND)
+            );
+        return questionVote;
     }
 }
