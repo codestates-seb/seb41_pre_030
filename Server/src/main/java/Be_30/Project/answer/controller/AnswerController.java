@@ -56,7 +56,7 @@ public class AnswerController {
             .buildAndExpand(questionId, answer.getAnswerId())
             .toUri();
 
-        log.info(location.toString());
+        log.info("Post Answer Location: " + location.toString());
 
         return ResponseEntity.created(location).build();
     }
@@ -67,7 +67,9 @@ public class AnswerController {
         @PathVariable("answer-id") @Positive long answerId,
         @AuthenticationPrincipal MemberDetails memberDetails) {
         Answer answer = answerService.adoptAnswer(answerId, memberDetails.getMemberId());
+
         AnswerDto.Response response = mapper.answerToAnswerResponseDto(answer);
+
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
 
