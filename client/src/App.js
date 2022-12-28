@@ -11,6 +11,8 @@ import Signup from './Pages/Signup/Signup';
 import QuestionDetail from './Pages/Question/QuestionDetail';
 import UserPage from './Pages/UserPage/UserPage';
 
+import AllUsers from './Pages/UserlistPage/AllUsers';
+
 function App() {
   const [question] = useFetch('http://13.125.30.88:8080/questions/')
   const location = useLocation();
@@ -24,6 +26,9 @@ function App() {
           <Route path='/signup' element={<Signup />}/>
           <Route path='/login' element={<LoginPage />} />
           <Route path='/ask' element={<AskPage />}/>
+          
+          <Route path='/alluser' element={<AllUsers />}/>
+
           <Route path='/' element={<Home questions={question}/>}/>
           <Route exact path='/' element={<Home questions={question}/>}/>
         </Routes>
