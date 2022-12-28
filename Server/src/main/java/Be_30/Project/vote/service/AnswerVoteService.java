@@ -40,27 +40,38 @@ public class AnswerVoteService {
         Answer answer = answerService.findVerifiedAnswer(answerId);
         Member member = memberService.findMember(memberDetails.getMemberId(), memberDetails.getEmail());
 
-        // 2. member 객체와 answer 객체를 이용해 이미 추천/비추천 유무 파악
-        if (VerifyOfMemberVotesAnswer(answer, member)) {
-            // 추천한 적이 없음 -> answer-> votes++
+        AnswerVote answerVote = new AnswerVote();
+
+        if(VerifyOfMemberVotesAnswer(answer, member)) {
+
             answer.setVotes(answer.getVotes() + 1);
-        } else { // 추천한 적이 있음-> 추천인지 비추천인지 확인해야 함
+            answerVote.setVoteStatus(VoteStatus.VOTE_UP);
+
+        } else {
             AnswerVote findAnswerVote = findVerifiedAnswerVote(answer, member);
-            if (findAnswerVote.getVoteStatus().equals(VoteStatus.VOTE_UP)) {
-                answer.setVotes(answer.getVotes() - 1);
-            } else {
+            VoteStatus voteStatus = findAnswerVote.getVoteStatus();
+
+            if(voteStatus.equals(VoteStatus.VOTE_UP)) {
+
+                answer.setVotes(answer.getVotes() -1);
+                answerVote.setVoteStatus(VoteStatus.VOTE_CANCEL);
+
+            } else if(voteStatus.equals(VoteStatus.VOTE_DOWN)) {
+
                 answer.setVotes(answer.getVotes() + 2);
+                answerVote.setVoteStatus(VoteStatus.VOTE_UP);
+
+            } else if(voteStatus.equals(VoteStatus.VOTE_CANCEL)){
+
+                answer.setVotes(answer.getVotes() + 1);
+                answerVote.setVoteStatus(VoteStatus.VOTE_UP);
+
             }
             answerVoteRepository.delete(findAnswerVote);
         }
-
-        // 3. answerVote에 변경된 answer 객체를 주입하고 저장
         Answer saveAnswer = answerRepository.save(answer);
-
-        AnswerVote answerVote = new AnswerVote();
         answerVote.setAnswer(saveAnswer);
         answerVote.setMember(member);
-        answerVote.setVoteStatus(VoteStatus.VOTE_UP);
 
         return answerVoteRepository.save(answerVote);
     }
@@ -69,23 +80,40 @@ public class AnswerVoteService {
         Answer answer = answerService.findVerifiedAnswer(answerId);
         Member member = memberService.findMember(memberDetails.getMemberId(), memberDetails.getEmail());
 
-        if (VerifyOfMemberVotesAnswer(answer, member)) {
+        AnswerVote answerVote = new AnswerVote();
+
+        if(VerifyOfMemberVotesAnswer(answer, member)) {
+
             answer.setVotes(answer.getVotes() - 1);
+            answerVote.setVoteStatus(VoteStatus.VOTE_DOWN);
+
         } else {
+
             AnswerVote findAnswerVote = findVerifiedAnswerVote(answer, member);
-            if (findAnswerVote.getVoteStatus().equals(VoteStatus.VOTE_DOWN)) {
+            VoteStatus voteStatus = findAnswerVote.getVoteStatus();
+
+            if(voteStatus.equals(VoteStatus.VOTE_DOWN)) {
+
                 answer.setVotes(answer.getVotes() + 1);
-            } else {
+                answerVote.setVoteStatus(VoteStatus.VOTE_CANCEL);
+
+            } else if (voteStatus.equals(VoteStatus.VOTE_UP)) {
+
                 answer.setVotes(answer.getVotes() - 2);
+                answerVote.setVoteStatus(VoteStatus.VOTE_DOWN);
+
+            } else if (voteStatus.equals(VoteStatus.VOTE_CANCEL)) {
+
+                answer.setVotes(answer.getVotes() - 1);
+                answerVote.setVoteStatus(VoteStatus.VOTE_DOWN);
+
             }
             answerVoteRepository.delete(findAnswerVote);
         }
         Answer saveAnswer = answerRepository.save(answer);
 
-        AnswerVote answerVote = new AnswerVote();
         answerVote.setAnswer(saveAnswer);
         answerVote.setMember(member);
-        answerVote.setVoteStatus(VoteStatus.VOTE_DOWN);
 
         return answerVoteRepository.save(answerVote);
     }
