@@ -3,11 +3,9 @@ package Be_30.Project.question.service;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.entity.Member;
-import Be_30.Project.member.repository.MemberRepository;
 import Be_30.Project.member.service.MemberService;
 import Be_30.Project.question.entity.Question;
 import Be_30.Project.question.repository.QuestionRepository;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,24 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class QuestionService {
 
+    private final MemberService memberService;
     private final QuestionRepository questionRepository;
 
-    private final MemberRepository memberRepository;
-
-    private final MemberService memberService;
-
-//    public Question createQuestion(Question question,String email) {
-////        Optional<Member> findMember = memberRepository.findByEmail(email);
-////        findMember.ifPresent(q -> q.addQuestion(question));
-////        question.setMember(findMember.get());
-//
-//        return questionRepository.save(question);
-//    }
-
-    public Question createQuestion(Question question,String email,long id) {
-        Member findMember = memberService.findMember(id,email);
-        findMember.addQuestion(question);
-
+    public Question createQuestion(Question question, long memberId, String email) {
+        Member findMember = memberService.findMember(memberId, email);
+        question.setMember(findMember);
+        findMember.getQuestions().add(question);
         return questionRepository.save(question);
     }
 
@@ -89,6 +76,7 @@ public class QuestionService {
 
     public void deleteQuestion(long questionId) {
         Question findQuestion = findById(questionId);
+        findQuestion.getMember().getQuestions().remove(findQuestion);
         questionRepository.delete(findQuestion);
     }
 }

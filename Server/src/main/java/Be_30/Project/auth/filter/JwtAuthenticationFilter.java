@@ -1,8 +1,8 @@
 package Be_30.Project.auth.filter;
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
+import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.dto.LoginDto;
-import Be_30.Project.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,15 +25,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  로그인 시 인증정보 확인(AuthenticationManager가 UserDetailService를 호출하여 UserDetail을 확인) 후
  토큰 발급(jwtTokenizer)
  */
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
-
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenizer jwtTokenizer) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenizer = jwtTokenizer;
-    }
-
 
     /**
      * 입력받은 username, password를 바탕으로 인증정보를 생성하는 로직
@@ -74,7 +70,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Authentication authResult) throws ServletException, IOException {
 
         //인증에 성공할 경우에 호출됨
-        Member member = (Member) authResult.getPrincipal();
+        MemberDetails member = (MemberDetails) authResult.getPrincipal();
 
         String accessToken = delegateAccessToken(member);
         String refreshToken = delegateRefreshToken(member);
@@ -111,7 +107,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      * @Param 인증된 Authentication의 principal field에서 찾아온 member정보
      * @Return AccessToken
      */
-    private String delegateAccessToken(Member member) {
+    private String delegateAccessToken(MemberDetails member) {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("memberId", member.getMemberId());
@@ -133,7 +129,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      * @Param 인증된 Authentication의 principal field에서 찾아온 member정보
      * @Return RefreshToken
      */
-    private String delegateRefreshToken(Member member) {
+    private String delegateRefreshToken(MemberDetails member) {
         String subject = member.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());

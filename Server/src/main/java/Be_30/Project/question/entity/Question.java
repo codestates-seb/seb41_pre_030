@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -36,7 +37,7 @@ public class Question extends Auditable {
     private Member member;
 
     @OneToMany
-    private List<Answer> answers;
+    private List<Answer> answers = new ArrayList<>();
 
     @OneToMany(mappedBy = "question")
     private List<QuestionVote> questionVotes = new ArrayList<>();

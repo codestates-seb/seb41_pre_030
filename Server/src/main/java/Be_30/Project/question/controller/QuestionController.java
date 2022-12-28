@@ -1,6 +1,5 @@
 package Be_30.Project.question.controller;
 
-import Be_30.Project.auth.jwt.JwtTokenizer;
 import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.dto.MultiResponseDto;
 import Be_30.Project.dto.SingleResponseDto;
@@ -8,7 +7,6 @@ import Be_30.Project.question.dto.QuestionDto;
 import Be_30.Project.question.entity.Question;
 import Be_30.Project.question.mapper.QuestionMapper;
 import Be_30.Project.question.service.QuestionService;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -30,7 +28,6 @@ public class QuestionController {
     private final QuestionService questionService;
     private final QuestionMapper mapper;
 
-
     @GetMapping
     public ResponseEntity<?> getQuestions(@Positive @RequestParam(defaultValue = "1") int page,
                                           @Positive @RequestParam(defaultValue = "10") int size,
@@ -46,7 +43,6 @@ public class QuestionController {
         );
     }
 
-    // TODO: 질문 조회 시 답변 목록도 함게 변환해야 함
     @GetMapping("/{questionId}")
     public ResponseEntity<?> getQuestion(@Positive @PathVariable long questionId) {
         Question question = questionService.findQuestion(questionId);
@@ -56,22 +52,18 @@ public class QuestionController {
         );
     }
 
-    // TODO: 질문 작성자 정보 추가
     @PostMapping
-    public ResponseEntity<?> createQuestion(@Valid @RequestBody QuestionDto.Post postDto,@AuthenticationPrincipal
-        MemberDetails memberDetails) {
-
-        String email = memberDetails.getEmail();
-        long id = memberDetails.getMemberId();
+    public ResponseEntity<?> createQuestion(@Valid @RequestBody QuestionDto.Post postDto,
+                                            @AuthenticationPrincipal MemberDetails member) {
         Question question = mapper.questionPostDtoToQuestion(postDto);
-        //Question createdQuestion = questionService.createQuestion(question,username);
-        Question createdQuestion = questionService.createQuestion(question,email,id);
+        Question createdQuestion = questionService.createQuestion(
+                question, member.getMemberId(), member.getEmail()
+        );
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.questionToQuestionResponseDto(createdQuestion)),
                 HttpStatus.CREATED
         );
     }
-
 
     @PatchMapping("/{questionId}")
     public ResponseEntity<?> updateQuestion(@Positive @PathVariable long questionId,
@@ -90,6 +82,4 @@ public class QuestionController {
         questionService.deleteQuestion(questionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 }

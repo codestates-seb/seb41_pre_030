@@ -45,10 +45,10 @@ public class QuestionDto {
         private int views;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-        private MemberDto.Response member;
-        private List<AnswerDto.Response> answers;
+        private MemberDto.ResponseOnlyMember member; // 작성자 데이터
+        private List<AnswerDto.Response> answers; // 질문에 딸린 답변 데이터
     }
-
+    
     @Getter
     @Builder
     public static class ResponseOnlyQuestion {
@@ -59,9 +59,7 @@ public class QuestionDto {
         private int views;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-        private int answerCount; // 답변 개수
     }
-
 
     @Getter
     @Builder
@@ -73,7 +71,7 @@ public class QuestionDto {
         private int views;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-        private MemberDto.Response member;
+        private MemberDto.ResponseOnlyMember member;
         private int answerCount; // 답변 개수
     }
 }

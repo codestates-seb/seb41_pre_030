@@ -74,4 +74,15 @@ public class MemberDto {
         private List<AnswerDto.Response> answers;
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class ResponseOnlyMember{
+        private long memberId;
+
+        @NotBlank
+        @Email
+        private String email;
+
+    }
 }
