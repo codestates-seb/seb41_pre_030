@@ -131,7 +131,17 @@ function QuestionDetail () {
   const [member] = useFetch(`http://13.125.30.88:8080/members/${id}`,request)
 
   const [value, setValue] = useState('');
-  
+
+  let createDate = null;
+  let modifiedDate = null;
+  let answerCreateDate = null;
+
+  if (question) {
+    createDate = new window.Date(question.data.createdAt)
+    modifiedDate = new window.Date(question.data.modifiedAt)
+    answerCreateDate = new window.Date(question.data.createdAt)
+  }
+
   console.log(question)
   console.log(value)
 
@@ -149,11 +159,6 @@ function QuestionDetail () {
           ]
     }
   }
-
-  
-  let createDate = new window.Date(question.data.createdAt)
-  let modifiedDate = new window.Date(question.data.modifiedAt)
-  let answerCreateDate = new window.Date(question.data.createdAt)
 
   console.log(question.createdAt)
 
@@ -194,20 +199,19 @@ function QuestionDetail () {
 
   return(
     <All>
+      {!question ?? <p>Loading</p>}
       <div>
         <Post>
           <AllQuestions>
             <Subject>  
-              {question && (
-                <h2>{question.subject}</h2>
-                )}
+                <h2>{question && question.data.subject}</h2>
             </Subject>
             <AskQuestionButton to='/ask'>Ask Question</AskQuestionButton>          
           </AllQuestions>
           <At>
             <Date>Asked {timeForToday(createDate)}</Date>
             <Date>Motified {timeForToday(modifiedDate)}</Date>
-            <Date>Viewed {question.view}</Date>
+            <Date>Viewed {question && question.data.view}</Date>
           </At>
           <QuestionContentView>
           <div style={{"display" : "flex", "margin" : "25px"}}>
@@ -215,16 +219,14 @@ function QuestionDetail () {
               <button style={{"backgroundColor" : "white", "border" : "none"}}>
                 <CaretUpOutlined style={{"fontSize" : "30px"}}/>
               </button>
-                  <QuestionEstimation>{question.vote}</QuestionEstimation>
+                  <QuestionEstimation>{question && question.data.vote}</QuestionEstimation>
               <button style={{"backgroundColor" : "white", "border" : "none"}}>
                 <CaretDownOutlined style={{"fontSize" : "30px"}}/>
               </button>
             </Vote>
           </div>
           <Content>
-            {question && (
-              <span>{question.content}</span>
-            )}
+            <span>{question && question.data.content}</span>
           </Content>
           </QuestionContentView>
         </Post>
@@ -298,7 +300,6 @@ function QuestionDetail () {
           <span style={{"margin" : "18px", "fontSize" : "17px"}}>Not the answer you're looking for? 
           <HyperLink to = "/ask"> ask your own question</HyperLink></span>
         </PostAnswer>
-
     </All>
   )
 }

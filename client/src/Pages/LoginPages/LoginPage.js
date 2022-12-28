@@ -116,7 +116,7 @@ const GitButton = styled(Button)`
 
 const LoginPage = () => {
   const [info, setInfo] = useState({
-    email: '',
+    username: '',
     password: '',
   })
   const navigate = useNavigate();
@@ -130,7 +130,7 @@ const LoginPage = () => {
     }
 
     await axios
-    .post("http://13.125.30.88:8080/", jsonData)
+    .post("http://13.125.30.88:8080/members/login", jsonData)
     .then((res) => {
       alert("Login");
       navigate("/");

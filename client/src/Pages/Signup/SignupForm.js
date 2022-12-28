@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -48,51 +48,64 @@ const Form = styled.form`
 `
 
 const SignupForm = () => {
-  const displayNameRef = useRef('');
-  const emailRef = useRef('');
-  const passwordeRef = useRef('');
+  const [info, setInfo] = useState({
+    email: '',
+    password: '',
+    nickName: '',
+    confirmedPassword: ''
+  })
   const navigate = useNavigate();
 
 
-  const onSignUpSubmitHandler = async () => {
-    const jsonData = JSON.stringify({
-      displayName: displayNameRef.current.value,
-      email: emailRef.current.value,
-      password:passwordeRef.current.value
-    });
+  const onSignUpSubmitHandler = (event) => {
+    event.preventDefault();
+    
+    const jsonData = JSON.stringify(info);
 
-    if(displayNameRef === '' || emailRef === '' || passwordeRef === '') {
-      alert("이메일이나 패스워드를 확인하세요");
-      return
-    }
-
-    await axios
-    .post("http://13.125.30.88:8080/members", jsonData)
-    .then((res) => {
-      alert("Signup");
-      navigate("/login");
-      // 현재 로그인 요청 보내면 로그인페이지 -> 회원가입 페이지로 되돌아옴
-      // url에 인풋 데이터는 남아있는 상태로 돌아옴
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    axios.post("http://13.125.30.88:8080/members/signup", jsonData)
+      .then((res) => {
+        navigate("/login");
+        // 현재 로그인 요청 보내면 로그인페이지 -> 회원가입 페이지로 되돌아옴
+        // url에 인풋 데이터는 남아있는 상태로 돌아옴
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('회원가입에 실패했습니다.');
+      })
   }
 
   return (
     <Container>
-      <Form onSubmit={onSignUpSubmitHandler}>
+      <Form onSubmit={event => onSignUpSubmitHandler(event)}>
         <div className='input-box'>
           <label htmlFor='display-name'>Display name</label>
-          <input ref={displayNameRef} type='text' id='display-name' name='display-name' />
+          <input type='text' 
+          id='display-name' 
+          name='display-name' 
+          onChange={event => setInfo({
+            ...info,
+            nickName: event.target.value
+          })}/>
         </div>
         <div className='input-box'>
           <label htmlFor='email'>Email</label>
-          <input ref={emailRef} type='text' id='email' name='email' />
+          <input type='text' 
+          id='email' 
+          name='email' 
+          onChange={event => setInfo({
+            ...info,
+            email: event.target.value
+          })}/>
         </div>
         <div className='input-box'>
           <label htmlFor='password'>Password</label>
-          <input ref={passwordeRef} type='text' id='password' name='password'/>
+          <input type='text' 
+          id='password' 
+          name='password'
+          onChange={event => setInfo({
+            ...info,
+            password: event.target.value
+          })}/>
           <p>Passwords must contain at least eight characters, including at least 1 letter and 1 number.</p>
         </div>
         <button>SignUp</button>
