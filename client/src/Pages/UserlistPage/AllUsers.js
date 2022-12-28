@@ -26,7 +26,7 @@ const AllUsers = () => {
         <All>
             <AllUser>All Users</AllUser>
             <UserSearch placeholder="Filter by user" />
-            <UserList />
+            <UserList itemPerPage={20} />
         </All>
     )
 };

@@ -3,6 +3,7 @@ import profileImage from "../../Image/profile.png";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import ReactPaginate from 'react-paginate';
+import useFetch from "../../Components/util/useFetch";
 
 const List = styled.div`
     display: grid;
@@ -39,16 +40,25 @@ const QuestionNumber = styled.div`
 
 const UserList = (props) => {
 
+    const [question] = useFetch('http://13.125.30.88:8080/members');
+
     const [itemOffset, setItemOffset] = useState(0);
 
     const endOffset = itemOffset + props.itemsPerPage;
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    const currentItems = props.questions.slice(itemOffset, endOffset);
-    const pageCount = Math.ceil(props.questions.length / props.itemsPerPage);
+    let currentItems = null;
+    if(question) {
+        currentItems = question.data.slice(itemOffset, endOffset);
+    };
+    
+    let pageCount = null;
+    if(pageCount) {
+        pageCount = Math.ceil(question.data.length / props.itemsPerPage);
+    }
 
 
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * props.itemsPerPage) % props.questions.length;
+        const newOffset = (event.selected * props.itemsPerPage) % question.data.length;
         console.log(
         `User requested page number ${event.selected}, which is offset ${newOffset}`
         );
@@ -58,7 +68,7 @@ const UserList = (props) => {
     return (
         <Fragment>
             {currentItems && currentItems.map(user => 
-                <List>
+                <List key={user.id}>
                 <UserContainer>
                         <LeftContainer src={profileImage}/>
                 <RightContainer>
