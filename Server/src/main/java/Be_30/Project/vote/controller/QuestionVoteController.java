@@ -1,15 +1,10 @@
 package Be_30.Project.vote.controller;
 
-
 import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.dto.SingleResponseDto;
-import Be_30.Project.vote.dto.AnswerVoteResponseDto;
 import Be_30.Project.vote.dto.QuestionVoteResponseDto;
-import Be_30.Project.vote.entity.AnswerVote;
 import Be_30.Project.vote.entity.QuestionVote;
-import Be_30.Project.vote.mapper.AnswerVoteMapper;
 import Be_30.Project.vote.mapper.QuestionVoteMapper;
-import Be_30.Project.vote.service.AnswerVoteService;
 import Be_30.Project.vote.service.QuestionVoteService;
 import javax.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
@@ -41,7 +36,7 @@ public class QuestionVoteController {
 
         if (memberDetails != null) {
             QuestionVote questionVote = questionVoteService.addVoteUp(questionId,
-                memberDetails.getMemberId());
+                memberDetails);
             QuestionVoteResponseDto response = mapper.QuestionVoteToQuestionVoteResponseDto(
                 questionVote);
             return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
@@ -56,7 +51,7 @@ public class QuestionVoteController {
 
         if (memberDetails != null) {
             QuestionVote questionVote = questionVoteService.addVoteDown(questionId,
-                memberDetails.getMemberId());
+                memberDetails);
             QuestionVoteResponseDto response = mapper.QuestionVoteToQuestionVoteResponseDto(
                 questionVote);
             return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
