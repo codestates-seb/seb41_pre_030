@@ -21,27 +21,27 @@ import javax.validation.constraints.Positive;
 @RestController
 public class FileController {
 
-    private final FileService fileService;
-    private final FileMapper mapper;
-
-    @GetMapping
-    public ResponseEntity<?> getFiles(@Positive @RequestParam(defaultValue = "1") int page,
-                                      @Positive @RequestParam(defaultValue = "10") int size) {
-        Page<ImageFile> pageFiles = fileService.getFiles(page - 1, size);
-        return new ResponseEntity<>(
-                new MultiResponseDto<>(
-                        mapper.filesToFileResponseDtos(pageFiles.getContent()),
-                        pageFiles),
-                HttpStatus.OK
-        );
-    }
-
-    @PostMapping
-    public ResponseEntity<?> createFile(MultipartFile file, long memberId) {
-        ImageFile savedFile = fileService.saveFile(file, memberId);
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.fileToFileResponseDto(savedFile)),
-                HttpStatus.CREATED
-        );
-    }
+//    private final FileService fileService;
+//    private final FileMapper mapper;
+//
+//    @GetMapping
+//    public ResponseEntity<?> getFiles(@Positive @RequestParam(defaultValue = "1") int page,
+//                                      @Positive @RequestParam(defaultValue = "10") int size) {
+//        Page<ImageFile> pageFiles = fileService.getFiles(page - 1, size);
+//        return new ResponseEntity<>(
+//                new MultiResponseDto<>(
+//                        mapper.filesToFileResponseDtos(pageFiles.getContent()),
+//                        pageFiles),
+//                HttpStatus.OK
+//        );
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity<?> createFile(MultipartFile file, long memberId) {
+//        ImageFile savedFile = fileService.saveFile(file, memberId);
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(mapper.fileToFileResponseDto(savedFile)),
+//                HttpStatus.CREATED
+//        );
+//    }
 }

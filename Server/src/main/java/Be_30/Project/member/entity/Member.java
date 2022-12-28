@@ -1,6 +1,8 @@
 package Be_30.Project.member.entity;
 
+import Be_30.Project.answer.entity.Answer;
 import Be_30.Project.audit.Auditable;
+import Be_30.Project.question.entity.Question;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -45,9 +47,13 @@ public class Member extends Auditable {
     @Column(length = 20, nullable = false)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
-//    private LocalDateTime createdAt = LocalDateTime.now();
-//
-//    private LocalDateTime modifiedAt = LocalDateTime.now();
+    @OneToMany(mappedBy = "member")
+    @Column
+    List<Question> questions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    @Column
+    List<Answer> answers= new ArrayList<>();
 
     public enum MemberStatus {
         MEMBER_ACTIVE("활동중"),
@@ -61,4 +67,16 @@ public class Member extends Auditable {
             this.status = status;
         }
     }
+
+    public void addQuestion(Question question){
+        questions.add(question);
+    }
+
+    public void addAnswer(Answer answer){
+        answers.add(answer);
+    }
+
+    public void removeQuestion(Question question){questions.remove(question);}
+
+    public void removeQuestion(Answer answer){answers.remove(answer);}
 }

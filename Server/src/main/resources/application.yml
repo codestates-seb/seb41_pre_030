@@ -12,6 +12,13 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 1051335177358-5ih47gcpocs6gpu2cmtd2ivrvcof968e.apps.googleusercontent.com
+            clientSecret: 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
 logging:
   level:
     org:
@@ -37,6 +44,7 @@ cloud:
     region.static: ap-northeast-2
     stack.auto: false
     s3.bucketName: my-springboot-build
+
 
 ---
 
