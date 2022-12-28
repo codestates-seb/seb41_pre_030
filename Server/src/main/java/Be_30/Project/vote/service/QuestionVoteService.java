@@ -41,24 +41,33 @@ public class QuestionVoteService {
         Question question = questionService.findQuestion(questionId);
         Member member = memberService.findMember(memberDetails.getMemberId(), memberDetails.getEmail());
 
+        QuestionVote questionVote = new QuestionVote();
+
         if(VerifyOfMemberVotesQuestion(question, member)) {
+
             question.makeUpVote();
+            questionVote.setVoteStatus(VoteStatus.VOTE_UP);
+
         } else {
             QuestionVote findQuestionVote = findVerifiedQuestionVote(question, member);
-            if(findQuestionVote.getVoteStatus().equals(VoteStatus.VOTE_UP)) {
+            VoteStatus voteStatus = findQuestionVote.getVoteStatus();
+
+            if(voteStatus.equals(VoteStatus.VOTE_UP)) {
                 question.makeDownVote();
-            } else {
+                questionVote.setVoteStatus(VoteStatus.VOTE_CANCEL);
+            } else if (voteStatus.equals(VoteStatus.VOTE_DOWN)) {
                 question.makeUpVote();
                 question.makeUpVote();
+                questionVote.setVoteStatus(VoteStatus.VOTE_UP);
+            } else if (voteStatus.equals(VoteStatus.VOTE_CANCEL)) {
+                question.makeUpVote();
+                questionVote.setVoteStatus(VoteStatus.VOTE_UP);
             }
             questionVoteRepository.delete(findQuestionVote);
         }
         Question saveQuestion = questionRepository.save(question);
-
-        QuestionVote questionVote = new QuestionVote();
         questionVote.setQuestion(saveQuestion);
         questionVote.setMember(member);
-        questionVote.setVoteStatus(VoteStatus.VOTE_UP);
 
         return questionVoteRepository.save(questionVote);
     }
@@ -66,23 +75,31 @@ public class QuestionVoteService {
         Question question = questionService.findQuestion(questionId);
         Member member = memberService.findMember(memberDetails.getMemberId(), memberDetails.getEmail());
 
+        QuestionVote questionVote = new QuestionVote();
+
         if(VerifyOfMemberVotesQuestion(question, member)) {
             question.makeDownVote();
-        }else {
+            questionVote.setVoteStatus(VoteStatus.VOTE_DOWN);
+        } else {
             QuestionVote findQuestionVote = findVerifiedQuestionVote(question, member);
-            if(findQuestionVote.getVoteStatus().equals(VoteStatus.VOTE_DOWN)) {
+            VoteStatus voteStatus = findQuestionVote.getVoteStatus();
+            if(voteStatus.equals(VoteStatus.VOTE_DOWN)) {
                 question.makeUpVote();
-            } else {
+                questionVote.setVoteStatus(VoteStatus.VOTE_CANCEL);
+            } else if (voteStatus.equals(VoteStatus.VOTE_UP)) {
                 question.makeDownVote();
                 question.makeDownVote();
+                questionVote.setVoteStatus(VoteStatus.VOTE_DOWN);
+            } else if (voteStatus.equals(VoteStatus.VOTE_CANCEL)) {
+                question.makeDownVote();
+                questionVote.setVoteStatus(VoteStatus.VOTE_DOWN);
             }
+            questionVoteRepository.delete(findQuestionVote);
         }
         Question saveQuestion = questionRepository.save(question);
 
-        QuestionVote questionVote = new QuestionVote();
         questionVote.setQuestion(saveQuestion);
         questionVote.setMember(member);
-        questionVote.setVoteStatus(VoteStatus.VOTE_DOWN);
 
         return questionVoteRepository.save(questionVote);
     }
