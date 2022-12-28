@@ -8,8 +8,10 @@ import Be_30.Project.answer.repository.AnswerRepository;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.entity.Member;
-import Be_30.Project.member.repository.MemberRepository;
+import Be_30.Project.member.service.MemberService;
 import Be_30.Project.question.entity.Question;
+import Be_30.Project.question.service.QuestionService;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,26 +26,38 @@ import org.springframework.transaction.annotation.Transactional;
 public class AnswerService {
 
     private final AnswerRepository answerRepository;
+    private final MemberService memberService;
+    private final QuestionService questionService;
 
-    public AnswerService(AnswerRepository answerRepository) {
+    public AnswerService(AnswerRepository answerRepository, MemberService memberService,
+        QuestionService questionService) {
         this.answerRepository = answerRepository;
+        this.memberService = memberService;
+        this.questionService = questionService;
     }
 
     // 질문 생성
-    public Answer createAnswer(Answer answer) {
-        // 해당 답변이 존재하는 지?? 중복 허용을 하기 때문에 존재유뮤 확인 x
-        // repo에 저장
+    public Answer createAnswer(Answer answer, long memberId, String email, long questionId) {
+
+        Question question = questionService.findQuestion(questionId);
+        Member member = memberService.findMember(memberId, email);
 
         answer.setVotes(0);
         answer.setAdopt(false);
+        answer.setMember(member);
+        answer.setQuestion(question);
 
         return answerRepository.save(answer);
     }
 
     // 질문 수정
-    public Answer updateAnswer(Answer answer) {
+    public Answer updateAnswer(Answer answer, long memberId) {
         // 해당 질문이 존재하는지 확인
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+        // 해당 질문의 작성자와 memberDetail의 멤버가 같은지 확인
+        if(findAnswer.getMember().getMemberId() != memberId) {
+            throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+        }
         // 변경 내용이 null 이 아니라면 변경
         Optional.ofNullable(answer.getContent())
             .ifPresent(content -> findAnswer.setContent(content));
@@ -65,8 +79,12 @@ public class AnswerService {
     }
 
     // 질문 삭제
-    public void deleteAnswer(long answerId) {
+    public void deleteAnswer(long answerId, long memberId) {
         Answer answer = findVerifiedAnswer(answerId);
+
+        if(answer.getMember().getMemberId() != memberId) {
+            throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+        }
         answerRepository.delete(answer);
     }
 
@@ -119,4 +137,5 @@ public class AnswerService {
             throw new BusinessLogicException(ExceptionCode.ADOPT_NOT_ALLOWED);
         }
     }
+
 }
