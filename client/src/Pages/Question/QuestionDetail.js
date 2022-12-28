@@ -118,6 +118,7 @@ const HyperLink = styled(NavLink)`
 function QuestionDetail () {
 
   const { id } = useParams()
+
   const request = {
     method : "get",
     headers : {"Content-Type" : "application/json"}
@@ -125,11 +126,24 @@ function QuestionDetail () {
   //클라이언트가 서버에게 json 형식의 데이터가 보내지는 것인지 알려주는 설정
 
 
-
+  //endpoint가 questionId가 되는 순간 데이터를 못 받아 옴
   const [question] = useFetch(`http://13.125.30.88:8080/questions/${id}`,request)
   const [member] = useFetch(`http://13.125.30.88:8080/members/${id}`,request)
 
   const [value, setValue] = useState('');
+
+  let createDate = null;
+  let modifiedDate = null;
+  let answerCreateDate = null;
+
+  if (question) {
+    createDate = new window.Date(question.data.createdAt)
+    modifiedDate = new window.Date(question.data.modifiedAt)
+    answerCreateDate = new window.Date(question.data.createdAt)
+  }
+
+  console.log(question)
+  console.log(value)
 
   const modules = {
     toolbar: {
@@ -146,13 +160,7 @@ function QuestionDetail () {
     }
   }
 
-  
-  let createDate = new window.Date(question.createdAt) 
-  let modifiedDate = new window.Date(question.modifiedAt)
-  let answerCreateDate = new window.Date(question.createdAt)
-
-  console.log(answerCreateDate)
-
+  console.log(question.createdAt)
 
   const timeForToday = (time) => {
     const today = new window.Date();
@@ -169,22 +177,41 @@ function QuestionDetail () {
     return `${Math.floor(betweenTimeDay / 365)} years ago`
   } 
 
+  const handleSubmit = (e) => {
+    if(value === '') return alert("내용을 입력하세요")
+
+    const request = {
+      method : "POST",
+      body : JSON.stringify(value),
+      header : {'Content-Type' : 'application/json'}
+    }
+    fetch('http://13.125.30.88:8080/questions/', request)
+    .then (() => {
+
+      // window.location.reload()
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    console.log(e.target.value)
+  }
+
+
   return(
     <All>
+      {!question ?? <p>Loading</p>}
       <div>
         <Post>
           <AllQuestions>
             <Subject>  
-              {question && (
-                <h2>{question.subject}</h2>
-                )}
+                <h2>{question && question.data.subject}</h2>
             </Subject>
-            <AskQuestionButton to='/AskQuestion'>Ask Question</AskQuestionButton>          
+            <AskQuestionButton to='/ask'>Ask Question</AskQuestionButton>          
           </AllQuestions>
           <At>
             <Date>Asked {timeForToday(createDate)}</Date>
             <Date>Motified {timeForToday(modifiedDate)}</Date>
-            <Date>Viewed {question.view}</Date>
+            <Date>Viewed {question && question.data.view}</Date>
           </At>
           <QuestionContentView>
           <div style={{"display" : "flex", "margin" : "25px"}}>
@@ -192,16 +219,14 @@ function QuestionDetail () {
               <button style={{"backgroundColor" : "white", "border" : "none"}}>
                 <CaretUpOutlined style={{"fontSize" : "30px"}}/>
               </button>
-                  <QuestionEstimation>{question.vote}</QuestionEstimation>
+                  <QuestionEstimation>{question && question.data.vote}</QuestionEstimation>
               <button style={{"backgroundColor" : "white", "border" : "none"}}>
                 <CaretDownOutlined style={{"fontSize" : "30px"}}/>
               </button>
             </Vote>
           </div>
           <Content>
-            {question && (
-              <span>{question.content}</span>
-            )}
+            <span>{question && question.data.content}</span>
           </Content>
           </QuestionContentView>
         </Post>
@@ -213,9 +238,9 @@ function QuestionDetail () {
         </Writer>
       </div>
       <Answer>
-      {question && question.answer.length} answers
+      {question.answer ? question.answer.length : 0} answers
         <AnswerContentView>
-          {question && question.answer.map(answer =>
+          {question.answer && question.answer.map(answer =>
           <div className="eachAnswer">
             <div style={{"display" : "flex"}} key={answer.id}>
               <Vote>
@@ -271,11 +296,10 @@ function QuestionDetail () {
           </div>
         </FlexRight>
         <PostAnswer>
-        <SubmitButton>Post Your Answer</SubmitButton>
+        <SubmitButton onClick={handleSubmit}>Post Your Answer</SubmitButton>
           <span style={{"margin" : "18px", "fontSize" : "17px"}}>Not the answer you're looking for? 
-          <HyperLink to = "/AskQuestion"> ask your own question</HyperLink></span>
+          <HyperLink to = "/ask"> ask your own question</HyperLink></span>
         </PostAnswer>
-
     </All>
   )
 }
