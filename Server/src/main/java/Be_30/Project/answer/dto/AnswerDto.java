@@ -39,8 +39,21 @@ public class AnswerDto {
         private String content;
         private boolean adopt;
         private int votes;
-        private MemberDto.Response member;
-        private QuestionDto.Response question;
+        private MemberDto.ResponseOnlyMember member;
+        private QuestionDto.ResponseOnlyQuestion question;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class ResponseWithoutQuestion {
+        private Long answerId;
+        private String content;
+        private boolean adopt;
+        private int votes;
+        private MemberDto.ResponseOnlyMember member;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
