@@ -11,7 +11,7 @@ const Container = styled.div`
   margin-bottom: 16px;
   max-width: 316px;
 `
-const Form = styled.form`
+const Form = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: -6px;
@@ -57,12 +57,16 @@ const SignupForm = () => {
   const navigate = useNavigate();
 
 
-  const onSignUpSubmitHandler = (event) => {
-    event.preventDefault();
-    
+  const onSignUpSubmitHandler = async () => {
     const jsonData = JSON.stringify(info);
+    console.log(jsonData)
 
-    axios.post("http://13.125.30.88:8080/members/signup", jsonData)
+    await axios.post("http://13.125.30.88:8080/members/signup", jsonData,
+    {
+      headers: {
+        "Content-Type": `application/json`
+      }
+    })
       .then((res) => {
         navigate("/login");
         // 현재 로그인 요청 보내면 로그인페이지 -> 회원가입 페이지로 되돌아옴
@@ -76,7 +80,7 @@ const SignupForm = () => {
 
   return (
     <Container>
-      <Form onSubmit={event => onSignUpSubmitHandler(event)}>
+      <Form>
         <div className='input-box'>
           <label htmlFor='display-name'>Display name</label>
           <input type='text' 
@@ -108,7 +112,7 @@ const SignupForm = () => {
           })}/>
           <p>Passwords must contain at least eight characters, including at least 1 letter and 1 number.</p>
         </div>
-        <button>SignUp</button>
+        <button onClick={onSignUpSubmitHandler}>SignUp</button>
       </Form>
   </Container>
   )

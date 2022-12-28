@@ -116,7 +116,7 @@ const GitButton = styled(Button)`
 
 const LoginPage = () => {
   const [info, setInfo] = useState({
-    username: '',
+    email: '',
     password: '',
   })
   const navigate = useNavigate();

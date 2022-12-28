@@ -20,7 +20,7 @@ const useFetch = (url) => {
         console.log("err")
       })
     })
-  },[url])
+  },[])
   return [question,setQuestion]
 }
 
