@@ -137,6 +137,7 @@ const Header = () => {
 
   const onChange = (e) => {
     setSearch(e.target.value);
+    console.log(state)
   };
 
   return (

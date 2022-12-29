@@ -3,17 +3,17 @@ import { ADD_TOKEN, DELETE_TOKEN, IS_LOGIN } from './actions'
 const AuthState = { tokens: {}, isLogin: false }
 
 export const AuthReducer = (state = AuthState, action) => {
-    switch (action) {
+    switch (action.type) {
         case ADD_TOKEN:
             return {
                 ...state, 
-                tokens: {...state, accessToken: action.payload.accessToken, refreshToken: action.payload.refreshToken}
+                tokens: {accessToken: action.payload.accessToken, refreshToken: action.payload.refreshToken}
             }
 
         case DELETE_TOKEN:
             return {
                 ...state, 
-                tokens: {}
+                tokens: {accessToken: null, refreshToken: null}
             }
 
         case IS_LOGIN:

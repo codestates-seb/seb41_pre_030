@@ -134,13 +134,13 @@ const LoginPage = () => {
     await axios
     .post("http://13.125.30.88:8080/members/login", jsonData)
     .then((res) => {
-      // store.dispatch(addToken(
-      //   {
-      //     accessToken: res.headers.authorization, 
-      //     refreshToken: res.headers.refresh
-      //   }
-      // ));
-      store.dispatch(isLogin());
+      store.dispatch(addToken(
+        {
+          accessToken: res.headers.authorization, 
+          refreshToken: res.headers.refresh
+        }
+      ));
+      store.dispatch(isLogin())
       alert("Login");
       navigate("/");
     })
