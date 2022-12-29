@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import UserList from "./UserList";
 import useFetch from "../../Components/util/useFetch";
@@ -29,6 +30,7 @@ export const All = styled.main`
                 background: #F48225;
                 border: 1px solid #F48225;
             }
+            
         }
     }
 `
@@ -46,13 +48,30 @@ const UserSearch = styled.input`
 `;
 
 const AllUsers = () => {
-    const [question] = useFetch('http://13.125.30.88:8080/members');
+    const [question, setQuestion] = useFetch('http://13.125.30.88:8080/members');
+
+    const [search, setSearch] = useState("");
+
+    const onChange = (e) => {
+        setSearch(e.target.value);
+    };
+
+    const userFind = (e) => {
+        if(e.key === "Enter") {
+        setQuestion({data: question.data.filter((el, idx) => {return el.nickName.includes(search)})})
+        }
+    }
 
     return(
         <All>
             <AllUser>All Users</AllUser>
-            <UserSearch placeholder="Filter by user" />
-            {question && <UserList question={question} itemsPerPage={20} />}
+            <UserSearch
+                type="text"
+                placeholder="Search..."
+                onChange={onChange}
+                onKeyDown={(e) => userFind(e)}
+                />
+            {question && <UserList question={question.data} itemsPerPage={20} />}
         </All>
     )
 };
