@@ -94,10 +94,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 //
 //        response.addCookie(RefreshCookie);
 //        response.addCookie(MemberCookie);
-//
-//        response.setHeader("memberId", String.valueOf(member.getMemberId()));
-//        response.setHeader("Authorization", "Bearer " + accessToken);
-//        response.setHeader("Refresh", refreshToken);
+
+          response.setHeader("memberId", String.valueOf(member.getMemberId()));
+          response.setHeader("Authorization", "Bearer " + accessToken);
+          response.setHeader("Refresh", refreshToken);
 
         //failureHandler는 실패했을 때 자동으로 실행된다
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
