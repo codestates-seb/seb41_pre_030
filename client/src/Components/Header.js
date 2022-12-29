@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Logo from "../Image/Logo";
 import { Link } from "react-router-dom";
+import store from '../Redux/store';
 
 const StyledHeader = styled.header`
   background-color: hsl(210deg 8% 98%);
@@ -123,9 +124,20 @@ const SignupLink = styled(Link)`
 
 const Header = () => {
   const [search, setSearch] = useState("");
+  const [state, setState] = useState(store.getState());
+
+  useEffect(() => {
+    const unsubscribe = store.subscribe(() => {
+        setState(store.getState())
+    });
+    return () => {
+        unsubscribe()
+    }
+  }, [state])
 
   const onChange = (e) => {
     setSearch(e.target.value);
+    console.log(state)
   };
 
   return (
