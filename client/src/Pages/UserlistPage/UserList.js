@@ -42,15 +42,16 @@ const QuestionNumber = styled.div`
 
 const UserList = (props) => {
     const [itemOffset, setItemOffset] = useState(0);
+    console.log(props.question)
 
     const endOffset = itemOffset + props.itemsPerPage;
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    let currentItems = props.question.data.slice(itemOffset, endOffset);
-    let pageCount = Math.ceil(props.question.data.length / props.itemsPerPage);
-    console.log(props.question.data)
+    let currentItems = props.question.slice(itemOffset, endOffset);
+    let pageCount = Math.ceil(props.question.length / props.itemsPerPage);
+    console.log(props.question)
 
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * props.itemsPerPage) % props.question.data.length;
+        const newOffset = (event.selected * props.itemsPerPage) % props.question.length;
         console.log(
         `User requested page number ${event.selected}, which is offset ${newOffset}`
         );
@@ -64,7 +65,7 @@ const UserList = (props) => {
                     <UserContainer key={user.memberId}>
                             <LeftContainer src={profileImage}/>
                     <RightContainer>
-                            <UserLink to="/api">{user.nickName}</UserLink>
+                            <UserLink to={`/userpage/${user.meberId}`}>{user.nickName}</UserLink>
                             <QuestionNumber>{user.answer ? user.answer.length : '0'}</QuestionNumber>
                     </RightContainer>
                     </UserContainer>

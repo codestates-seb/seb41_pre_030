@@ -28,7 +28,7 @@ function App() {
           <Route path='/signup' element={<Signup />}/>
           <Route path='/login' element={<LoginPage />} />
           <Route path='/ask' element={<AskPage />}/>
-          <Route path='/alluser' element={<AllUsers />}/>
+          <Route path='/members' element={<AllUsers />}/>
           <Route exact path='/' element={<Home questions={question}/>}/>
         </Routes>
         {!['/signup', '/login'].includes(location.pathname) && <Footer />}
