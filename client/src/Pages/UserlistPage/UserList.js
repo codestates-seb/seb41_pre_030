@@ -63,10 +63,10 @@ const UserList = (props) => {
             <List>
                 {currentItems && currentItems.map(user => 
                     <UserContainer key={user.memberId}>
-                            <LeftContainer src={profileImage}/>
+                            <LeftContainer src={user.profileImageSrc}/>
                     <RightContainer>
-                            <UserLink to={`/member/${user.meberId}`}>{user.nickName}</UserLink>
-                            <QuestionNumber>{user.answer ? user.answer.length : '0'}</QuestionNumber>
+                            <UserLink to={`/member/${user.memberId}`}>{user.nickName}</UserLink>
+                            <QuestionNumber>{user.answers ? user.answers.length : '0'}</QuestionNumber>
                     </RightContainer>
                     </UserContainer>
                 )}

@@ -2,8 +2,9 @@ import styled from "styled-components";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import store from '../../Redux/store';
 // import { useSelector } from 'react-redux'
 
 
@@ -101,6 +102,16 @@ const Button = styled.button`
 
 
 const AskPage = () => {
+	const [state, setState] = useState(store.getState());
+	
+	useEffect(() => {
+		const unsubscribe = store.subscribe(() => {
+				setState(store.getState())
+		});
+		return () => {
+			unsubscribe()
+		}
+	}, [state])
 
 	// const user = useSelector();
 
@@ -163,24 +174,28 @@ const AskPage = () => {
 		e.preventDefault();
 
 		if (title !== "" && body !== "") {
-			const bodyJSON = {
-				title: title,
-				body: body,
-				// user: user,
-			};
+			const bodyJSON =  JSON.stringify({
+				subject: title,
+				content: body,
+			});
 
 			console.log(bodyJSON)
 
 			await axios
-				.post("http://13.125.30.88:8080/questions/", JSON.stringify(bodyJSON))
+				.post("http://13.125.30.88:8080/questions", bodyJSON, {
+					headers: {
+						"Content-Type": 'application/json',
+						"Autorization": localStorage.getItem("accessToken"),
+						"refresh": localStorage.getItem("refeshToken")
+					}
+				})
 				.then((res) => {
 					alert("Question added successfully");
 					navigate("/");
-			})
-
-			.catch((err) => {
-				console.log(err);
-			});
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 		}
 	}
 	return (

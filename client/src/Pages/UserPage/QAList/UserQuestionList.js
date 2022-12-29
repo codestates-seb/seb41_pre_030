@@ -1,19 +1,15 @@
 import { Fragment } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import useFetch from '../../../Components/util/useFetch';
 import UserPageListItem from './UserPageListItem';
 
 const UserQuestionList = () => {
-    let param = useParams();
-    const [question] = useFetch(`http://13.125.30.88:8080/members`);
-    let idUser = [];
-    if (question) {idUser = question.data.filter((el, idx) => el.memberId === param)};
-
-
+    const location = useLocation();
+    const [question] = useFetch(`http://13.125.30.88:8080/members/${location.pathname[8]}`);
     return (
         <Fragment>
-            {idUser.questions && <h2>{question.questions.length} Questions</h2>}
-            {idUser.questions && question.questions.map(question => 
+            {question && <h2>{question.data.questions.length} Questions</h2>}
+            {question && question.data.questions.map(question => 
                 <UserPageListItem key={question.questionId} question={question}/>
             )}
         </Fragment>
