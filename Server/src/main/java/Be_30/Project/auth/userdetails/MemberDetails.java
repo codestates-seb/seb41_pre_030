@@ -2,7 +2,9 @@ package Be_30.Project.auth.userdetails;
 
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
 import Be_30.Project.member.entity.Member;
+import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
+@Setter
 public class MemberDetails implements UserDetails {
 
     private CustomAuthorityUtils authorityUtils;
@@ -17,6 +20,7 @@ public class MemberDetails implements UserDetails {
     private String email;
     private String password;
     private List<String> roles;
+    private LocalDateTime lastLogin;
 
     public MemberDetails(CustomAuthorityUtils authorityUtils, Member member) {
         this.authorityUtils = authorityUtils;
@@ -24,6 +28,7 @@ public class MemberDetails implements UserDetails {
         this.email = member.getEmail();
         this.password = member.getPassword();
         this.roles = member.getRoles();
+        this.lastLogin = member.getLastLogin();
     }
 
     @Override

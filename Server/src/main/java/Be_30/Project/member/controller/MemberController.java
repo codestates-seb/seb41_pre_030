@@ -93,6 +93,19 @@ public class MemberController {
             HttpStatus.OK);
     }
 
+    @GetMapping("/{member-id}")
+    public ResponseEntity getMember(@Positive @PathVariable("member-id") int id
+        ) {
+
+        Member member = memberService.findMember(id,"");
+
+        MemberDto.Response response = mapper.MemberToMemberResponseDto(member);
+
+        return new ResponseEntity<>(
+            new SingleResponseDto<>(response),
+            HttpStatus.OK);
+    }
+
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@Positive @PathVariable("member-id") int id, @AuthenticationPrincipal MemberDetails memberDetails){
         String email = memberDetails.getEmail();
@@ -112,6 +125,18 @@ public class MemberController {
         , pageMembers);
 
         return new ResponseEntity<>(multiResponseDto,HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity loginMember(@AuthenticationPrincipal MemberDetails memberDetails){
+        Member member = new Member();
+        member.setMemberId(memberDetails.getMemberId());
+        member.setEmail(memberDetails.getEmail());
+        member.setRoles(memberDetails.getRoles());
+
+        MemberDto.Response response = mapper.MemberToMemberResponseDto(member);
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
 //    private String getEmailByRequest(HttpServletRequest request) {
