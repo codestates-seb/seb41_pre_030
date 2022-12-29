@@ -68,8 +68,12 @@ public class MemberService {
     }
 
     public Member findMember(long memberId, String email) {
-
-        return findVerifiedMember(memberId,email);
+        if(!email.isEmpty()){
+            return findVerifiedMember(memberId,email);
+        }
+            return memberRepository.findById(memberId).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND)
+            );
     }
 
 

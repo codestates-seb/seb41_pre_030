@@ -3,11 +3,11 @@ package Be_30.Project.member.entity;
 import Be_30.Project.answer.entity.Answer;
 import Be_30.Project.audit.Auditable;
 import Be_30.Project.question.entity.Question;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
-import Be_30.Project.file.entity.ImageFile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,9 +35,9 @@ public class Member extends Auditable {
     @Column(length = 100, nullable = false)
     private String nickName;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
-    private ImageFile profileImage;
+    private String profileImageSrc;
+
+    private LocalDateTime lastLogin;
 
     //user 권한 정보와 관련된 별도의 엔티티 생성 필요 없음
     @ElementCollection(fetch = FetchType.EAGER)

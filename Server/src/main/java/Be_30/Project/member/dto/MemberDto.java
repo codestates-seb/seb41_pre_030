@@ -3,6 +3,7 @@ package Be_30.Project.member.dto;
 import Be_30.Project.answer.dto.AnswerDto;
 import Be_30.Project.member.entity.Member.MemberStatus;
 
+import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -69,6 +70,12 @@ public class MemberDto {
 
         private String profileImageSrc;
 
+        private LocalDateTime createdAt;
+
+        private LocalDateTime modifiedAt;
+
+        private LocalDateTime lastLogin;
+
         private List<QuestionDto.ResponseOnlyQuestion> questions;
 
         private List<AnswerDto.Response> answers;
@@ -80,9 +87,12 @@ public class MemberDto {
     public static class ResponseOnlyMember{
         private long memberId;
 
-        @NotBlank
-        @Email
         private String email;
 
+        private String nickName;
+
+        private MemberStatus memberStatus;
+
+        private String profileImageSrc;
     }
 }

@@ -47,18 +47,17 @@ public class AnswerController {
     public ResponseEntity postAnswer(@PathVariable("question-id") @Positive long questionId,
         @Valid @RequestBody AnswerDto.Post answerPostDto,
         @AuthenticationPrincipal MemberDetails memberDetails) {
-        // 전달 받은 Dto -> 서비스에 보냄
-        Answer answer = answerService.createAnswer(mapper.answerPostDtoToAnswer(answerPostDto),
-            memberDetails.getMemberId(), memberDetails.getEmail(), questionId);
 
-        URI location = UriComponentsBuilder.newInstance()
-            .path("/questions/{question-id}/answers/{answer-id}")
-            .buildAndExpand(questionId, answer.getAnswerId())
-            .toUri();
+        if(memberDetails != null) {
+            Answer answer = answerService.createAnswer(mapper.answerPostDtoToAnswer(answerPostDto),
+                memberDetails, questionId);
 
-        log.info(location.toString());
+            AnswerDto.Response response = mapper.answerToAnswerResponseDto(answer);
 
-        return ResponseEntity.created(location).build();
+            return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 채택 기능
@@ -66,9 +65,14 @@ public class AnswerController {
     public ResponseEntity postAdopt(@PathVariable("question-id") @Positive long questionId,
         @PathVariable("answer-id") @Positive long answerId,
         @AuthenticationPrincipal MemberDetails memberDetails) {
-        Answer answer = answerService.adoptAnswer(answerId, memberDetails.getMemberId());
-        AnswerDto.Response response = mapper.answerToAnswerResponseDto(answer);
-        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+
+        if(memberDetails != null) {
+            Answer answer = answerService.adoptAnswer(answerId, memberDetails.getMemberId());
+            AnswerDto.Response response = mapper.answerToAnswerResponseDto(answer);
+            return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping("/{question-id}/answers/{answer-id}")
@@ -76,15 +80,18 @@ public class AnswerController {
         @PathVariable("answer-id") @Positive long answerId,
         @Valid @RequestBody AnswerDto.Patch answerPatchDto,
         @AuthenticationPrincipal MemberDetails memberDetails) {
-        // dto -> 객체 -> setId
-        Answer answer = mapper.answerPatchDtoToAnswer(answerPatchDto);
-        answer.setAnswerId(answerId);
-        // 객체 -> service
-        Answer updateAnswer = answerService.updateAnswer(answer, memberDetails.getMemberId());
-        // 반환받은 객체 -> responseDto
-        AnswerDto.Response response = mapper.answerToAnswerResponseDto(updateAnswer);
+        if(memberDetails != null) {
+            Answer answer = mapper.answerPatchDtoToAnswer(answerPatchDto);
+            answer.setAnswerId(answerId);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+            Answer updateAnswer = answerService.updateAnswer(answer, memberDetails.getMemberId());
+
+            AnswerDto.Response response = mapper.answerToAnswerResponseDto(updateAnswer);
+
+            return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{question-id}/answers/{answer-id}")
@@ -113,13 +120,15 @@ public class AnswerController {
     }
 
     @DeleteMapping("/{question-id}/answers/{answer-id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAnswer(@PathVariable("question-id") @Positive long questionId,
+    public ResponseEntity deleteAnswer(@PathVariable("question-id") @Positive long questionId,
         @PathVariable("answer-id") @Positive long answerId,
         @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        answerService.deleteAnswer(answerId, memberDetails.getMemberId());
-
+        if(memberDetails != null) {
+            answerService.deleteAnswer(answerId, memberDetails.getMemberId());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
-
 }

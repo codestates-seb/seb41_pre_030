@@ -41,7 +41,8 @@ public class AnswerVote extends Auditable {
 
      public enum VoteStatus {
          VOTE_UP("추천"),
-         VOTE_DOWN("비추천");
+         VOTE_DOWN("비추천"),
+         VOTE_CANCEL("취소");
          private String status;
 
          VoteStatus(String status) {
