@@ -5,6 +5,7 @@ import static java.lang.Boolean.valueOf;
 
 import Be_30.Project.answer.entity.Answer;
 import Be_30.Project.answer.repository.AnswerRepository;
+import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.entity.Member;
@@ -37,10 +38,10 @@ public class AnswerService {
     }
 
     // 질문 생성
-    public Answer createAnswer(Answer answer, long memberId, String email, long questionId) {
+    public Answer createAnswer(Answer answer, MemberDetails memberDetails, long questionId) {
 
         Question question = questionService.findQuestion(questionId);
-        Member member = memberService.findMember(memberId, email);
+        Member member = memberService.findMember(memberDetails.getMemberId(), memberDetails.getEmail());
 
         answer.setVotes(0);
         answer.setAdopt(false);
