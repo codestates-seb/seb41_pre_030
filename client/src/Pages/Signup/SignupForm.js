@@ -108,7 +108,8 @@ const SignupForm = () => {
           name='password'
           onChange={event => setInfo({
             ...info,
-            password: event.target.value
+            password: event.target.value,
+            confirmedPassword: event.target.value
           })}/>
           <p>Passwords must contain at least eight characters, including at least 1 letter and 1 number.</p>
         </div>
