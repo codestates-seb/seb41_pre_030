@@ -25,6 +25,9 @@ export const All = styled.main`
             border: 1px solid hsl(210,8%,85%);
             border-radius: 3px;
             cursor: pointer;
+            :hover {
+                background-color: hsl(210,8%,85%)
+            }
             :active {
                 color: white;
                 background: #F48225;

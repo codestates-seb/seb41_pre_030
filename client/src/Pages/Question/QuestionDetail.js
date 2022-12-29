@@ -7,7 +7,7 @@ import OAuthButton from "../Signup/OAuthButton";
 import Google from "../../Image/Google";
 import GitHub from "../../Image/GitHub";
 import Logo from "../../Image/Logo";
-import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons' ;
+import { CaretUpOutlined, CaretDownOutlined, CheckOutlined } from '@ant-design/icons' ;
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css';
 
@@ -43,7 +43,7 @@ const AnswerContentView = styled.div`
 `
 
 const Vote = styled.div`
-  margin: 20px;
+  margin: 0px 20px;
   display: grid;
 `
 
@@ -113,6 +113,11 @@ const Writer = styled.div`
 const HyperLink = styled(NavLink)`
   text-decoration: none;
   color: blue
+`
+
+const AdoptStyle = styled(CheckOutlined)`
+  font-size: 20px;
+  margin-top: 20px;
 `
 
 function QuestionDetail () {
@@ -196,6 +201,10 @@ function QuestionDetail () {
     console.log(e.target.value)
   }
 
+  const downButton = () => {
+    console.log("down")
+  }
+
 
   return(
     <All>
@@ -211,7 +220,7 @@ function QuestionDetail () {
           <At>
             <Date>Asked {timeForToday(createDate)}</Date>
             <Date>Motified {timeForToday(modifiedDate)}</Date>
-            <Date>Viewed {question && question.data.view}</Date>
+            <Date>Viewed {question && question.data.views}</Date>
           </At>
           <QuestionContentView>
           <div style={{"display" : "flex", "margin" : "25px"}}>
@@ -219,7 +228,7 @@ function QuestionDetail () {
               <button style={{"backgroundColor" : "white", "border" : "none"}}>
                 <CaretUpOutlined style={{"fontSize" : "30px"}}/>
               </button>
-                  <QuestionEstimation>{question && question.data.vote}</QuestionEstimation>
+                  <QuestionEstimation>{question && question.data.votes }</QuestionEstimation>
               <button style={{"backgroundColor" : "white", "border" : "none"}}>
                 <CaretDownOutlined style={{"fontSize" : "30px"}}/>
               </button>
@@ -249,8 +258,9 @@ function QuestionDetail () {
                 </button>
                 <QuestionEstimation>{answer.vote}</QuestionEstimation>
                 <button style={{"backgroundColor" : "white", "border" : "none"}}>
-                  <CaretDownOutlined style={{"fontSize" : "30px"}}/>
+                  <CaretDownOutlined style={{"fontSize" : "30px"}} onClick = {downButton}/>
                 </button>
+                <AdoptStyle style={question.answer.adopt === true ? {"color" : "blue"}: {"color" : "black"}}/>
               </Vote>
               <Content>
                 <div style={{"marginLeft" : "20px"}}>{answer.content}</div>
