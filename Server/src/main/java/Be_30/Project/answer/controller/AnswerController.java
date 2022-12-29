@@ -48,14 +48,16 @@ public class AnswerController {
         @Valid @RequestBody AnswerDto.Post answerPostDto,
         @AuthenticationPrincipal MemberDetails memberDetails) {
 
-
+        if(memberDetails != null) {
             Answer answer = answerService.createAnswer(mapper.answerPostDtoToAnswer(answerPostDto),
                 memberDetails, questionId);
 
             AnswerDto.Response response = mapper.answerToAnswerResponseDto(answer);
 
             return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
-
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 채택 기능
