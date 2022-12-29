@@ -65,7 +65,7 @@ const UserList = (props) => {
                     <UserContainer key={user.memberId}>
                             <LeftContainer src={profileImage}/>
                     <RightContainer>
-                            <UserLink to={`/userpage/${user.meberId}`}>{user.nickName}</UserLink>
+                            <UserLink to={`/member/${user.meberId}`}>{user.nickName}</UserLink>
                             <QuestionNumber>{user.answer ? user.answer.length : '0'}</QuestionNumber>
                     </RightContainer>
                     </UserContainer>

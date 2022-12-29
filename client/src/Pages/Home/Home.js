@@ -9,6 +9,7 @@ export const All = styled.main`
     width: 100vh;
     border-left: 1px solid hsl(210,8%,85%);
     display: grid;
+    padding-bottom: 50px;
     ul {
         display: flex;
         flex-direction: row;

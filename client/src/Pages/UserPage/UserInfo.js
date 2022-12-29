@@ -1,6 +1,9 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import useFetch from '../../Components/util/useFetch';
 import profileImage from "../../Image/profile.png";
+import store from '../../Redux/store';
 
 const TopViewContainer = styled.div`
     position: relative;
@@ -64,23 +67,65 @@ const EditProfile = styled.div`
 `
 
 const UserInfo = () => {
+    let param = useParams();
+    const [question] = useFetch(`http://13.125.30.88:8080/members/${param}`);
+    const [state, setState] = useState(store.getState());
+    
+    useEffect(() => {
+        const unsubscribe = store.subscribe(() => {
+            setState(store.getState())
+        });
+        return () => {
+            unsubscribe()
+        }
+    }, [state])
+    console.log(state)
+
+    // let createDate = null;
+    // let modifiedDate = null;
+    // let answerCreateDate = null;
+
+    // if (question) {
+    //     createDate = new window.Date(question.data.createdAt)
+    //     modifiedDate = new window.Date(question.data.modifiedAt)
+    //     answerCreateDate = new window.Date(question.data.createdAt)
+    // }
+
+    // const timeForToday = (time) => {
+    //     const today = new window.Date();
+    //     const timeValue = new window.Date(time);
+    //     const betweenTimeMin = Math.floor((today.getTime() - timeValue.getTime())/ 1000 / 60)
+    //     const betweenTimeHour = Math.floor( betweenTimeMin / 60)
+    //     const betweenTimeDay = Math.floor( betweenTimeMin / 60 / 24)
+    
+    //     if(betweenTimeMin < 1) return "방금 전"
+    //     if(betweenTimeMin < 60) return `${betweenTimeMin} minute ago`
+    //     if(betweenTimeHour < 24) return `${betweenTimeHour} hours ago`
+    //     if(betweenTimeDay < 365) return `${betweenTimeDay} days ago`
+    
+    //     return `${Math.floor(betweenTimeDay / 365)} years ago`
+    // }
+
     return (
         <TopViewContainer>
             <TopView>
                 <TopViewImg>
                     <div>
-                        <img src={profileImage} alt="user avatar"/>
+                        {/* <img src={question.data.questionImageSrc} alt="user avatar"/> */}
                     </div>
                 </TopViewImg>
                 <TopViewInfo>
                     <div>
-                        John Doe
+                        {/* {question.data.nickName} */}
                     </div>
                     <ul>
                         <li>🎂 Member for 0 days</li>
+                        {/* <li>🎂 Member for {timeForToday(createDate)} days</li> */}
                         <li>🗓️ Visited 4 days</li>
+                        {/* <li>🗓️ Visited {timeForToday(visitDate)} days</li> */}
                     </ul>
                 </TopViewInfo>
+                {/* {state.user에 멤버 아이디랑 url 아이디랑 같으면 에딧버튼 보여주기} */}
                 <EditProfile> 
                     <Link to={'/member/edit'}>⚙️ Edit profile</Link>
                 </EditProfile>

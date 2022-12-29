@@ -1,6 +1,6 @@
-import { ADD_TOKEN, DELETE_TOKEN, IS_LOGIN } from './actions'
+import { ADD_TOKEN, ADD_USER, DELETE_TOKEN, LOGGED_FALSE, LOGGED_TRUE } from './actions'
 
-const AuthState = { tokens: {}, isLogin: false }
+const AuthState = { tokens: {}, user: {}, isLogin: false }
 
 export const AuthReducer = (state = AuthState, action) => {
     switch (action.type) {
@@ -16,10 +16,22 @@ export const AuthReducer = (state = AuthState, action) => {
                 tokens: {accessToken: null, refreshToken: null}
             }
 
-        case IS_LOGIN:
+        case LOGGED_TRUE:
             return {
                 ...state,
                 isLogin: true
+            }
+
+        case LOGGED_FALSE:
+            return {
+                ...state,
+                isLogin: false
+            }
+
+        case ADD_USER: 
+            return {
+                ...state,
+                user: {}
             }
 
         default:

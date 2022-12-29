@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import UserInfoEdit from './UserInfoEdit';
 import UserQAList from './QAList/UserQAList';
-import UserTopInfo from './UserInfo';
+import UserInfo from './UserInfo';
 
 const Container = styled.div`
     min-height: 900px;
@@ -22,7 +22,7 @@ const Container = styled.div`
 const UserPage = () => {
     return (
         <Container>
-            <UserTopInfo />
+            <UserInfo />
             <Routes>
                 <Route path='*' element={<UserQAList />} />
                 <Route path='/edit' element={<UserInfoEdit />} />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { All, AllQuestions, AskQuestionButton } from "../Home/Home"
 import styled from "styled-components";
 import useFetch from "../../Components/util/useFetch";
@@ -68,7 +68,7 @@ const YourAnswer = styled.div`
 `
 const PostAnswer = styled.div`
   font-size: 15px;
-  margin: 20px;
+  margin: 50px 20px 20px;
   display: flex;
 `
 
@@ -136,6 +136,8 @@ function QuestionDetail () {
   const [member] = useFetch(`http://13.125.30.88:8080/members/${id}`,request)
 
   const [value, setValue] = useState('');
+
+  let isLogin = localStorage.getItem("isLogin");
 
   let createDate = null;
   let modifiedDate = null;
@@ -247,20 +249,20 @@ function QuestionDetail () {
         </Writer>
       </div>
       <Answer>
-      {question.answer ? question.answer.length : 0} answers
+        {question ? question.data.answers.length : 0} answers
         <AnswerContentView>
-          {question.answer && question.answer.map(answer =>
-          <div className="eachAnswer">
+          {question && question.data.answers.map(answer =>
+          <div className="eachAnswer" key={answer.answerId}>
             <div style={{"display" : "flex"}} key={answer.id}>
               <Vote>
                 <button style={{"backgroundColor" : "white", "border" : "none"}}>
                   <CaretUpOutlined style={{"fontSize" : "30px"}}/>
                 </button>
-                <QuestionEstimation>{answer.vote}</QuestionEstimation>
+                <QuestionEstimation>{answer.votes}</QuestionEstimation>
                 <button style={{"backgroundColor" : "white", "border" : "none"}}>
                   <CaretDownOutlined style={{"fontSize" : "30px"}} onClick = {downButton}/>
                 </button>
-                <AdoptStyle style={question.answer.adopt === true ? {"color" : "blue"}: {"color" : "black"}}/>
+                <AdoptStyle style={answer.adopt === true ? {"color" : "blue"}: {"color" : "black"}}/>
               </Vote>
               <Content>
                 <div style={{"marginLeft" : "20px"}}>{answer.content}</div>
@@ -285,31 +287,34 @@ function QuestionDetail () {
         style={{ "height" : "400px"}}/>
       </YourAnswer>
 
-      {/*로그인 시 뜨지 않게 해야함 */}
-        <FlexRight>
-          <div style={{"whiteSpace": "nowrap"}} >Signup or
-            <HyperLink to="/login"> login</HyperLink>
-          </div>
-          <div className='button-group'>
-            <OAuthButton color="rgb(59, 64, 69)">
-              <Google /> 
-              Sign up with Google
-            </OAuthButton>
-            <OAuthButton bg_color="rgb(47, 51, 55)">
-              <GitHub /> 
-              Sign up with GitHub
-            </OAuthButton>
-            <OAuthButton bg_color="rgb(56, 84, 153)">
-              <Logo style={{"height" : "1px"}}/> 
-              Sign up using Email and Password
-            </OAuthButton>
-          </div>
-        </FlexRight>
-        <PostAnswer>
+      {!isLogin ??
+          <Fragment>
+            <FlexRight>
+              <div style={{"whiteSpace": "nowrap"}} >Signup or
+                <HyperLink to="/login"> login</HyperLink>
+              </div>
+              <div className='button-group'>
+                <OAuthButton color="rgb(59, 64, 69)">
+                  <Google /> 
+                  Sign up with Google
+                </OAuthButton>
+                <OAuthButton bg_color="rgb(47, 51, 55)">
+                  <GitHub /> 
+                  Sign up with GitHub
+                </OAuthButton>
+                <OAuthButton bg_color="rgb(56, 84, 153)">
+                  <Logo style={{"height" : "1px"}}/> 
+                  Sign up using Email and Password
+                </OAuthButton>
+              </div>
+            </FlexRight>
+        </Fragment>
+      }
+      <PostAnswer>
         <SubmitButton onClick={handleSubmit}>Post Your Answer</SubmitButton>
           <span style={{"margin" : "18px", "fontSize" : "17px"}}>Not the answer you're looking for? 
           <HyperLink to = "/ask"> ask your own question</HyperLink></span>
-        </PostAnswer>
+      </PostAnswer>
     </All>
   )
 }

@@ -1,6 +1,8 @@
 export const ADD_TOKEN = 'ADD_TOKEN';
 export const DELETE_TOKEN = 'DELETE_TOKEN';
-export const IS_LOGIN = 'IS_LOGIN';
+export const LOGGED_TRUE = 'LOGGED_TRUE';
+export const LOGGED_FALSE = 'LOGGED_FALSE';
+export const ADD_USER = 'ADD_USER';
 
 export const addToken = (payload) => {
     return {
@@ -14,8 +16,19 @@ export const deleteToken = (payload) => {
         payload
     }
 }
-export const isLogin = () => {
+export const logIn = () => {
     return {
-        type: IS_LOGIN,
+        type: LOGGED_TRUE,
+    }
+}
+export const logOut = () => {
+    return {
+        type: LOGGED_FALSE,
+    }
+}
+export const addUser = (payload) => {
+    return {
+        type: ADD_USER,
+        payload
     }
 }

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 import Logo from "../Image/Logo";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import store from '../Redux/store';
 
 const StyledHeader = styled.header`
@@ -120,15 +120,34 @@ const SignupLink = styled(Link)`
     --button-hover-bg-color: hsl(209deg 100% 38%);
     --button-active-bg-color: hsl(209deg 100% 32%);
   }
-`;
+`
+const ProfileLink = styled.a`
+  display: inline-block;
+  padding: 7px 5px 0px 5px;
+  margin: auto;
+
+  :hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  img {
+    width: 35px;
+    height: 35px;
+  }
+`
+
+
+;
 
 const Header = () => {
   const [search, setSearch] = useState("");
   const [state, setState] = useState(store.getState());
-
+  let isLogin = localStorage.getItem("isLogin")
+  const location = useLocation();
+  
   useEffect(() => {
     const unsubscribe = store.subscribe(() => {
-        setState(store.getState())
+      setState(store.getState())
     });
     return () => {
         unsubscribe()
@@ -139,6 +158,11 @@ const Header = () => {
     setSearch(e.target.value);
     console.log(state)
   };
+
+  const onLogoutHandler = () => {
+    localStorage.clear();
+    location.reload()
+  }
 
   return (
     <StyledHeader>
@@ -157,12 +181,26 @@ const Header = () => {
           name="keyword" 
         />
       </form>
-      <LoginLink to={"/login"}>
-        <button className="login">Log in</button>
-      </LoginLink>
-      <SignupLink to={"/signup"}>
-        <button className="signUp">Sign up</button>
-      </SignupLink>
+      {isLogin ?
+      <Fragment>
+        <ProfileLink href={`member/${state.user.memberId}`} className="profile">
+          <img />
+        </ProfileLink>
+        <LoginLink className="profile">
+          <button className="logout" onClick={onLogoutHandler}>Log out</button>
+        </LoginLink> 
+      </Fragment> 
+        :
+      <Fragment>      
+        <LoginLink to={"/login"}>
+          <button className="login">Log in</button>
+        </LoginLink>
+        <SignupLink to={"/signup"}>
+          <button className="signUp">Sign up</button>
+        </SignupLink>
+    </Fragment> 
+    }
+
     </StyledHeader>
   );
 };

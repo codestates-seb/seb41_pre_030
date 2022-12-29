@@ -25,7 +25,7 @@ const Pagenation = (props) => {
                 <Questions key={question.questionId}>
                     <QuestionCount>
                         <Count>{question.votes} votes</Count>
-                        <Count>{question.answer?question.answer.length : 0} answers</Count>
+                        <Count>{question.answerCount?question.answerCount : 0} answers</Count>
                         <Count>{question.views} views</Count>
                     </QuestionCount>
                     <Question>
