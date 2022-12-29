@@ -5,6 +5,8 @@ import GitLogo from "../../Image/GitLogo";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import store from '../../Redux/store';
+import { addToken, isLogin } from '../../Redux/actions';
 
 
 const BgCenter = styled.div`
@@ -132,6 +134,13 @@ const LoginPage = () => {
     await axios
     .post("http://13.125.30.88:8080/members/login", jsonData)
     .then((res) => {
+      // store.dispatch(addToken(
+      //   {
+      //     accessToken: res.headers.authorization, 
+      //     refreshToken: res.headers.refresh
+      //   }
+      // ));
+      store.dispatch(isLogin());
       alert("Login");
       navigate("/");
     })
