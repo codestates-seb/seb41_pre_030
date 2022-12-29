@@ -37,8 +37,6 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private void sendSuccessResponse(HttpServletResponse response,Authentication authentication)
         throws IOException {
-        //TODO: 데이터베이스에 lastlogin 값 저장하기
-        //TODO: 로그인을 할때뿐만 아니라 할때도 doFilterInternal거쳐서 에러로그가 뜬다? -> shouldNotFilter를 안거치나?
         Gson gson = new Gson();
         MemberDetails memberDeatils = (MemberDetails) authentication.getPrincipal();
         memberDeatils.setLastLogin(LocalDateTime.now());
@@ -46,6 +44,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
         Optional<Member> findmember = memberRepository.findByEmail(memberDeatils.getEmail());
         findmember.get().setLastLogin(LocalDateTime.now());
+        memberRepository.save(findmember.get());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(OK.value());
         response.getWriter().write(gson.toJson(memberDeatils,memberDeatils.getClass()));
