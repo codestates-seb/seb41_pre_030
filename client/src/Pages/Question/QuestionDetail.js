@@ -201,6 +201,10 @@ function QuestionDetail () {
     console.log(e.target.value)
   }
 
+  const downButton = () => {
+    console.log("down")
+  }
+
 
   return(
     <All>
@@ -224,7 +228,7 @@ function QuestionDetail () {
               <button style={{"backgroundColor" : "white", "border" : "none"}}>
                 <CaretUpOutlined style={{"fontSize" : "30px"}}/>
               </button>
-                  <QuestionEstimation>{question.answer ? question.data.vote : 0}</QuestionEstimation>
+                  <QuestionEstimation>{question && question.data.votes }</QuestionEstimation>
               <button style={{"backgroundColor" : "white", "border" : "none"}}>
                 <CaretDownOutlined style={{"fontSize" : "30px"}}/>
               </button>
@@ -254,7 +258,7 @@ function QuestionDetail () {
                 </button>
                 <QuestionEstimation>{answer.vote}</QuestionEstimation>
                 <button style={{"backgroundColor" : "white", "border" : "none"}}>
-                  <CaretDownOutlined style={{"fontSize" : "30px"}}/>
+                  <CaretDownOutlined style={{"fontSize" : "30px"}} onClick = {downButton}/>
                 </button>
                 <AdoptStyle style={question.answer.adopt === true ? {"color" : "blue"}: {"color" : "black"}}/>
               </Vote>
