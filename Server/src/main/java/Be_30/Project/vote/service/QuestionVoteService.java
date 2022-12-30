@@ -57,8 +57,7 @@ public class QuestionVoteService {
                 questionVote.setVoteStatus(VoteStatus.VOTE_CANCEL);
             } else if (voteStatus.equals(VoteStatus.VOTE_DOWN)) {
                 question.makeUpVote();
-                question.makeUpVote();
-                questionVote.setVoteStatus(VoteStatus.VOTE_UP);
+                questionVote.setVoteStatus(VoteStatus.VOTE_CANCEL);
             } else if (voteStatus.equals(VoteStatus.VOTE_CANCEL)) {
                 question.makeUpVote();
                 questionVote.setVoteStatus(VoteStatus.VOTE_UP);
@@ -88,8 +87,7 @@ public class QuestionVoteService {
                 questionVote.setVoteStatus(VoteStatus.VOTE_CANCEL);
             } else if (voteStatus.equals(VoteStatus.VOTE_UP)) {
                 question.makeDownVote();
-                question.makeDownVote();
-                questionVote.setVoteStatus(VoteStatus.VOTE_DOWN);
+                questionVote.setVoteStatus(VoteStatus.VOTE_CANCEL);
             } else if (voteStatus.equals(VoteStatus.VOTE_CANCEL)) {
                 question.makeDownVote();
                 questionVote.setVoteStatus(VoteStatus.VOTE_DOWN);

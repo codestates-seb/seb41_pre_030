@@ -36,7 +36,7 @@ public class AnswerVoteService {
     }
 
     public AnswerVote addVoteUp(long answerId, MemberDetails memberDetails) {
-        // 1. answerId로 answer 가져오기?
+
         Answer answer = answerService.findVerifiedAnswer(answerId);
         Member member = memberService.findMember(memberDetails.getMemberId(), memberDetails.getEmail());
 
@@ -58,8 +58,8 @@ public class AnswerVoteService {
 
             } else if(voteStatus.equals(VoteStatus.VOTE_DOWN)) {
 
-                answer.setVotes(answer.getVotes() + 2);
-                answerVote.setVoteStatus(VoteStatus.VOTE_UP);
+                answer.setVotes(answer.getVotes() + 1);
+                answerVote.setVoteStatus(VoteStatus.VOTE_CANCEL);
 
             } else if(voteStatus.equals(VoteStatus.VOTE_CANCEL)){
 
@@ -99,8 +99,8 @@ public class AnswerVoteService {
 
             } else if (voteStatus.equals(VoteStatus.VOTE_UP)) {
 
-                answer.setVotes(answer.getVotes() - 2);
-                answerVote.setVoteStatus(VoteStatus.VOTE_DOWN);
+                answer.setVotes(answer.getVotes() - 1);
+                answerVote.setVoteStatus(VoteStatus.VOTE_CANCEL);
 
             } else if (voteStatus.equals(VoteStatus.VOTE_CANCEL)) {
 
