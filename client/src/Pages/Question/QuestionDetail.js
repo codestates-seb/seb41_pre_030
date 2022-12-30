@@ -189,9 +189,13 @@ function QuestionDetail () {
     const request = {
       method : "POST",
       body : JSON.stringify(value),
-      header : {'Content-Type' : 'application/json'}
+      header : {
+        "Content-Type" : "application/json",
+        "Autorization": localStorage.getItem("accessToken"),
+        "Refresh": localStorage.getItem("refreshToken")
+      }
     }
-    fetch('http://13.125.30.88:8080/questions/', request)
+    fetch(`http://13.125.30.88:8080/questions/${id}/answers`, request)
     .then (() => {
 
       // window.location.reload()
