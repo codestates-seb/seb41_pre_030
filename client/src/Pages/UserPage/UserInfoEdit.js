@@ -124,21 +124,23 @@ const UserInfoEdit = ({question}) => {
     }
 
     const onSubmitHandler = async (event) => {
-        event.preventDefault()
+        event.preventDefault();
+        const data = JSON.stringify({
+            memberId : ''+question.data.memberId,
+            email : question.data.email,
+            nickName : nickname,
+            memberStatus : question.data.memberStatus
+        })
+        console.log(data)
         await axios({
             method: "PATCH",
-            url: `http://13.125.30.88:8080//members/${question.data.memberId}`,
+            url: `http://13.125.30.88:8080/members/${question.data.memberId}`,
             headers: {
                 "Content-Type": 'application/json',
                 "Authorization": localStorage.getItem("accessToken"),
                 "Refresh": localStorage.getItem("refreshToken")
             },
-            data: JSON.stringify({
-                memberId : 1,
-                email : question.data.email,
-                nickName : nickname,
-                memberStatus : question.data.memberStatus
-            })
+            data: data
         });
     }
 
