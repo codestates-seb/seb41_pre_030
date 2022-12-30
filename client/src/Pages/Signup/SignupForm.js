@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Container = styled.div`
   background-color: white;
   padding: 24px;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 10px 24px 0;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 7px;
   margin-bottom: 16px;
   max-width: 316px;
@@ -37,15 +37,65 @@ const Form = styled.div`
       color: rgb(106, 115, 124);
     }
   }
-  button {
+  /* button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
     background: rgb(10, 149, 255);
     border: none;
     border-radius: 3px;
     padding: 10px;
     color: white;
     cursor: pointer;
-  }
+
+    border: 1px solid hsl(205deg 41% 63%);
+    border-radius: 4px;
+    font-weight: 500;
+
+    :hover {
+      background: var(--button-hover-bg-color);
+    }
+    :active {
+      background: var(--button-active-bg-color);
+    }
+  } */
 `
+const Button = styled.button`
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    margin-top: 8px;
+    width: 100%;
+
+    border: 1px solid hsl(205deg 41% 63%);
+    border-radius: 4px;
+    font-weight: 500;
+
+    :hover {
+      background: var(--button-hover-bg-color);
+    }
+    :active {
+      background: var(--button-active-bg-color);
+    }
+    cursor: pointer;
+
+    svg {
+      margin: 0 5px;
+    }
+`;
+
+const LoginButton = styled(Button)`
+    background-color: hsl(206deg 100% 52%);
+    color: #fff;
+    --button-hover-bg-color: hsl(209deg 100% 38%);
+    --button-active-bg-color: hsl(209deg 100% 32%);
+`;
 
 const SignupForm = () => {
   const [info, setInfo] = useState({
@@ -113,7 +163,7 @@ const SignupForm = () => {
           })}/>
           <p>Passwords must contain at least eight characters, including at least 1 letter and 1 number.</p>
         </div>
-        <button onClick={onSignUpSubmitHandler}>SignUp</button>
+        <LoginButton onClick={onSignUpSubmitHandler}>SignUp</LoginButton>
       </Form>
   </Container>
   )
