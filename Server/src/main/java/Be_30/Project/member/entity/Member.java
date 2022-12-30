@@ -13,11 +13,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 @Entity
 public class Member extends Auditable {
-
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -27,15 +25,15 @@ public class Member extends Auditable {
     private String email;
 
     @Column(length = 100, nullable = false)
+    private String nickName;
+
+    private String profileImageSrc;
+
+    @Column(length = 100, nullable = false)
     private String password;
 
     @Column(length = 100, nullable = false)
     private String confirmedPassword;
-
-    @Column(length = 100, nullable = false)
-    private String nickName;
-
-    private String profileImageSrc;
 
     private LocalDateTime lastLogin;
 
@@ -47,6 +45,9 @@ public class Member extends Auditable {
     @Column(length = 20, nullable = false)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
+    @Enumerated(EnumType.STRING)
+    private OauthPlatform oauthPlatform;
+
     @OneToMany(mappedBy = "member")
     @Column
     List<Question> questions = new ArrayList<>();
@@ -54,6 +55,10 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member")
     @Column
     List<Answer> answers= new ArrayList<>();
+
+    public enum OauthPlatform {
+        GOOGLE, GITHUB;
+    }
 
     public enum MemberStatus {
         MEMBER_ACTIVE("활동중"),
