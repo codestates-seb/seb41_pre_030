@@ -7,6 +7,7 @@ import OAuthButton from "../Signup/OAuthButton";
 import Google from "../../Image/Google";
 import GitHub from "../../Image/GitHub";
 import Logo from "../../Image/Logo";
+import axios from 'axios';
 import { CaretUpOutlined, CaretDownOutlined, CheckOutlined } from '@ant-design/icons' ;
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css';
@@ -201,20 +202,15 @@ function QuestionDetail () {
 
   const handleSubmit = (e) => {
     if(value === '') return alert("내용을 입력하세요")
-
-    const request = {
-      method : "POST",
-      body : JSON.stringify(value),
-      header : {
+    axios.post(`http://13.125.30.88:8080/questions/${id}/answers`, JSON.stringify(value),
+      {headers : {
         "Content-Type" : "application/json",
         "Authorization": localStorage.getItem("accessToken"),
         "Refresh": localStorage.getItem("refreshToken")
-      }
-    }
-    fetch(`http://13.125.30.88:8080/questions/${id}/answers`, request)
+      }}
+    )
     .then (() => {
-
-      // window.location.reload()
+      window.location.reload()
     })
     .catch(err => {
       console.log(err)

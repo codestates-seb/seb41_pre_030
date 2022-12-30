@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import profileImage from "../../Image/profile.png";
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import useFetch from '../../Components/util/useFetch';
 
 const Container = styled.div`
@@ -96,7 +96,7 @@ const UserInfoEdit = ({question}) => {
     const [nickname, setNickname] = useState(question.data.nickName)
     const fileInput = useRef(null)
 
-    const onImageReviewHandler = (e) => {
+    const onImageReviewHandler = async (e) => {
         if(!e.target.files[0]){
             setImage(profileImage);
             return;
@@ -109,28 +109,36 @@ const UserInfoEdit = ({question}) => {
             }
         }
         reader.readAsDataURL(e.target.files[0])
-        // console.log(image)
-    }
-
-    const onSubmitHandler = async (event) => {
-        event.preventDefault();
         const formData = new FormData();
-        
         formData.append("file", fileInput.current.files[0]);
-    
-        const value = {nickName: nickname};
-        const blob = new Blob([JSON.stringify(value)], {type: "application/json"}) ;
-        
-        formData.append("data", blob);
         await axios({
-            method: "PATCH",
+            method: "POST",
             url: `http://13.125.30.88:8080/files`,
             headers: {
                 "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
                 "Authorization": localStorage.getItem("accessToken"),
-				"Refresh": localStorage.getItem("refeshToken")
+				"Refresh": localStorage.getItem("refreshToken")
             },
             data: formData, // data 전송시에 반드시 생성되어 있는 formData 객체만 전송 하여야 한다.
+        });
+    }
+
+    const onSubmitHandler = async (event) => {
+        event.preventDefault()
+        await axios({
+            method: "PATCH",
+            url: `http://13.125.30.88:8080//members/${question.data.memberId}`,
+            headers: {
+                "Content-Type": 'application/json',
+                "Authorization": localStorage.getItem("accessToken"),
+                "Refresh": localStorage.getItem("refreshToken")
+            },
+            data: JSON.stringify({
+                memberId : 1,
+                email : question.data.email,
+                nickName : nickname,
+                memberStatus : question.data.memberStatus
+            })
         });
     }
 
@@ -143,7 +151,7 @@ const UserInfoEdit = ({question}) => {
             <EditTitle>
                 <h1>Edit your profile</h1>
             </EditTitle>
-            {nickname && <Form onSubmit={event => onSubmitHandler(event)}>
+            {nickname && <Form onSubmit={onSubmitHandler}>
                 <ImageContainer>
                     <div>
                         <img src={image} alt="user avatar" onClick={()=>{fileInput.current.click()}}/>

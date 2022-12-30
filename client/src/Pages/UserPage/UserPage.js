@@ -27,7 +27,7 @@ const UserPage = () => {
     const [question] = useFetch(`http://13.125.30.88:8080/members/${id}`);
 
     useEffect(() => {
-    }, [ question ])
+    }, [])
     
     return (
         <Container>
