@@ -7,7 +7,6 @@ const Pagenation = (props) => {
     const [itemOffset, setItemOffset] = useState(0);
 
     const endOffset = itemOffset + props.itemsPerPage;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     const currentItems = props.questions.slice(itemOffset, endOffset);
     const pageCount = Math.ceil(props.questions.length / props.itemsPerPage);
 

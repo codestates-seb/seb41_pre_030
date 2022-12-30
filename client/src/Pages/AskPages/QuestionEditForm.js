@@ -2,8 +2,9 @@ import styled from "styled-components";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import useFetch from '../../Components/util/useFetch';
 
 
 const Container = styled.main`
@@ -95,11 +96,23 @@ const Button = styled.button`
 	cursor: pointer;
 `;
 
-const AskPage = () => {
+const  QuestionEditForm = () => {
+    const { id } = useParams()
 	const [title, setTitle] = useState("");
 	const [body, setBody] = useState("");
+    const [load, setLoad] = useState(false)
 	const navigate = useNavigate();
 	const quillRef = useRef();
+
+    useEffect(() => {
+        axios.get(`http://13.125.30.88:8080/questions/${id}`)
+        .then(res => {
+            console.log(res)
+            setTitle(res.data.data.subject);
+            setBody(res.data.data.content);
+            setLoad(!load)
+        }) 
+    }, [])
 
 	const toolbarOptions = [
 		["bold", "italic", "underline"], // toggled buttons
@@ -127,7 +140,7 @@ const AskPage = () => {
 			});
 
 			await axios
-				.post("http://13.125.30.88:8080/questions", bodyJSON, {
+				.patch(`http://13.125.30.88:8080/questions/${id}`, bodyJSON, {
 					headers: {
 						"Content-Type": 'application/json',
 						"AutHorization": localStorage.getItem("accessToken"),
@@ -135,8 +148,8 @@ const AskPage = () => {
 					}
 				})
 				.then((res) => {
-					alert("Question added successfully");
-					navigate("/");
+					alert("Question edited!");
+					navigate(`/questions/${id}`);
 					window.location.reload();
 				})
 				.catch((err) => {
@@ -165,25 +178,25 @@ const AskPage = () => {
 				<InputHeaderDetail>
 					Be specific and imagine you’re asking a question to another person.
 				</InputHeaderDetail>
-				<QuestionTitleInput
+				{load && <QuestionTitleInput
 					value={title}
 					onChange={(e) => setTitle(e.target.value)}
 					type="text"
 					placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
-				/>
+				/>}
 			</SmallContainer>
 			<SmallContainer>
-				<QuestionTextares 
+                    {load && <QuestionTextares 
 					ref={quillRef}
 					value={body}
 					onChange={handleQuill}
 					modules={modules}
 					className="react-quill"
-					theme="snow"/>
+					theme="snow"/>}
 			</SmallContainer>
-			<Button onClick={handleSubmit} className="button">Post your Question</Button>
+			<Button onClick={handleSubmit} className="button">Edit your Question</Button>
 		</Container>
 	);
 	};
 
-export default AskPage;
+export default QuestionEditForm;

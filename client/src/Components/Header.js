@@ -1,8 +1,7 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import styled from "styled-components";
 import Logo from "../Image/Logo";
 import { Link } from "react-router-dom";
-import store from '../Redux/store';
 import useFetch from './util/useFetch';
 
 const StyledHeader = styled.header`
@@ -122,22 +121,11 @@ const ProfileLink = styled(Link)`
 const Header = () => {
   const [questions] = useFetch(`http://13.125.30.88:8080/members/${localStorage.getItem("user")}`);
   const [search, setSearch] = useState("");
-  const [state, setState] = useState(store.getState());
 
   let isLogin = localStorage.getItem("isLogin")
-  
-  useEffect(() => {
-    const unsubscribe = store.subscribe(() => {
-      setState(store.getState())
-    });
-    return () => {
-        unsubscribe()
-    }
-  }, [state])
 
   const onChange = (e) => {
     setSearch(e.target.value);
-    console.log(state)
   };
 
   const onLogoutHandler = () => {
@@ -165,7 +153,7 @@ const Header = () => {
       {isLogin ?
       <Fragment>
         <ProfileLink to={`member/${localStorage.getItem("user")}`} className="profile">
-          <img src={questions && questions.data.profileImageSrc}/>
+          <img src={questions && questions.data.profileImageSrc} alt="유저 이미지"/>
         </ProfileLink>
         <ButtonLink to={"/"}>
           <button className="logout" onClick={onLogoutHandler}>Log out</button>

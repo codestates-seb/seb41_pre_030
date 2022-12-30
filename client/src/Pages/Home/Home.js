@@ -129,7 +129,6 @@ export const Contents = styled.span`
 `
 
 const Home = ({questions}) => {
-    console.log(questions)
     return (
         <All>
             <QuestionList>

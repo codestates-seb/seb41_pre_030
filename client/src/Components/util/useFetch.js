@@ -14,7 +14,6 @@ const useFetch = (url) => {
       })
       .then(data => {
         setQuestion(data)
-        console.log(data)
       })
       .catch(err => {
         console.log("err")

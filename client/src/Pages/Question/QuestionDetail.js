@@ -114,7 +114,7 @@ const Writer = styled.div`
   border-radius: 5px;
   background-color: aliceblue;
   width: 200px;
-  height: 100px;
+  height: 130px;
   display: flex;
   text-align: center;
   justify-content: center;
@@ -128,10 +128,15 @@ const Writer = styled.div`
       border-radius: 3px;
     }
   }
+  .edit{
+    font-size: 13px;
+    text-decoration: none;
+    color: #1f9315
+  }
 `
 const HyperLink = styled(NavLink)`
   text-decoration: none;
-  color: blue
+  color: blue;
 `
 const StackLogo = styled.span`
   svg{
@@ -152,15 +157,13 @@ function QuestionDetail () {
     method : "get",
     headers : {"Content-Type" : "application/json"}
   }
-  //클라이언트가 서버에게 json 형식의 데이터가 보내지는 것인지 알려주는 설정
 
-
-  //endpoint가 questionId가 되는 순간 데이터를 못 받아 옴
   const [question] = useFetch(`http://13.125.30.88:8080/questions/${id}`,request)
 
   const [value, setValue] = useState('');
 
   let isLogin = localStorage.getItem("isLogin");
+  let userId = localStorage.getItem("user")
 
   let createDate = null;
   let modifiedDate = null;
@@ -171,9 +174,6 @@ function QuestionDetail () {
     modifiedDate = new window.Date(question.data.modifiedAt)
     answerCreateDate = new window.Date(question.data.createdAt)
   }
-
-  console.log(question)
-  console.log(value)
 
   const modules = {
     toolbar: {
@@ -189,8 +189,6 @@ function QuestionDetail () {
           ]
     }
   }
-
-  console.log(question.createdAt)
 
   const timeForToday = (time) => {
     const today = new window.Date();
@@ -349,6 +347,7 @@ function QuestionDetail () {
             <Date>Asked {timeForToday(createDate)}</Date>
             <img style={{"width": "30px"}} src={question && question.data.member.profileImageSrc} alt="유저 이미지" />
             <HyperLink to={question && `/member/${question.data.member.memberId}`} style={{"fontSize" : "15px"}}>{question && question.data.member.nickName}</HyperLink>
+            <div>{question && question.data.member.memberId == userId ? <Link className="edit" to={question && `/askEdit/${id}`}>질문 수정</Link> : null}</div>
           </div>
         </Writer>
       </div>

@@ -12,6 +12,7 @@ import QuestionDetail from './Pages/Question/QuestionDetail';
 import UserPage from './Pages/UserPage/UserPage';
 import Search from './Pages/Search/Search';
 import AllUsers from './Pages/UserlistPage/AllUsers';
+import QuestionEditForm from './Pages/AskPages/QuestionEditForm';
 
 function App() {
   const [question] = useFetch('http://13.125.30.88:8080/questions/')
@@ -20,8 +21,9 @@ function App() {
   return (
     <div className="App">
         <Header/>
-        {!['/signup', '/login', '/ask'].includes(location.pathname) && <Sidebar />}
+        {!['/signup', '/login', '/ask', '/askEdit'].includes(location.pathname.slice(0,8)) && <Sidebar />}
         <Routes>
+          <Route path='/askEdit/:id' element={<QuestionEditForm />} />
           <Route path='/search' element={<Search />} />
           <Route path='/questions/:id' element={<QuestionDetail />}/>
           <Route path='/member/*' element={<UserPage />}/>
