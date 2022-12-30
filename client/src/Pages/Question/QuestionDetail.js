@@ -45,6 +45,7 @@ const AnswerContentView = styled.div`
 const Vote = styled.div`
   margin: 0px 20px;
   display: grid;
+  justify-items: center;
 `
 
 const QuestionEstimation = styled.span`
@@ -82,20 +83,30 @@ const FlexRight = styled.div`
     margin-bottom: 16px;
   }
 `
-const SubmitButton = styled(NavLink)`
-  background-color: rgba(0, 60, 255, 0.8);
-  color:white;
-  border: 1px solid blue;
-  border-radius: 7px;
+const SubmitButton = styled.button`
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  border: 1px solid hsl(205deg 41% 63%);
+  border-radius: 4px;
+  font-weight: 500;
+
+  background-color: hsl(206deg 100% 52%);
+  color: #fff;
   width: 120px;
   height: 40px;
   font-size: 17px;
   margin-top: 10px;
-  text-align: center;
-  text-decoration: none;
+
   :hover {
-    background-color: blue;
-    }
+    background: hsl(209deg 100% 38%);
+  }
+  :active {
+    background: hsl(209deg 100% 32%);
+  }
+  
+  cursor: pointer;
 `
 const Writer = styled.div`
   text-decoration: none;
@@ -114,6 +125,11 @@ const HyperLink = styled(NavLink)`
   text-decoration: none;
   color: blue
 `
+const StackLogo = styled.span`
+  svg{
+    height: 20px;
+  }
+`;
 
 const AdoptStyle = styled(CheckOutlined)`
   font-size: 20px;
@@ -299,16 +315,16 @@ function QuestionDetail () {
                 <HyperLink to="/login"> login</HyperLink>
               </div>
               <div className='button-group'>
-                <OAuthButton color="rgb(59, 64, 69)">
+                <OAuthButton color="hsl(210deg 8% 20%)" bg_color="hsl(0deg 0% 100%)" hv_color="hsl(210deg 8% 98%)" ac_color="hsl(210deg 8% 95%)">
                   <Google /> 
                   Sign up with Google
                 </OAuthButton>
-                <OAuthButton bg_color="rgb(47, 51, 55)">
+                <OAuthButton color="#fff" bg_color="hsl(210deg 8% 20%)" hv_color="hsl(210deg 8% 15%)" ac_color="hsl(210deg 8% 5%)">
                   <GitHub /> 
                   Sign up with GitHub
                 </OAuthButton>
-                <OAuthButton bg_color="rgb(56, 84, 153)">
-                  <Logo style={{"height" : "1px"}}/> 
+                <OAuthButton color="#fff" bg_color="#385499" hv_color="#314a86" ac_color="hsl(205deg 46% 32%)">
+                  <StackLogo><Logo style={{"height" : "20px"}}/></StackLogo>
                   Sign up using Email and Password
                 </OAuthButton>
               </div>
@@ -323,6 +339,6 @@ function QuestionDetail () {
     </All>
   )
 }
-export default QuestionDetail
+export default QuestionDetail;
 
 //css 정리, 답변 post 요청, click 할때마다 views + 1

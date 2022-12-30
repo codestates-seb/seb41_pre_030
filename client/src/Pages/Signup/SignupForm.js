@@ -37,29 +37,6 @@ const Form = styled.div`
       color: rgb(106, 115, 124);
     }
   }
-  /* button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-
-    background: rgb(10, 149, 255);
-    border: none;
-    border-radius: 3px;
-    padding: 10px;
-    color: white;
-    cursor: pointer;
-
-    border: 1px solid hsl(205deg 41% 63%);
-    border-radius: 4px;
-    font-weight: 500;
-
-    :hover {
-      background: var(--button-hover-bg-color);
-    }
-    :active {
-      background: var(--button-active-bg-color);
-    }
-  } */
 `
 const Button = styled.button`
     -webkit-appearance: none;
