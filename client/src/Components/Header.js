@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Logo from "../Image/Logo";
 import { Link, useLocation } from "react-router-dom";
 import store from '../Redux/store';
+import useFetch from './util/useFetch';
 
 const StyledHeader = styled.header`
   background-color: hsl(210deg 8% 98%);
@@ -121,7 +122,7 @@ const SignupLink = styled(Link)`
     --button-active-bg-color: hsl(209deg 100% 32%);
   }
 `
-const ProfileLink = styled.a`
+const ProfileLink = styled(Link)`
   display: inline-block;
   padding: 7px 5px 0px 5px;
   margin: auto;
@@ -140,6 +141,7 @@ const ProfileLink = styled.a`
 ;
 
 const Header = () => {
+  const [questions] = useFetch(`http://13.125.30.88:8080/members/${localStorage.getItem("user")}`);
   const [search, setSearch] = useState("");
   const [state, setState] = useState(store.getState());
   let isLogin = localStorage.getItem("isLogin")
@@ -183,8 +185,8 @@ const Header = () => {
       </form>
       {isLogin ?
       <Fragment>
-        <ProfileLink href={`member/${localStorage.getItem("user")}`} className="profile">
-          <img src={state.profileImageSrc} alt="mini profile"/>
+        <ProfileLink to={`member/${localStorage.getItem("user")}`} className="profile">
+          <img src={questions && questions.data.profileImageSrc}/>
         </ProfileLink>
         <LoginLink className="profile">
           <button className="logout" onClick={onLogoutHandler}>Log out</button>
