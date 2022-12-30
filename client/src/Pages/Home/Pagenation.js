@@ -34,9 +34,6 @@ const Pagenation = (props) => {
 
     const handlePageClick = (event) => {
         const newOffset = (event.selected * props.itemsPerPage) % props.questions.length;
-        console.log(
-        `User requested page number ${event.selected}, which is offset ${newOffset}`
-        );
         setItemOffset(newOffset);
     };
 
@@ -56,7 +53,7 @@ const Pagenation = (props) => {
                         <Contents dangerouslySetInnerHTML={{__html: question.content}}></Contents>
                     </Question>
                     <UserBox>
-                        <img src={question.member.profileImageSrc} />
+                        <img src={question.member.profileImageSrc} alt="유저 이미지" />
                         <span>{question.member.nickName}</span>
                     </UserBox>
                 </Questions>

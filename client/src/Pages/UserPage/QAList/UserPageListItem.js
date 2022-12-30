@@ -45,14 +45,10 @@ const ContentsTitle = styled.span`
 `
 
 const UserPageListItem = ({question}) => {
-    let createDate = null;
-    let modifiedDate = null;
     let answerCreateDate = null;
 
     if (question) {
-      createDate = new window.Date(question.createdAt)
-      modifiedDate = new window.Date(question.modifiedAt)
-      answerCreateDate = new window.Date(question.createdAt)
+        answerCreateDate = new window.Date(question.createdAt)
     }
 
     const timeForToday = (time) => {
@@ -76,7 +72,7 @@ const UserPageListItem = ({question}) => {
                 <Detail to={`/questions/${question.questionId}`}>
                     <ContentsTitle>{question.subject}</ContentsTitle><br/>
                 </Detail>
-                <span className='created-at'>{timeForToday(createDate)}</span>
+                <span className='created-at'>{timeForToday(answerCreateDate)}</span>
             </Content>
         </ItemContainer>
     )

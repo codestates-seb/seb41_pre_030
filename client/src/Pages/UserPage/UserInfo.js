@@ -1,8 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import useFetch from '../../Components/util/useFetch';
-import store from '../../Redux/store';
 
 const TopViewContainer = styled.div`
     position: relative;

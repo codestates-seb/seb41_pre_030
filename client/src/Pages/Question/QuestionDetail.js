@@ -347,7 +347,7 @@ function QuestionDetail () {
         <Writer>
           <div className="createUser">
             <Date>Asked {timeForToday(createDate)}</Date>
-            <img style={{"width": "30px"}} src={question && question.data.member.profileImageSrc}/>
+            <img style={{"width": "30px"}} src={question && question.data.member.profileImageSrc} alt="유저 이미지" />
             <HyperLink to={question && `/member/${question.data.member.memberId}`} style={{"fontSize" : "15px"}}>{question && question.data.member.nickName}</HyperLink>
           </div>
         </Writer>
@@ -369,13 +369,13 @@ function QuestionDetail () {
                 <AdoptStyle style={answer.adopt === true ? {"color" : "blue"}: {"color" : "black"}}/>
               </Vote>
               <Content>
-                <div style={{"marginLeft" : "20px"}} dangerouslySetInnerHTML={{__html: answer.content}}>{}</div>
+                <div style={{"marginLeft" : "20px"}} dangerouslySetInnerHTML={{__html: answer.content}} />
               </Content>
             </div>
             <Writer>
               <div className="createUser">
                 <Date>answered {timeForToday(answerCreateDate)}</Date>
-                <img style={{"width": "25px"}} src={question && answer.member.profileImageSrc} />
+                <img style={{"width": "25px"}} src={question && answer.member.profileImageSrc} alt="유저 이미지"/>
                 <HyperLink to={`/member/${answer.member.memberId}`} style={{"fontSize" : "15px"}}>{question && answer.member.nickName}</HyperLink>
               </div>
             </Writer>

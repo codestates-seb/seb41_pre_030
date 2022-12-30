@@ -96,8 +96,7 @@ const SignupForm = () => {
     })
       .then((res) => {
         navigate("/login");
-        // 현재 로그인 요청 보내면 로그인페이지 -> 회원가입 페이지로 되돌아옴
-        // url에 인풋 데이터는 남아있는 상태로 돌아옴
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err)

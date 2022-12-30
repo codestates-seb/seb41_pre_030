@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import profileImage from "../../Image/profile.png";
 import axios from 'axios';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import useFetch from '../../Components/util/useFetch';
+import { useNavigate } from 'react-router-dom';
+
 
 const Container = styled.div`
     position: absolute;

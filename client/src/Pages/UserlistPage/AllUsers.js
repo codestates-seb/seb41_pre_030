@@ -59,7 +59,7 @@ const AllUsers = () => {
 
     const userFind = (e) => {
         if(e.key === "Enter") {
-        setQuestion({data: question.data.filter((el, idx) => {return el.nickName.includes(search)})})
+        setQuestion({data: question.data.filter((el) => {return el.nickName.includes(search)})})
         }
     }
 

@@ -55,10 +55,6 @@ const Signup = () => {
               <GitHub /> 
               Sign up with GitHub
             </OAuthButton>
-            {/* <OAuthButton bg_color="rgb(56, 84, 153)">
-              <Facebook /> 
-              Sign up with Facebook
-            </OAuthButton> */}
           </div>
           <SignupForm />
         </FlexRight>

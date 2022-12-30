@@ -2,10 +2,8 @@ import styled from "styled-components";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import store from '../../Redux/store';
-// import { useSelector } from 'react-redux'
 
 
 const Container = styled.main`
@@ -102,69 +100,22 @@ const Button = styled.button`
 
 
 const AskPage = () => {
-	const [state, setState] = useState(store.getState());
-	
-	useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-				setState(store.getState())
-		});
-		return () => {
-			unsubscribe()
-		}
-	}, [state])
-
-	// const user = useSelector();
-
-	// const imageHandler = () => {
-	// 	const input = document.createElement('input');
-	
-	// 	input.setAttribute('type', 'file');
-	// 	input.setAttribute('accept', 'image/*');
-	// 	input.click();
-	
-	// 	input.addEventListener('change', async () => {
-	// 		console.log('온체인지');
-	// 		const file = input.files[0];
-
-	// 		const id = await webclient.uploadFile(file);
-	// 		console.log(quillRef)
-	// 		// const range = this.quill.getSelection();
-	// 		// const link = `${ROOT_URL}/file/${id}`;
-
-	// 		console.log()
-	// 	});
-	// }
-
-	const toolbarOptions = [
-		["bold", "italic", "underline"], // toggled buttons
-		["blockquote", "code-block"],
-
-		[{ list: "ordered" }, { list: "bullet" }], // superscript/subscript
-
-		[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-
-		["link", "image"]
-		];
-
-	// const modules = useMemo(() => {
-	// 	return {
-	// 	toolbar: {
-	// 		container: toolbarOptions,
-	// 		handlers: {
-	// 			image: imageHandler,
-	// 		}
-	// 	}
-	// }
-	// },[]);
-
-	const modules = {
-		toolbar: toolbarOptions,
-	}
-
 	const [title, setTitle] = useState("");
 	const [body, setBody] = useState("");
 	const navigate = useNavigate();
 	const quillRef = useRef();
+
+	const toolbarOptions = [
+		["bold", "italic", "underline"], // toggled buttons
+		["blockquote", "code-block"],
+		[{ list: "ordered" }, { list: "bullet" }], // superscript/subscript
+		[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+		["link", "image"]
+		];
+
+	const modules = {
+		toolbar: toolbarOptions,
+	}
 
 	const handleQuill = (value) => {
 		setBody(value);
@@ -179,19 +130,18 @@ const AskPage = () => {
 				content: body,
 			});
 
-			console.log(bodyJSON)
-
 			await axios
 				.post("http://13.125.30.88:8080/questions", bodyJSON, {
 					headers: {
 						"Content-Type": 'application/json',
-						"Autorization": localStorage.getItem("accessToken"),
+						"AutHorization": localStorage.getItem("accessToken"),
 						"Refresh": localStorage.getItem("refreshToken")
 					}
 				})
 				.then((res) => {
 					alert("Question added successfully");
 					navigate("/");
+					window.location.reload();
 				})
 				.catch((err) => {
 					console.log(err);
