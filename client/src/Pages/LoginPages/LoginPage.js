@@ -42,7 +42,7 @@ const UpContainer = styled.div`
   }
 `;
 
-const RowContainer = styled.div`
+const RowContainer = styled.form`
   padding: 30px 20px;
   border-radius: 10px;
   background: #ffffff;
@@ -146,14 +146,20 @@ const LoginPage = () => {
       localStorage.setItem("refreshToken", res.headers.refresh)
       localStorage.setItem("isLogin", true)
       localStorage.setItem("user", res.data.memberId)
-      alert("Login");
       navigate("/");
       window.location.reload();
     })
     .catch((err) => {
+      alert("이메일 또는 비밀번호가 틀렸습니다");
       console.log(err);
     })
   }
+
+  const handleKeypress = e => {
+    if (e.keyCode === 13) {
+      Login();
+    }
+  };
 
   return (
     <BgCenter>
@@ -169,7 +175,7 @@ const LoginPage = () => {
             <GitLogo />Log in with GitHub
           </GitButton>
         </UpContainer>
-        <RowContainer>
+        <RowContainer onKeyPress={handleKeypress}>
           <LoginHeader>Email</LoginHeader>
           <LoginInput type="email" value={info.email}
                       onChange={ev => setInfo({
