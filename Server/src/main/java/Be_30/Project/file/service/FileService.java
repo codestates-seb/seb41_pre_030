@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
-
 
 @RequiredArgsConstructor
 @Transactional
@@ -71,4 +71,15 @@ public class FileService {
     public Page<ImageFile> getFiles(int page, int size) {
         return fileRepository.findAll(PageRequest.of(page, size));
     }
+
+    // 기본 이미지 랜덤 선택
+    public String getRandomDefaultImageSrc() {
+        List<ImageFile> defaultImages = fileRepository.findByDefaultImageIsTrue();
+        if (defaultImages.isEmpty()) {
+            return null;
+        }
+        int randomImageID = (int) (Math.random() * (defaultImages.size() - 1)); // 인덱스는 0부터 시작
+        return defaultImages.get(randomImageID).getSrc();
+    }
+
 }
