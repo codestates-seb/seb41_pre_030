@@ -31,7 +31,7 @@ export const AuthReducer = (state = AuthState, action) => {
         case ADD_USER: 
             return {
                 ...state,
-                user: {}
+                user: action.payload
             }
 
         default:

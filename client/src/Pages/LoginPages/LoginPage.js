@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import store from '../../Redux/store';
-import { addToken, logIn} from '../../Redux/actions';
+import { addToken, addUser, logIn} from '../../Redux/actions';
 
 
 const BgCenter = styled.div`
@@ -134,7 +134,7 @@ const LoginPage = () => {
     await axios
     .post("http://13.125.30.88:8080/members/login", jsonData)
     .then((res) => {
-      console.log(res)
+      console.log(res.data)
       store.dispatch(addToken(
         {
           accessToken: res.headers.authorization, 
@@ -142,9 +142,11 @@ const LoginPage = () => {
         }
       ));
       store.dispatch(logIn());
+      store.dispatch(addUser(res.data));
       localStorage.setItem("accessToken", res.headers.authorization)
       localStorage.setItem("refreshToken", res.headers.refresh)
       localStorage.setItem("isLogin", true)
+      localStorage.setItem("user", res.data.memberId)
       alert("Login");
       navigate("/");
     })

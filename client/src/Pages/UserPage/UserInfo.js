@@ -7,6 +7,7 @@ import store from '../../Redux/store';
 const TopViewContainer = styled.div`
     position: relative;
     margin-bottom: 16px;
+    min-height: 148.4px;
 `
 const TopView = styled.div`
     display: flex !important;
@@ -67,7 +68,7 @@ const EditProfile = styled.div`
 
 const UserInfo = () => {
     const location = useLocation();
-    const [question] = useFetch(`http://13.125.30.88:8080/members/${location.pathname[8]}`);
+    const [question] = useFetch(`http://13.125.30.88:8080/members/${location.pathname.slice(8)}`);
     const [state, setState] = useState(store.getState());
 
     useEffect(() => {

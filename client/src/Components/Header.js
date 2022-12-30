@@ -183,8 +183,8 @@ const Header = () => {
       </form>
       {isLogin ?
       <Fragment>
-        <ProfileLink href={`member/${state.user.memberId}`} className="profile">
-          <img />
+        <ProfileLink href={`member/${localStorage.getItem("user")}`} className="profile">
+          <img src={state.profileImageSrc} alt="mini profile"/>
         </ProfileLink>
         <LoginLink className="profile">
           <button className="logout" onClick={onLogoutHandler}>Log out</button>

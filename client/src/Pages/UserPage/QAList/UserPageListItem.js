@@ -37,10 +37,10 @@ const ContentsTitle = styled.span`
 
 const UserPageListItem = ({question}) => {
     return (
-        <ItemContainer >
+        <ItemContainer key={question.answerId}>
             <Content >
-                <span className='vote-number'>{question.vote} <span className='vote-unit'> votes</span> </span>
-                <Detail to={`/questions/${question.id}`}>
+                <span className='vote-number'>{question.votes} <span className='vote-unit'> votes</span> </span>
+                <Detail to={`/questions/${question.questionId}`}>
                     <ContentsTitle>{question.subject}</ContentsTitle><br/>
                 </Detail>
                 <span className='created-at'>{question.createdAt}</span>

@@ -9,9 +9,9 @@ const UserAnswerList = () => {
     return (
         <Fragment>
             {question && <h2>{question.data.answers.length} Answers</h2>}
-            {/* {question && question.data.answers.question.map(answer => 
-                <UserPageListItem key={answer.answerId} answer={answer}/>
-            )} */}
+            {question && question.data.answers.map(answer => 
+                <UserPageListItem key={answer.answerId} question={answer.question}/>
+            )}
         </Fragment>
     )
 }

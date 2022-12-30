@@ -2,7 +2,7 @@ import styled from "styled-components";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-import { useState, useRef, useMemo, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import store from '../../Redux/store';
 // import { useSelector } from 'react-redux'
@@ -186,7 +186,7 @@ const AskPage = () => {
 					headers: {
 						"Content-Type": 'application/json',
 						"Autorization": localStorage.getItem("accessToken"),
-						"refresh": localStorage.getItem("refeshToken")
+						"Refresh": localStorage.getItem("refreshToken")
 					}
 				})
 				.then((res) => {
@@ -208,7 +208,7 @@ const AskPage = () => {
 					<ul>
 						<li>Summarize your problem in a one-line title.</li>
 						<li>Describe your problem in more detail.</li>
-						<li>Describe what you tried and what you expected to happen.</li>
+						<li>Describe what you tried and what you expected to happen.</li>₩
 						<li>Review your question and post it to the site.</li>
 					</ul>
 					</InputHeaderDetail>
