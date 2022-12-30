@@ -4,6 +4,15 @@ import styled from 'styled-components';
 const ItemContainer = styled.div `
     display: flex;
     border-top: 1px solid black;
+    align-items: center;
+    button {
+        border: none;
+        background: none;
+        color: red;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
 `
 const Content = styled.div`
     width: 1000px;
@@ -45,6 +54,7 @@ const UserPageListItem = ({question}) => {
                 </Detail>
                 <span className='created-at'>{question.createdAt}</span>
             </Content>
+            <button>삭제</button>
         </ItemContainer>
     )
 }

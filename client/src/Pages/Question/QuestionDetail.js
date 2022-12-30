@@ -191,7 +191,7 @@ function QuestionDetail () {
       body : JSON.stringify(value),
       header : {
         "Content-Type" : "application/json",
-        "Autorization": localStorage.getItem("accessToken"),
+        "Authorization": localStorage.getItem("accessToken"),
         "Refresh": localStorage.getItem("refreshToken")
       }
     }

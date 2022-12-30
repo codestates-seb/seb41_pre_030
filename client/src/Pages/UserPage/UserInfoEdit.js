@@ -123,11 +123,11 @@ const UserInfoEdit = ({question}) => {
         
         formData.append("data", blob);
         await axios({
-            method: "POST",
+            method: "PATCH",
             url: `http://13.125.30.88:8080/files`,
             headers: {
                 "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
-                "Autorization": localStorage.getItem("accessToken"),
+                "Authorization": localStorage.getItem("accessToken"),
 				"Refresh": localStorage.getItem("refeshToken")
             },
             data: formData, // data 전송시에 반드시 생성되어 있는 formData 객체만 전송 하여야 한다.
