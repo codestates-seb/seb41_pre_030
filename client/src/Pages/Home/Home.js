@@ -42,11 +42,11 @@ const QuestionList = styled.div`
     font-size: 30px;
     width: 100vh;
     display: grid;
-`
+    `
 
 export const AllQuestions = styled.div`
     width: 1100px;
-    height: 40px;
+    max-height: 40px;
     margin: 40px 40px 0px 40px;
     display: flex;
     justify-content: space-between;
@@ -78,8 +78,10 @@ export const AskQuestionButton = styled(NavLink)`
 `
 
 export const Questions = styled.div `
+    height: 150px;
     display: flex;
     border-top: 1px solid hsl(210,8%,85%);;
+    min-width: 1200px;
 `
 export const QuestionCount = styled.div`
     font-size: 15px;
@@ -127,6 +129,7 @@ export const Contents = styled.span`
 `
 
 const Home = ({questions}) => {
+    console.log(questions)
     return (
         <All>
             <QuestionList>
@@ -134,7 +137,7 @@ const Home = ({questions}) => {
                     All Questions
                     <AskQuestionButton to={localStorage.getItem("isLogin") ? '/ask' : '/login'}>Ask Question</AskQuestionButton>
                 </AllQuestions>
-                <CountQuestions>{questions && questions.length} questions</CountQuestions>
+                <CountQuestions>{questions && questions.data.length} questions</CountQuestions>
             </QuestionList>
             {questions && <Pagenation questions={questions.data} itemsPerPage={10} />}
         </All>

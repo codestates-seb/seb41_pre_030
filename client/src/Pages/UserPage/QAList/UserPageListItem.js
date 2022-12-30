@@ -45,6 +45,30 @@ const ContentsTitle = styled.span`
 `
 
 const UserPageListItem = ({question}) => {
+    let createDate = null;
+    let modifiedDate = null;
+    let answerCreateDate = null;
+
+    if (question) {
+      createDate = new window.Date(question.createdAt)
+      modifiedDate = new window.Date(question.modifiedAt)
+      answerCreateDate = new window.Date(question.createdAt)
+    }
+
+    const timeForToday = (time) => {
+        const today = new window.Date();
+        const timeValue = new window.Date(time);
+        const betweenTimeMin = Math.floor((today.getTime() - timeValue.getTime())/ 1000 / 60)
+        const betweenTimeHour = Math.floor( betweenTimeMin / 60)
+        const betweenTimeDay = Math.floor( betweenTimeMin / 60 / 24)
+    
+        if(betweenTimeMin < 1) return "방금 전"
+        if(betweenTimeMin < 60) return `${betweenTimeMin}분전`
+        if(betweenTimeHour < 24) return `${betweenTimeHour} 시간 전`
+        if(betweenTimeDay < 365) return `${betweenTimeDay} days ago`
+    
+        return `${Math.floor(betweenTimeDay / 365)} years ago`
+    } 
     return (
         <ItemContainer key={question.answerId}>
             <Content >
@@ -52,9 +76,8 @@ const UserPageListItem = ({question}) => {
                 <Detail to={`/questions/${question.questionId}`}>
                     <ContentsTitle>{question.subject}</ContentsTitle><br/>
                 </Detail>
-                <span className='created-at'>{question.createdAt}</span>
+                <span className='created-at'>{timeForToday(createDate)}</span>
             </Content>
-            <button>삭제</button>
         </ItemContainer>
     )
 }

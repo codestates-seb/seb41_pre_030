@@ -9,7 +9,9 @@ export const All = styled.main`
     margin-left: 280px;
     width: 100vh;
     border-left: 1px solid hsl(210,8%,85%);
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    min-height: 1700px;
     ul {
         display: flex;
         flex-direction: row;

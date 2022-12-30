@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from "react";
-import profileImage from "../../Image/profile.png";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import ReactPaginate from 'react-paginate';
@@ -8,13 +7,15 @@ const List = styled.div`
     display: flex;
     flex-wrap: wrap;
     padding-top: 50px;
+    width: 1200px;
 `;
 
 const UserContainer = styled.div`
-    display: flex;
     margin: 10px;
-    margin-bottom: 50px;
-    width: 200px;
+    display: flex;
+    margin-right: 30px;
+    margin-bottom: 80px;
+    width: 230px;
 `;
 
 const LeftContainer = styled.img`
@@ -22,6 +23,7 @@ const LeftContainer = styled.img`
     height: 60px;
     margin-left: 10px; 
     margin-right: 10px;
+    border-radius: 3px;
 `;
 
 const RightContainer = styled.div`
@@ -31,7 +33,7 @@ const RightContainer = styled.div`
 
 const UserLink = styled(Link)`
     text-decoration: none;
-    font-size: 25px;
+    font-size: 20px;
     color: hsl(206deg 100% 52%);
 `;
 
@@ -66,7 +68,7 @@ const UserList = (props) => {
                             <LeftContainer src={user.profileImageSrc}/>
                     <RightContainer>
                             <UserLink to={`/member/${user.memberId}`}>{user.nickName}</UserLink>
-                            <QuestionNumber>{user.answers ? user.answers.length : '0'}</QuestionNumber>
+                            <QuestionNumber>{user.answers ? user.answers.length : '0'} Post</QuestionNumber>
                     </RightContainer>
                     </UserContainer>
                 )}

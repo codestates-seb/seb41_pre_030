@@ -1,6 +1,7 @@
 import ReactPaginate from 'react-paginate';
 import { Fragment, useState } from "react";
 import { Contents, ContentsTitle, Count, Detail, Question, QuestionCount, Questions } from './Home';
+import styled from 'styled-components';
 
 const Pagenation = (props) => {
     const [itemOffset, setItemOffset] = useState(0);
@@ -9,6 +10,26 @@ const Pagenation = (props) => {
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     const currentItems = props.questions.slice(itemOffset, endOffset);
     const pageCount = Math.ceil(props.questions.length / props.itemsPerPage);
+
+    const UserBox = styled.div`
+        display: flex;
+        flex-grow: 1;
+        margin-top: auto;
+        justify-content: right;
+        width: 150px;
+        margin-bottom: 20px;
+        margin-right: 30px;
+        span{
+            margin-top: auto;
+            font-size: 15px;
+        }
+        img {
+            margin-right: 10px;
+            height: 25px;
+            width : 25px;
+            border-radius: 3px;
+        }
+    `
 
 
     const handlePageClick = (event) => {
@@ -32,8 +53,12 @@ const Pagenation = (props) => {
                         <Detail to={`/questions/${question.questionId}`}>
                         <ContentsTitle>{question.subject}</ContentsTitle><br/>
                         </Detail>
-                        <Contents>{question.content}</Contents>
+                        <Contents dangerouslySetInnerHTML={{__html: question.content}}></Contents>
                     </Question>
+                    <UserBox>
+                        <img src={question.member.profileImageSrc} />
+                        <span>{question.member.nickName}</span>
+                    </UserBox>
                 </Questions>
             )}
             <ReactPaginate

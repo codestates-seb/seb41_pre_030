@@ -45,6 +45,7 @@ const UserSearch = styled.input`
     padding: 13px;
     font-size: 15px;
     margin-top: 20px;
+    border-radius: 3px;
 `;
 
 const AllUsers = () => {

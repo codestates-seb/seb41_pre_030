@@ -185,7 +185,7 @@ const AskPage = () => {
 				.post("http://13.125.30.88:8080/questions", bodyJSON, {
 					headers: {
 						"Content-Type": 'application/json',
-						"Authorization": localStorage.getItem("accessToken"),
+						"Autorization": localStorage.getItem("accessToken"),
 						"Refresh": localStorage.getItem("refreshToken")
 					}
 				})

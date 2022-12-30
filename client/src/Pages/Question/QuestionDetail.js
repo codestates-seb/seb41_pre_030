@@ -340,7 +340,7 @@ function QuestionDetail () {
             </Vote>
           </div>
           <Content>
-            <span>{question && question.data.content}</span>
+            <span dangerouslySetInnerHTML={{__html: question && question.data.content}} ></span>
           </Content>
           </QuestionContentView>
         </Post>
@@ -348,7 +348,7 @@ function QuestionDetail () {
           <div className="createUser">
             <Date>Asked {timeForToday(createDate)}</Date>
             <img style={{"width": "30px"}} src={question && question.data.member.profileImageSrc}/>
-            <HyperLink to="/UserPage" style={{"fontSize" : "15px"}}>{question && question.data.member.nickName}</HyperLink>
+            <HyperLink to={question && `/member/${question.data.member.memberId}`} style={{"fontSize" : "15px"}}>{question && question.data.member.nickName}</HyperLink>
           </div>
         </Writer>
       </div>
@@ -369,14 +369,14 @@ function QuestionDetail () {
                 <AdoptStyle style={answer.adopt === true ? {"color" : "blue"}: {"color" : "black"}}/>
               </Vote>
               <Content>
-                <div style={{"marginLeft" : "20px"}}>{answer.content}</div>
+                <div style={{"marginLeft" : "20px"}} dangerouslySetInnerHTML={{__html: answer.content}}>{}</div>
               </Content>
             </div>
             <Writer>
               <div className="createUser">
                 <Date>answered {timeForToday(answerCreateDate)}</Date>
                 <img style={{"width": "25px"}} src={question && answer.member.profileImageSrc} />
-                <HyperLink to="/UserPage" style={{"fontSize" : "15px"}}>{question && answer.member.nickName}</HyperLink>
+                <HyperLink to={`/member/${answer.member.memberId}`} style={{"fontSize" : "15px"}}>{question && answer.member.nickName}</HyperLink>
               </div>
             </Writer>
           </div>
@@ -418,11 +418,15 @@ function QuestionDetail () {
             </FlexRight>
         </Fragment>
       }
-      <PostAnswer>
-        <SubmitButton onClick={handleSubmit}>Post Your Answer</SubmitButton>
-          <span style={{"margin" : "18px", "fontSize" : "17px"}}>Not the answer you're looking for? 
-          <HyperLink to = "/ask"> ask your own question</HyperLink></span>
-      </PostAnswer>
+      {isLogin === "true" ? 
+        <PostAnswer>
+          <SubmitButton onClick={handleSubmit}>Post Your Answer</SubmitButton>
+            <span style={{"margin" : "18px", "fontSize" : "17px"}}>Not the answer you're looking for? 
+            <HyperLink to = "/ask"> ask your own question</HyperLink></span>
+        </PostAnswer> :
+        <></>
+
+      }
     </All>
   )
 }
