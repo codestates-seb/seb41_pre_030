@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { All, AllQuestions, AskQuestionButton } from "../Home/Home"
 import styled from "styled-components";
 import useFetch from "../../Components/util/useFetch";
-import { NavLink, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 import OAuthButton from "../Signup/OAuthButton";
 import Google from "../../Image/Google";
 import GitHub from "../../Image/GitHub";
@@ -320,7 +320,7 @@ function QuestionDetail () {
             <Subject>  
                 <h2>{question && question.data.subject}</h2>
             </Subject>
-            <AskQuestionButton to='/ask'>Ask Question</AskQuestionButton>          
+            <AskQuestionButton to={localStorage.getItem("isLogin") ? '/ask' : '/login'}>Ask Question</AskQuestionButton>          
           </AllQuestions>
           <At>
             <Date>Asked {timeForToday(createDate)}</Date>
@@ -395,7 +395,8 @@ function QuestionDetail () {
       {isLogin === "true" ? <></> :
           <Fragment>
             <FlexRight>
-              <div style={{"whiteSpace": "nowrap"}} >Signup or
+              <div style={{"whiteSpace": "nowrap"}} >
+                <HyperLink to="/signup"> Signup </HyperLink>or
                 <HyperLink to="/login"> login</HyperLink>
               </div>
               <div className='button-group'>
@@ -407,10 +408,12 @@ function QuestionDetail () {
                   <GitHub /> 
                   Sign up with GitHub
                 </OAuthButton>
-                <OAuthButton color="#fff" bg_color="#385499" hv_color="#314a86" ac_color="hsl(205deg 46% 32%)">
-                  <StackLogo><Logo style={{"height" : "20px"}}/></StackLogo>
-                  Sign up using Email and Password
-                </OAuthButton>
+                <Link to="/signup">
+                  <OAuthButton color="#fff" bg_color="#385499" hv_color="#314a86" ac_color="hsl(205deg 46% 32%)">
+                    <StackLogo><Logo style={{"height" : "20px"}}/></StackLogo>
+                    Sign up using Email and Password
+                  </OAuthButton>
+                </Link>
               </div>
             </FlexRight>
         </Fragment>
