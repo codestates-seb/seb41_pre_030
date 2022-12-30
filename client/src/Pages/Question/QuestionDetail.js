@@ -133,7 +133,6 @@ function QuestionDetail () {
 
   //endpoint가 questionId가 되는 순간 데이터를 못 받아 옴
   const [question] = useFetch(`http://13.125.30.88:8080/questions/${id}`,request)
-  const [member] = useFetch(`http://13.125.30.88:8080/members/${id}`,request)
 
   const [value, setValue] = useState('');
 
@@ -244,7 +243,8 @@ function QuestionDetail () {
         <Writer>
           <div className="createUser">
             <Date>Asked {timeForToday(createDate)}</Date>
-            <HyperLink to="/UserPage" style={{"fontSize" : "15px"}}>{member.nickName}</HyperLink>
+            <img style={{"width": "25px"}} src={question && question.data.member.profileImageSrc}/>
+            <HyperLink to="/UserPage" style={{"fontSize" : "15px"}}>{question && question.data.member.nickName}</HyperLink>
           </div>
         </Writer>
       </div>
@@ -271,7 +271,8 @@ function QuestionDetail () {
             <Writer>
               <div className="createUser">
                 <Date>answered {timeForToday(answerCreateDate)}</Date>
-                <HyperLink to="/UserPage" style={{"fontSize" : "15px"}}>{member.nickName}</HyperLink>
+                <img style={{"width": "25px"}} src={question && answer.member.profileImageSrc} />
+                <HyperLink to="/UserPage" style={{"fontSize" : "15px"}}>{question && answer.member.nickName}</HyperLink>
               </div>
             </Writer>
           </div>
