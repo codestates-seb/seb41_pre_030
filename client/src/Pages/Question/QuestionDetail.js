@@ -95,7 +95,7 @@ const PostAnswer = styled.div`
 
 const FlexRight = styled.div`
   display: grid;
-  margin: 90px 20px 20px 20px;
+  margin: 85px 20px 20px 20px;
   font-size: 20px;
   div.button-group {
     display: flex !important;
@@ -419,6 +419,32 @@ function QuestionDetail () {
         </PostAnswer> :
         <></>
       }
+      {isLogin === "true" ? <></> :
+          <Fragment>
+            <FlexRight>
+              <div style={{"whiteSpace": "nowrap"}} >
+                <HyperLink to="/signup"> Signup </HyperLink>or
+                <HyperLink to="/login"> login</HyperLink>
+              </div>
+              <div className='button-group'>
+                <OAuthButton color="hsl(210deg 8% 20%)" bg_color="hsl(0deg 0% 100%)" hv_color="hsl(210deg 8% 98%)" ac_color="hsl(210deg 8% 95%)">
+                  <Google /> 
+                  Sign up with Google
+                </OAuthButton>
+                <OAuthButton color="#fff" bg_color="hsl(210deg 8% 20%)" hv_color="hsl(210deg 8% 15%)" ac_color="hsl(210deg 8% 5%)">
+                  <GitHub /> 
+                  Sign up with GitHub
+                </OAuthButton>
+                <Link to="/signup">
+                  <OAuthButton color="#fff" bg_color="#385499" hv_color="#314a86" ac_color="hsl(205deg 46% 32%)">
+                    <StackLogo><Logo style={{"height" : "20px"}}/></StackLogo>
+                    Sign up using Email and Password
+                  </OAuthButton>
+                </Link>
+              </div>
+            </FlexRight>
+        </Fragment>
+      }
       <Answer>
         {question ? question.data.answers.length : 0} answers
         <AnswerContentView>
@@ -457,32 +483,6 @@ function QuestionDetail () {
           )}
         </AnswerContentView>
       </Answer>
-      {isLogin === "true" ? <></> :
-          <Fragment>
-            <FlexRight>
-              <div style={{"whiteSpace": "nowrap"}} >
-                <HyperLink to="/signup"> Signup </HyperLink>or
-                <HyperLink to="/login"> login</HyperLink>
-              </div>
-              <div className='button-group'>
-                <OAuthButton color="hsl(210deg 8% 20%)" bg_color="hsl(0deg 0% 100%)" hv_color="hsl(210deg 8% 98%)" ac_color="hsl(210deg 8% 95%)">
-                  <Google /> 
-                  Sign up with Google
-                </OAuthButton>
-                <OAuthButton color="#fff" bg_color="hsl(210deg 8% 20%)" hv_color="hsl(210deg 8% 15%)" ac_color="hsl(210deg 8% 5%)">
-                  <GitHub /> 
-                  Sign up with GitHub
-                </OAuthButton>
-                <Link to="/signup">
-                  <OAuthButton color="#fff" bg_color="#385499" hv_color="#314a86" ac_color="hsl(205deg 46% 32%)">
-                    <StackLogo><Logo style={{"height" : "20px"}}/></StackLogo>
-                    Sign up using Email and Password
-                  </OAuthButton>
-                </Link>
-              </div>
-            </FlexRight>
-        </Fragment>
-      }
     </All>
   )
 }
