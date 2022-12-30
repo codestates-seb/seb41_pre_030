@@ -54,10 +54,12 @@ const SearchInput = styled.input`
   border: 1px solid #999;
   border-radius: 3px;
   padding: 10px 10px;
-  margin-top: 7px;
+  margin-top: 5px;
+  font-size: 16px
 `;
 
-const LoginLink = styled(Link)`
+const ButtonLink = styled(Link)` 
+
   button {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -72,6 +74,7 @@ const LoginLink = styled(Link)`
     border: 1px solid hsl(205deg 41% 63%);
     border-radius: 4px;
     font-weight: 500;
+    font-size: 14px;
 
     :hover {
       background: var(--button-hover-bg-color);
@@ -81,47 +84,23 @@ const LoginLink = styled(Link)`
     }
     cursor: pointer;
   }
-
+  
   .login {
     background-color: hsl(205deg 46% 92%);
     color: hsl(205deg 47% 42%);
     --button-hover-bg-color: hsl(205deg 57% 81%);
     --button-active-bg-color: hsl(205deg 56% 76%);
   }
-`;
-
-const SignupLink = styled(Link)`
-  button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-
-    display: inline-block;
-    height: 36px;
-    padding: 0px 15px;
-    margin-top: 8px;
-    width: auto;
-
-    border: 1px solid hsl(205deg 41% 63%);
-    border-radius: 4px;
-    font-weight: 500;
-
-    :hover {
-      background: var(--button-hover-bg-color);
-    }
-    :active {
-      background: var(--button-active-bg-color);
-    }
-    cursor: pointer;
-  }
-
-  .signUp {
+  
+  .signup,.logout {
     background-color: hsl(206deg 100% 52%);
     color: #fff;
     --button-hover-bg-color: hsl(209deg 100% 38%);
     --button-active-bg-color: hsl(209deg 100% 32%);
   }
-`
+`;
+
+
 const ProfileLink = styled(Link)`
   display: inline-block;
   padding: 7px 5px 0px 5px;
@@ -188,18 +167,18 @@ const Header = () => {
         <ProfileLink to={`member/${localStorage.getItem("user")}`} className="profile">
           <img src={questions && questions.data.profileImageSrc}/>
         </ProfileLink>
-        <LoginLink className="profile">
+        <ButtonLink>
           <button className="logout" onClick={onLogoutHandler}>Log out</button>
-        </LoginLink> 
+        </ButtonLink>
       </Fragment> 
         :
       <Fragment>      
-        <LoginLink to={"/login"}>
+        <ButtonLink to={"/login"}>
           <button className="login">Log in</button>
-        </LoginLink>
-        <SignupLink to={"/signup"}>
-          <button className="signUp">Sign up</button>
-        </SignupLink>
+        </ButtonLink>
+        <ButtonLink to={"/signup"}>
+          <button className="signup">Sign up</button>
+        </ButtonLink>
     </Fragment> 
     }
 

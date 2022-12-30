@@ -47,11 +47,11 @@ const Signup = () => {
         <SignupExplain />
         <FlexRight>
           <div className='button-group'>
-            <OAuthButton color="rgb(59, 64, 69)">
+            <OAuthButton color="hsl(210deg 8% 20%)" bg_color="hsl(0deg 0% 100%)" hv_color="hsl(210deg 8% 98%)" ac_color="hsl(210deg 8% 95%)">
               <Google /> 
               Sign up with Google
             </OAuthButton>
-            <OAuthButton bg_color="rgb(47, 51, 55)">
+            <OAuthButton color="#fff" bg_color="hsl(210deg 8% 20%)" hv_color="hsl(210deg 8% 15%)" ac_color="hsl(210deg 8% 5%)">
               <GitHub /> 
               Sign up with GitHub
             </OAuthButton>
