@@ -8,6 +8,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: false
     show-sql: true
   output:
     ansi:
@@ -33,7 +36,8 @@ logging:
     org:
       springframework:
         orm:
-          jpa: DEBUG
+          jpa: warn
+    root: info
 server:
   servlet:
     encoding:
@@ -68,6 +72,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update # 운영 서버에서는 create 하면 X
+    properties:
+      hibernate:
+        show_sql: false
   h2:
     console:
       enabled: false
@@ -87,10 +94,17 @@ spring:
             scope:
               - email
               - profile
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: warn
+    root: info
 jwt:
   secret-key: ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 420
+  access-token-expiration-minutes: 1440
+  refresh-token-expiration-minutes: 2880
 cloud:
   aws:
     credentials:

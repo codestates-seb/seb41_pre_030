@@ -7,6 +7,7 @@ import Be_30.Project.member.entity.Member;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtVerificationFilter extends OncePerRequestFilter {
 
@@ -38,9 +40,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             Map<String, Object> claims = verifyJws(request);
             setAuthenticationToContext(claims); //Authentication 객체를 securityContext에 저장하기 위한 메서드
         } catch (SignatureException se) {
+            se.printStackTrace();
             request.setAttribute("exception", se);
             // 서명 검증에 실패했을 때 SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
         } catch (ExpiredJwtException ee) {
+            ee.printStackTrace();
             request.setAttribute("exception", ee);
             // 만료되었을 때 SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
         } catch (Exception e) {
@@ -55,7 +59,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         //jwt가 Authorization header에 포함되지 않았다면 filter 실행하지 않는다.
         String authorization = request.getHeader("Authorization");
-
         return authorization == null || !authorization.startsWith("Bearer");
     }
 
@@ -73,6 +76,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         member.setEmail(username);
         member.setRoles(roles);
         MemberDetails memberDetails = new MemberDetails(authorityUtils, member);
+
+        log.warn(">>>>>>> 생성된 MemberDetails: {}", memberDetails.getEmail());
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(memberDetails, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
