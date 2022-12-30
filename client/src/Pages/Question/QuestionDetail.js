@@ -218,8 +218,36 @@ function QuestionDetail () {
     console.log(e.target.value)
   }
 
+  const [votes, setVotes] = useState(question && question.data.votes)
+
   const downButton = () => {
+    const updateRequest = {
+      method : "POST",
+    }
+    fetch(`http://13.125.30.88:8080/questions/${id}/answers`, updateRequest)
+    .then (() => {
+      setVotes(votes - 1)
+      // window.location.reload()
+    })
+    .catch(err => {
+      console.log(err)
+    })
     console.log("down")
+  }
+  
+  const upButton = () => {
+    const updateRequest = {
+      method : "POST",
+    }
+    fetch(`http://13.125.30.88:8080/questions/${id}/answers`, updateRequest)
+    .then (() => {
+      setVotes(votes + 1)
+      // window.location.reload()
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    console.log("up")
   }
 
 
@@ -242,11 +270,11 @@ function QuestionDetail () {
           <QuestionContentView>
           <div style={{"display" : "flex", "margin" : "25px"}}>
             <Vote>
-              <button style={{"backgroundColor" : "white", "border" : "none"}}>
+              <button style={{"backgroundColor" : "white", "border" : "none"}} onClick = {upButton}>
                 <CaretUpOutlined style={{"fontSize" : "30px"}}/>
               </button>
-                  <QuestionEstimation>{question && question.data.votes }</QuestionEstimation>
-              <button style={{"backgroundColor" : "white", "border" : "none"}}>
+              <QuestionEstimation>{question && question.data.votes}</QuestionEstimation>
+              <button style={{"backgroundColor" : "white", "border" : "none"}} onClick = {downButton}>
                 <CaretDownOutlined style={{"fontSize" : "30px"}}/>
               </button>
             </Vote>
@@ -271,12 +299,12 @@ function QuestionDetail () {
           <div className="eachAnswer" key={answer.answerId}>
             <div style={{"display" : "flex"}} key={answer.id}>
               <Vote>
-                <button style={{"backgroundColor" : "white", "border" : "none"}}>
+                <button style={{"backgroundColor" : "white", "border" : "none"}} onClick = {upButton}>
                   <CaretUpOutlined style={{"fontSize" : "30px"}}/>
                 </button>
                 <QuestionEstimation>{answer.votes}</QuestionEstimation>
-                <button style={{"backgroundColor" : "white", "border" : "none"}}>
-                  <CaretDownOutlined style={{"fontSize" : "30px"}} onClick = {downButton}/>
+                <button style={{"backgroundColor" : "white", "border" : "none"}} onClick = {downButton}>
+                  <CaretDownOutlined style={{"fontSize" : "30px"}}/>
                 </button>
                 <AdoptStyle style={answer.adopt === true ? {"color" : "blue"}: {"color" : "black"}}/>
               </Vote>
