@@ -37,10 +37,29 @@ const QuestionContentView = styled.div`
 
 const AnswerContentView = styled.div`
   display: grid;
-.eachAnswer{
-  border-bottom: 1px solid gray;
-  margin: 20px;
-}
+  .eachAnswer{
+    border-bottom: 1px solid gray;
+    margin: 20px;
+  }
+  .answer-edit {
+    display: flex;
+    flex-direction: column;
+  }
+  textarea {
+    width: 1034px;
+    height: 250px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 20px;
+    margin-bottom: 30px;
+    font-size: 15px;
+  }
+  .answer-edit button {
+    background: none;
+    border: none;
+    width: 50px;
+    color: #1f9315
+  }
 `
 
 const Vote = styled.div`
@@ -133,6 +152,11 @@ const Writer = styled.div`
     text-decoration: none;
     color: #1f9315
   }
+  p{
+    font-size: 13px;
+    text-decoration: none;
+    color: #1f9315
+  }
 `
 const HyperLink = styled(NavLink)`
   text-decoration: none;
@@ -159,8 +183,11 @@ function QuestionDetail () {
   }
 
   const [question] = useFetch(`http://13.125.30.88:8080/questions/${id}`,request)
+  console.log(question)
 
   const [value, setValue] = useState('');
+  const [answerEdit, setAnswerEdit] = useState(false)
+  const [answerContent, setAnswerContent] = useState('')
 
   let isLogin = localStorage.getItem("isLogin");
   let userId = localStorage.getItem("user")
@@ -308,6 +335,31 @@ function QuestionDetail () {
     console.log("up")
   }
 
+  const answerEditStateChanger = () => {
+    setAnswerEdit(!answerEdit)
+  }
+
+  const onAnswerEditHandler = (answerMemberId) => {
+    const bodyJSON =  JSON.stringify({
+      content: answerContent,
+    });
+
+    axios
+    .patch(`http://13.125.30.88:8080//questions/${id}/answers/${answerMemberId}`, bodyJSON, {
+      headers: {
+        "Content-Type": 'application/json',
+        "AutHorization": localStorage.getItem("accessToken"),
+        "Refresh": localStorage.getItem("refreshToken")
+      }
+    })
+    .then((res) => {
+      alert("Answer edited!");
+      window.location.reload();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
 
   return(
     <All>
@@ -351,6 +403,22 @@ function QuestionDetail () {
           </div>
         </Writer>
       </div>
+      <YourAnswer>
+        <ReactQuill 
+          theme="snow"
+          value={value}
+          onChange={setValue}
+          modules={modules}
+          style={{ "height" : "400px"}}/>
+      </YourAnswer>
+      {isLogin === "true" ? 
+        <PostAnswer>
+          <SubmitButton onClick={handleSubmit}>Post Your Answer</SubmitButton>
+            <span style={{"margin" : "18px", "fontSize" : "17px"}}>Not the answer you're looking for? 
+            <HyperLink to = "/ask"> ask your own question</HyperLink></span>
+        </PostAnswer> :
+        <></>
+      }
       <Answer>
         {question ? question.data.answers.length : 0} answers
         <AnswerContentView>
@@ -367,30 +435,28 @@ function QuestionDetail () {
                 </button>
                 <AdoptStyle style={answer.adopt === true ? {"color" : "blue"}: {"color" : "black"}}/>
               </Vote>
-              <Content>
-                <div style={{"marginLeft" : "20px"}} dangerouslySetInnerHTML={{__html: answer.content}} />
-              </Content>
-            </div>
-            <Writer>
-              <div className="createUser">
-                <Date>answered {timeForToday(answerCreateDate)}</Date>
-                <img style={{"width": "25px"}} src={question && answer.member.profileImageSrc} alt="유저 이미지"/>
-                <HyperLink to={`/member/${answer.member.memberId}`} style={{"fontSize" : "15px"}}>{question && answer.member.nickName}</HyperLink>
+              {answerEdit ? 
+                <div className="answer-edit">
+                  <textarea type='textarea' defaultValue={answer.content} onChange={e => setAnswerContent(e.target.value)}/>
+                  <button onClick={() => onAnswerEditHandler(answer.answerId)}>수정</button>
+                </div>
+                :
+                <Content>
+                  <div style={{"marginLeft" : "20px"}} dangerouslySetInnerHTML={{__html: answer.content}} />
+                </Content>}
               </div>
-            </Writer>
+              <Writer>
+                <div className="createUser">
+                  <Date>answered {timeForToday(answerCreateDate)}</Date>
+                  <img style={{"width": "25px"}} src={question && answer.member.profileImageSrc} alt="유저 이미지"/>
+                  <HyperLink to={`/member/${answer.member.memberId}`} style={{"fontSize" : "15px"}}>{question && answer.member.nickName}</HyperLink>
+                  {question && answer.member.memberId == userId && answerEdit === false ? <p onClick={answerEditStateChanger}>답변 수정</p> : null}
+                </div>
+              </Writer>
           </div>
           )}
         </AnswerContentView>
       </Answer>
-      <YourAnswer>
-      <ReactQuill 
-        theme="snow"
-        value={value}
-        onChange={setValue}
-        modules={modules}
-        style={{ "height" : "400px"}}/>
-      </YourAnswer>
-
       {isLogin === "true" ? <></> :
           <Fragment>
             <FlexRight>
@@ -416,15 +482,6 @@ function QuestionDetail () {
               </div>
             </FlexRight>
         </Fragment>
-      }
-      {isLogin === "true" ? 
-        <PostAnswer>
-          <SubmitButton onClick={handleSubmit}>Post Your Answer</SubmitButton>
-            <span style={{"margin" : "18px", "fontSize" : "17px"}}>Not the answer you're looking for? 
-            <HyperLink to = "/ask"> ask your own question</HyperLink></span>
-        </PostAnswer> :
-        <></>
-
       }
     </All>
   )
