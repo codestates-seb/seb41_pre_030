@@ -156,8 +156,19 @@ const UserInfoEdit = ({question}) => {
         window.location.reload();
     }
 
-    const onDeleteAccountHandler = () => {
-        
+    const onDeleteAccountHandler = async () => {
+        await axios({
+            method: "DELETE",
+            url: `http://13.125.30.88:8080/members/${question.data.memberId}`,
+            headers: {
+                "Authorization": localStorage.getItem("accessToken"),
+                "Refresh": localStorage.getItem("refreshToken")
+            },
+        });
+        localStorage.clear();
+        window.location.reload();
+        navigate(`/`);
+        window.location.reload();
     }
 
     return (
