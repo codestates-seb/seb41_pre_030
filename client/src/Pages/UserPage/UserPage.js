@@ -1,8 +1,10 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import UserInfoEdit from './UserInfoEdit';
 import UserQAList from './QAList/UserQAList';
 import UserInfo from './UserInfo';
+import useFetch from '../../Components/util/useFetch';
+import { useEffect } from 'react';
 
 const Container = styled.div`
     min-height: 900px;
@@ -20,12 +22,19 @@ const Container = styled.div`
 `
 
 const UserPage = () => {
+    const location = useLocation();
+    const id = location.pathname.slice(8,10)
+    const [question] = useFetch(`http://13.125.30.88:8080/members/${id}`);
+
+    useEffect(() => {
+    }, [ question ])
+    
     return (
         <Container>
-            <UserInfo />
+            <UserInfo id={id} question={question}/>
             <Routes>
                 <Route path='*' element={<UserQAList />} />
-                <Route path='/edit' element={<UserInfoEdit />} />
+                <Route path={`:id/edit/`} element={<UserInfoEdit question={question}/>} />
             </Routes>
         </Container>
     )

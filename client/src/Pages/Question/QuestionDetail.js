@@ -288,7 +288,7 @@ function QuestionDetail () {
         style={{ "height" : "400px"}}/>
       </YourAnswer>
 
-      {!isLogin ??
+      {isLogin === "true" ? <></> :
           <Fragment>
             <FlexRight>
               <div style={{"whiteSpace": "nowrap"}} >Signup or

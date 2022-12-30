@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import useFetch from '../../Components/util/useFetch';
 import store from '../../Redux/store';
@@ -66,20 +66,7 @@ const EditProfile = styled.div`
     }
 `
 
-const UserInfo = () => {
-    const location = useLocation();
-    const [question] = useFetch(`http://13.125.30.88:8080/members/${location.pathname.slice(8)}`);
-    const [state, setState] = useState(store.getState());
-
-    useEffect(() => {
-        const unsubscribe = store.subscribe(() => {
-            setState(store.getState())
-        });
-        return () => {
-            unsubscribe()
-        }
-    }, [state, question])
-
+const UserInfo = ({ id, question }) => {
     let createDate = null;
     let modifiedDate = null;
 
@@ -121,7 +108,7 @@ const UserInfo = () => {
                     </ul>
                 </TopViewInfo>
                 <EditProfile> 
-                    <Link to={'/member/edit'}>⚙️ Edit profile</Link>
+                    <Link to={`/member/${id}/edit`}>⚙️ Edit profile</Link>
                 </EditProfile>
             </TopView>
         </TopViewContainer>

@@ -1,7 +1,9 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import profileImage from "../../Image/profile.png";
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import useFetch from '../../Components/util/useFetch';
 
 const Container = styled.div`
     position: absolute;
@@ -89,11 +91,10 @@ const InputCotainer = styled.div`
     }
 `
 
-const UserInfoEdit = () => {
-    const [image, setImage] = useState(profileImage)
-    const [nickname, setNickname] = useState('')
+const UserInfoEdit = ({question}) => {
+    const [image, setImage] = useState(question.data.profileImageSrc)
+    const [nickname, setNickname] = useState(question.data.nickName)
     const fileInput = useRef(null)
-    const nicknameInput = useRef(null)
 
     const onImageReviewHandler = (e) => {
         if(!e.target.files[0]){
@@ -142,7 +143,7 @@ const UserInfoEdit = () => {
             <EditTitle>
                 <h1>Edit your profile</h1>
             </EditTitle>
-            <Form onSubmit={event => onSubmitHandler(event)}>
+            {nickname && <Form onSubmit={event => onSubmitHandler(event)}>
                 <ImageContainer>
                     <div>
                         <img src={image} alt="user avatar" onClick={()=>{fileInput.current.click()}}/>
@@ -170,7 +171,7 @@ const UserInfoEdit = () => {
                     />
                 </InputCotainer>
                 <button>Edit profile</button>
-            </Form>
+            </Form>}
             <button className='delete-account' onClick={onDeleteAccountHandler}>Delete profile</button>
         </Container>
     )

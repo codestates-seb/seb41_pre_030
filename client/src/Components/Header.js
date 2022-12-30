@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 import Logo from "../Image/Logo";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import store from '../Redux/store';
 import useFetch from './util/useFetch';
 
@@ -145,7 +145,6 @@ const Header = () => {
   const [search, setSearch] = useState("");
   const [state, setState] = useState(store.getState());
   let isLogin = localStorage.getItem("isLogin")
-  const location = useLocation();
   
   useEffect(() => {
     const unsubscribe = store.subscribe(() => {
@@ -163,7 +162,7 @@ const Header = () => {
 
   const onLogoutHandler = () => {
     localStorage.clear();
-    location.reload()
+    window.location.reload()
   }
 
   return (

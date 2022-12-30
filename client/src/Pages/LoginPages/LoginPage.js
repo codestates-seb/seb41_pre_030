@@ -148,6 +148,7 @@ const LoginPage = () => {
       localStorage.setItem("user", res.data.memberId)
       alert("Login");
       navigate("/");
+      window.location.reload();
     })
     .catch((err) => {
       console.log(err);
