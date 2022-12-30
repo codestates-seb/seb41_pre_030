@@ -123,6 +123,7 @@ const Header = () => {
   const [questions] = useFetch(`http://13.125.30.88:8080/members/${localStorage.getItem("user")}`);
   const [search, setSearch] = useState("");
   const [state, setState] = useState(store.getState());
+
   let isLogin = localStorage.getItem("isLogin")
   
   useEffect(() => {
@@ -166,7 +167,7 @@ const Header = () => {
         <ProfileLink to={`member/${localStorage.getItem("user")}`} className="profile">
           <img src={questions && questions.data.profileImageSrc}/>
         </ProfileLink>
-        <ButtonLink>
+        <ButtonLink to={"/"}>
           <button className="logout" onClick={onLogoutHandler}>Log out</button>
         </ButtonLink>
       </Fragment> 
