@@ -132,7 +132,7 @@ const Home = ({questions}) => {
             <QuestionList>
                 <AllQuestions>
                     All Questions
-                    <AskQuestionButton to='/ask'>Ask Question</AskQuestionButton>
+                    <AskQuestionButton to={localStorage.getItem("isLogin") ? '/ask' : '/login'}>Ask Question</AskQuestionButton>
                 </AllQuestions>
                 <CountQuestions>{questions && questions.length} questions</CountQuestions>
             </QuestionList>

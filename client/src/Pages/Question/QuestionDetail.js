@@ -113,13 +113,20 @@ const Writer = styled.div`
   text-decoration: none;
   border-radius: 5px;
   background-color: aliceblue;
-  width: 170px;
+  width: 200px;
   height: 100px;
   display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
   float: right;
   margin: 0 10px 20px 0;
   .createUser{
     margin: 10px;
+    img {
+      margin-right: 10px;
+      border-radius: 3px;
+    }
   }
 `
 const HyperLink = styled(NavLink)`
@@ -220,13 +227,39 @@ function QuestionDetail () {
 
   const [votes, setVotes] = useState(question && question.data.votes)
 
-  const downButton = () => {
+  const questionUpVoteHandler = () => {
     const updateRequest = {
       method : "POST",
+      headers: {
+        "Content-Type": 'application/json',
+        "Authorization": localStorage.getItem("accessToken"),
+        "Refresh": localStorage.getItem("refreshToken")
+      }
     }
-    fetch(`http://13.125.30.88:8080/questions/${id}/answers`, updateRequest)
+    fetch(`http://13.125.30.88:8080/questions/${id}/vote-up`, updateRequest)
+    .then (() => {
+      setVotes(votes + 1)
+      window.location.reload();
+      // window.location.reload()
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
+  const questionDownVoteHandler = () => {
+    const updateRequest = {
+      method : "POST",
+      headers: {
+        "Content-Type": 'application/json',
+        "Authorization": localStorage.getItem("accessToken"),
+        "Refresh": localStorage.getItem("refreshToken")
+      }
+    }
+    fetch(`http://13.125.30.88:8080/questions/${id}/vote-down`, updateRequest)
     .then (() => {
       setVotes(votes - 1)
+      window.location.reload();
       // window.location.reload()
     })
     .catch(err => {
@@ -235,13 +268,40 @@ function QuestionDetail () {
     console.log("down")
   }
   
-  const upButton = () => {
+  const answerUpVoteHandler = (answerId) => {
     const updateRequest = {
       method : "POST",
+      headers: {
+        "Content-Type": 'application/json',
+        "Authorization": localStorage.getItem("accessToken"),
+        "Refresh": localStorage.getItem("refreshToken")
+      }
     }
-    fetch(`http://13.125.30.88:8080/questions/${id}/answers`, updateRequest)
+    fetch(`http://13.125.30.88:8080/questions/${id}/answers/${answerId}/vote-up`, updateRequest)
     .then (() => {
       setVotes(votes + 1)
+      window.location.reload();
+      // window.location.reload()
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    console.log("up")
+  }
+
+  const answerDownVoteHandler = (answerId) => {
+    const updateRequest = {
+      method : "POST",
+      headers: {
+        "Content-Type": 'application/json',
+        "Authorization": localStorage.getItem("accessToken"),
+        "Refresh": localStorage.getItem("refreshToken")
+      }
+    }
+    fetch(`http://13.125.30.88:8080/questions/${id}/answers/${answerId}/vote-down`, updateRequest)
+    .then (() => {
+      setVotes(votes + 1)
+      window.location.reload();
       // window.location.reload()
     })
     .catch(err => {
@@ -270,11 +330,11 @@ function QuestionDetail () {
           <QuestionContentView>
           <div style={{"display" : "flex", "margin" : "25px"}}>
             <Vote>
-              <button style={{"backgroundColor" : "white", "border" : "none"}} onClick = {upButton}>
+              <button style={{"backgroundColor" : "white", "border" : "none"}} onClick = {questionUpVoteHandler}>
                 <CaretUpOutlined style={{"fontSize" : "30px"}}/>
               </button>
               <QuestionEstimation>{question && question.data.votes}</QuestionEstimation>
-              <button style={{"backgroundColor" : "white", "border" : "none"}} onClick = {downButton}>
+              <button style={{"backgroundColor" : "white", "border" : "none"}} onClick = {questionDownVoteHandler}>
                 <CaretDownOutlined style={{"fontSize" : "30px"}}/>
               </button>
             </Vote>
@@ -287,7 +347,7 @@ function QuestionDetail () {
         <Writer>
           <div className="createUser">
             <Date>Asked {timeForToday(createDate)}</Date>
-            <img style={{"width": "25px"}} src={question && question.data.member.profileImageSrc}/>
+            <img style={{"width": "30px"}} src={question && question.data.member.profileImageSrc}/>
             <HyperLink to="/UserPage" style={{"fontSize" : "15px"}}>{question && question.data.member.nickName}</HyperLink>
           </div>
         </Writer>
@@ -299,11 +359,11 @@ function QuestionDetail () {
           <div className="eachAnswer" key={answer.answerId}>
             <div style={{"display" : "flex"}} key={answer.id}>
               <Vote>
-                <button style={{"backgroundColor" : "white", "border" : "none"}} onClick = {upButton}>
+                <button style={{"backgroundColor" : "white", "border" : "none"}} onClick = {() => answerUpVoteHandler(answer.answerId)}>
                   <CaretUpOutlined style={{"fontSize" : "30px"}}/>
                 </button>
                 <QuestionEstimation>{answer.votes}</QuestionEstimation>
-                <button style={{"backgroundColor" : "white", "border" : "none"}} onClick = {downButton}>
+                <button style={{"backgroundColor" : "white", "border" : "none"}} onClick = {() => answerDownVoteHandler(answer.answerId)}>
                   <CaretDownOutlined style={{"fontSize" : "30px"}}/>
                 </button>
                 <AdoptStyle style={answer.adopt === true ? {"color" : "blue"}: {"color" : "black"}}/>

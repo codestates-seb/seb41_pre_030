@@ -42,7 +42,7 @@ const UpContainer = styled.div`
   }
 `;
 
-const RowContainer = styled.form`
+const RowContainer = styled.div`
   padding: 30px 20px;
   border-radius: 10px;
   background: #ffffff;
@@ -150,7 +150,6 @@ const LoginPage = () => {
       window.location.reload();
     })
     .catch((err) => {
-      alert("이메일 또는 비밀번호가 틀렸습니다");
       console.log(err);
     })
   }
@@ -175,7 +174,7 @@ const LoginPage = () => {
             <GitLogo />Log in with GitHub
           </GitButton>
         </UpContainer>
-        <RowContainer onKeyPress={handleKeypress}>
+        <RowContainer onKeyUp={e => handleKeypress(e)}>
           <LoginHeader>Email</LoginHeader>
           <LoginInput type="email" value={info.email}
                       onChange={ev => setInfo({

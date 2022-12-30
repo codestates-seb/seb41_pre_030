@@ -105,9 +105,15 @@ const SignupForm = () => {
       })
   }
 
+  const handleKeypress = e => {
+    if (e.keyCode === 13) {
+      onSignUpSubmitHandler();
+    }
+  };
+
   return (
     <Container>
-      <Form>
+      <Form onKeyUp={e => handleKeypress(e)}>
         <div className='input-box'>
           <label htmlFor='display-name'>Display name</label>
           <input type='text' 

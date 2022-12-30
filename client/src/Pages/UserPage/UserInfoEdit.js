@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import profileImage from "../../Image/profile.png";
 import axios from 'axios';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import useFetch from '../../Components/util/useFetch';
 
 const Container = styled.div`
@@ -10,7 +10,7 @@ const Container = styled.div`
     width: 1100px;
     button {
         position: absolute;
-        bottom: 0;
+        bottom: 40px;
         right: 180px;
         display: inline-block;
         background-color: hsl(206deg 100% 52%);
@@ -29,6 +29,13 @@ const Container = styled.div`
         right: 0;
         border: 1px solid #d0394e;
         background-color: #d0393e;
+    }
+    span {
+        display: inline-block;
+        color: red;
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
     }
 `
 const EditTitle = styled.div`
@@ -95,6 +102,7 @@ const UserInfoEdit = ({question}) => {
     const [image, setImage] = useState(question.data.profileImageSrc)
     const [nickname, setNickname] = useState(question.data.nickName)
     const fileInput = useRef(null)
+    const navigate = useNavigate();
 
     const onImageReviewHandler = async (e) => {
         if(!e.target.files[0]){
@@ -121,6 +129,8 @@ const UserInfoEdit = ({question}) => {
             },
             data: formData, // data 전송시에 반드시 생성되어 있는 formData 객체만 전송 하여야 한다.
         });
+        navigate(`/member/${question.data.memberId}`)
+        window.location.reload();
     }
 
     const onSubmitHandler = async (event) => {
@@ -142,6 +152,8 @@ const UserInfoEdit = ({question}) => {
             },
             data: data
         });
+        navigate(`/member/${question.data.memberId}`)
+        window.location.reload();
     }
 
     const onDeleteAccountHandler = () => {
@@ -150,10 +162,11 @@ const UserInfoEdit = ({question}) => {
 
     return (
         <Container>
+            <span>이 페이지에서 새로고침을 금지합니다.</span>
             <EditTitle>
                 <h1>Edit your profile</h1>
             </EditTitle>
-            {nickname && <Form onSubmit={onSubmitHandler}>
+            <Form onSubmit={onSubmitHandler}>
                 <ImageContainer>
                     <div>
                         <img src={image} alt="user avatar" onClick={()=>{fileInput.current.click()}}/>
@@ -181,7 +194,7 @@ const UserInfoEdit = ({question}) => {
                     />
                 </InputCotainer>
                 <button>Edit profile</button>
-            </Form>}
+            </Form>
             <button className='delete-account' onClick={onDeleteAccountHandler}>Delete profile</button>
         </Container>
     )
