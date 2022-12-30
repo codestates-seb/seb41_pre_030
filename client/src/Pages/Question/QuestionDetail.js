@@ -41,24 +41,18 @@ const AnswerContentView = styled.div`
     border-bottom: 1px solid gray;
     margin: 20px;
   }
-  .answer-edit {
-    display: flex;
-    flex-direction: column;
+  .ql-editor {
+    font-size: 18px;
   }
-  textarea {
-    width: 1034px;
-    height: 250px;
+  .answer-edit .edit-button {
+    background: none;
     border: 1px solid #ccc;
     border-radius: 3px;
-    padding: 20px;
-    margin-bottom: 30px;
-    font-size: 15px;
-  }
-  .answer-edit button {
-    background: none;
-    border: none;
-    width: 50px;
-    color: #1f9315
+    height: 30px;
+    width: 60px;
+    color: #1f9315;
+    margin-top: 80px;
+    cursor: pointer;
   }
 `
 
@@ -345,7 +339,7 @@ function QuestionDetail () {
     });
 
     axios
-    .patch(`http://13.125.30.88:8080//questions/${id}/answers/${answerMemberId}`, bodyJSON, {
+    .patch(`http://13.125.30.88:8080/questions/${id}/answers/${answerMemberId}`, bodyJSON, {
       headers: {
         "Content-Type": 'application/json',
         "AutHorization": localStorage.getItem("accessToken"),
@@ -416,10 +410,12 @@ function QuestionDetail () {
           <SubmitButton onClick={handleSubmit}>Post Your Answer</SubmitButton>
             <span style={{"margin" : "18px", "fontSize" : "17px"}}>Not the answer you're looking for? 
             <HyperLink to = "/ask"> ask your own question</HyperLink></span>
-        </PostAnswer> :
+        </PostAnswer> 
+        :
         <></>
       }
-      {isLogin === "true" ? <></> :
+      {isLogin === "true" ? <></> 
+          :
           <Fragment>
             <FlexRight>
               <div style={{"whiteSpace": "nowrap"}} >
@@ -461,10 +457,14 @@ function QuestionDetail () {
                 </button>
                 <AdoptStyle style={answer.adopt === true ? {"color" : "blue"}: {"color" : "black"}}/>
               </Vote>
-              {answerEdit ? 
+              {answerEdit && answer.member.memberId == userId ? 
                 <div className="answer-edit">
-                  <textarea type='textarea' defaultValue={answer.content} onChange={e => setAnswerContent(e.target.value)}/>
-                  <button onClick={() => onAnswerEditHandler(answer.answerId)}>수정</button>
+                  <ReactQuill 
+                  theme="snow"
+                  defaultValue={answer.content}
+                  onChange={setAnswerContent}
+                  style={{"height" : "200px", "width" : "1034px"}}/>
+                  <button className='edit-button' onClick={() => onAnswerEditHandler(answer.answerId)}>수정</button>
                 </div>
                 :
                 <Content>
