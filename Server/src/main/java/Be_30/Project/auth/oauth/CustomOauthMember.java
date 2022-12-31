@@ -28,16 +28,15 @@ public class CustomOauthMember { // 회원가입 대기 임시 데이터 (회원
     public CustomOauthMember() {
     }
 
-    public CustomOauthMember(OAuth2User oAuth2User, String platform) {
+    public CustomOauthMember(OAuth2User oAuth2User, Member.OauthPlatform platform) {
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
-        if (platform.equals("google")) {
-            this.oauthPlatform = Member.OauthPlatform.GOOGLE;
+        if (platform.equals(Member.OauthPlatform.GOOGLE)) {
             profileImageSrc = String.valueOf(attributes.get("picture"));
         } else {
-            this.oauthPlatform = Member.OauthPlatform.GITHUB;
             profileImageSrc = String.valueOf(attributes.get("avatar_url"));
         }
+        this.oauthPlatform = platform;
         this.email = String.valueOf(attributes.get("email"));
         this.nickname = String.valueOf(attributes.get("name"));
     }

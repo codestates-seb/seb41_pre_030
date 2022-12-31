@@ -42,30 +42,34 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal(); // Resource Owner 소셜 계정 정부
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String email = String.valueOf(attributes.get("email"));
+        Member.OauthPlatform platform = request.getRequestURI().contains("google") ?  Member.OauthPlatform.GOOGLE: Member.OauthPlatform.GITHUB; // 플랫폼 구분
 
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
 
         // 2. 회원가입이 되어있지 않은 상태라면 임시 테이블에 해당 정보를 넣어두고 회원가입 경로로 전달
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         if (optionalMember.isEmpty()) {
-            // 플랫폼 구분
-            String requestURI = request.getRequestURI();
-            CustomOauthMember oauthMember;
-            if(requestURI.contains("google")) {
-                oauthMember = new CustomOauthMember(oAuth2User, "google");
-            } else {
-                oauthMember = new CustomOauthMember(oAuth2User, "github");
-            }
-            oauthMemberRepository.save(oauthMember);
+            CustomOauthMember oauthMember = new CustomOauthMember(oAuth2User, platform);
+            oauthMemberRepository.save(oauthMember); // 임시 저장
+            
             queryParams.add("nickName", URLEncoder.encode(String.valueOf(oauthMember.getNickname()), StandardCharsets.UTF_8));
             queryParams.add("email", email);
-            queryParams.add("platform", oauthMember.getOauthPlatform().name());
+            queryParams.add("platform", platform.name());
             getRedirectStrategy().sendRedirect(request, response, createURI(queryParams, "/login/oauth2/signup").toString());
             return;
         }
 
         // 3. 회원가입이 되어있는 유저라면 서버의 JWT 토큰을 만들어 전달
         Member savedMember = optionalMember.get();
+
+        // 3-1. 소셜 로그인 유저의 플랫폼이 일치하지 않는 경우 예외 발생
+        if(!savedMember.getOauthPlatform().equals(platform)) {
+            queryParams.add("error", "member_exists");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            String uri = createURI(queryParams, "/").toString();
+            getRedirectStrategy().sendRedirect(request, response, uri);
+            return;
+        }
 
         savedMember.setLastLogin(LocalDateTime.now());
         memberRepository.save(savedMember);

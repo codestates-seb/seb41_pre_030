@@ -22,7 +22,6 @@ spring:
           google:
             client-id: secret
             client-secret: secret
-            redirect-uri: http://localhost:8080/login/oauth2/code/google
             scope:
               - email
               - profile
