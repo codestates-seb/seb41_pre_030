@@ -1,6 +1,8 @@
 package Be_30.Project.member.service;
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
+import Be_30.Project.auth.oauth.CustomOauthMember;
+import Be_30.Project.auth.oauth.OauthMemberRepository;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
@@ -26,15 +28,17 @@ public class MemberService {
     private CustomAuthorityUtils authorityUtils;
     private final JwtTokenizer jwtTokenizer;
     private final FileService fileService;
+    private final OauthMemberRepository oauthMemberRepository;
 
     public MemberService(@Lazy MemberRepository memberRepository, @Lazy PasswordEncoder passwordEncoder,
                          @Lazy CustomAuthorityUtils authorityUtils, @Lazy JwtTokenizer jwtTokenizer,
-                         @Lazy FileService fileService) {
+                         @Lazy FileService fileService, @Lazy OauthMemberRepository oauthMemberRepository) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityUtils = authorityUtils;
         this.jwtTokenizer = jwtTokenizer;
         this.fileService = fileService;
+        this.oauthMemberRepository = oauthMemberRepository;
     }
 
     public Member createMember(Member member) {
@@ -57,6 +61,28 @@ public class MemberService {
             return memberRepository.save(member);
         } else {
             throw new BusinessLogicException(ExceptionCode.PASSWORD_NOT_CONFIRMED);
+        }
+    }
+
+    public Member createSocialMember(Member member) {
+        verifyExistsEmail(member.getEmail());
+
+        if(member.getOauthPlatform() != null) {
+            // 소셜 회원 가입
+            List<String> roles = authorityUtils.createRoles(member.getEmail());
+            member.setRoles(roles);
+
+            // 소셜 회원가입 테이블에 정보가 있어야만 진행 가능
+            CustomOauthMember oauthMember = oauthMemberRepository.findByEmail(member.getEmail())
+                    .orElseThrow(() -> new BusinessLogicException(ExceptionCode.OAUTH_MEMBER_NOT_FOUND));
+            member.setProfileImageSrc(oauthMember.getProfileImageSrc());
+            member.setPassword("{noop}1234"); // 현 상황에서 어쩔 수 없음
+            member.setConfirmedPassword("{noop}1234");
+
+            oauthMemberRepository.delete(oauthMember); // 회원가입과 동시에 임시 테이블 데이터는 삭제
+            return memberRepository.save(member);
+        } else {
+            throw new BusinessLogicException(ExceptionCode.OAUTH_MEMBER_NOT_FOUND);
         }
     }
 

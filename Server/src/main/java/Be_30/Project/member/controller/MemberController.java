@@ -1,6 +1,5 @@
 package Be_30.Project.member.controller;
 
-import Be_30.Project.auth.jwt.JwtTokenizer;
 import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.dto.MultiResponseDto;
 import Be_30.Project.dto.SingleResponseDto;
@@ -21,17 +20,15 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*", exposedHeaders = "*")
 @RestController
 @RequestMapping("/members")
 @Validated
 @Slf4j
 @RequiredArgsConstructor
 public class MemberController {
+
     private final MemberService memberService;
     private final MemberMapper mapper;
-
-    private final JwtTokenizer jwtTokenizer;
 
     @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post memberDto) {
@@ -43,6 +40,17 @@ public class MemberController {
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response),
                 HttpStatus.CREATED);
+    }
+
+    @PostMapping("/signup/oauth") // 소셜 로그인 회원가입
+    public ResponseEntity signup(@Valid @RequestBody MemberDto.OauthPost memberDto) {
+        Member member = mapper.OauthMemberDtoToMember(memberDto);
+        member.setOauthPlatform(Member.OauthPlatform.valueOf(memberDto.getPlatform()));
+
+        Member savedMember = memberService.createSocialMember(member);
+        MemberDto.Response response = mapper.MemberToMemberResponseDto(savedMember);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{member-id}")

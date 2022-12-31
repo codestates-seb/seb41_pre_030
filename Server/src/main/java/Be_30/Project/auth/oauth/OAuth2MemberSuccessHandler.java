@@ -1,13 +1,11 @@
-package Be_30.Project.auth.handler;
+package Be_30.Project.auth.oauth;
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
-import Be_30.Project.dto.ErrorResponse;
-import Be_30.Project.exception.BusinessLogicException;
-import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.entity.Member;
 import Be_30.Project.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -30,59 +28,44 @@ import java.util.*;
 @RequiredArgsConstructor
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    @Value("${custom.frontend.host}")
+    private String frontendHost;
+
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberRepository memberRepository;
+    private final OauthMemberRepository oauthMemberRepository;
 
-    @Override
+    @Override // 소셜 로그인에 성공해 해당 계정 정보를 가져온 이후 과정
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        // 1. Resource Owner의 소셜 계정 정보를 파싱
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal(); // Resource Owner 소셜 계정 정부
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        String email = String.valueOf(attributes.get("email")); // Resource Owner Email 주소
-        List<String> authorities = authorityUtils.createRoles(email); // 권한 정보 생성
-        String requestURI = request.getRequestURI();
+        String email = String.valueOf(attributes.get("email"));
 
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
 
-        // Attribute 변수명이 살짝씩 다르므로 분리
-        String profileImageSrc;
-        Member.OauthPlatform oauthPlatform;
-        if (requestURI.contains("google")) {
-            oauthPlatform = Member.OauthPlatform.GOOGLE;
-            profileImageSrc = String.valueOf(attributes.get("picture"));
-        } else {
-            oauthPlatform = Member.OauthPlatform.GITHUB;
-            profileImageSrc = String.valueOf(attributes.get("avatar_url"));
-        }
-
-        // 회원가입이 안되어있으면 소셜 유저 정보로 회원가입을 진행
-
-        Optional<Member> optionalMember = memberRepository.findByEmailAndOauthPlatform(email, oauthPlatform);
-        Member savedMember;
-        if(optionalMember.isEmpty()) {
-
-            // 이메일 계정이 이미 있으면 중복 가입 X
-            if (memberRepository.findByEmail(email).isPresent()) {
-                queryParams.add("error",
-                        URLEncoder.encode(ExceptionCode.MEMBER_EXISTS.getMessage(), StandardCharsets.UTF_8));
-                String uri = createURI(queryParams).toString();
-                getRedirectStrategy().sendRedirect(request, response, uri);
-                return;
+        // 2. 회원가입이 되어있지 않은 상태라면 임시 테이블에 해당 정보를 넣어두고 회원가입 경로로 전달
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        if (optionalMember.isEmpty()) {
+            // 플랫폼 구분
+            String requestURI = request.getRequestURI();
+            CustomOauthMember oauthMember;
+            if(requestURI.contains("google")) {
+                oauthMember = new CustomOauthMember(oAuth2User, "google");
+            } else {
+                oauthMember = new CustomOauthMember(oAuth2User, "github");
             }
-
-            Member member = new Member();
-            member.setPassword("{noop}1234");
-            member.setConfirmedPassword("{noop}1234");
-            member.setOauthPlatform(oauthPlatform);
-            member.setEmail(email);
-            member.setRoles(authorities);
-            member.setNickName(String.valueOf(attributes.get("name")));
-            member.setProfileImageSrc(profileImageSrc);
-
-            savedMember = memberRepository.save(member);
-        } else {
-            savedMember = optionalMember.get();
+            oauthMemberRepository.save(oauthMember);
+            queryParams.add("nickName", URLEncoder.encode(String.valueOf(oauthMember.getNickname()), StandardCharsets.UTF_8));
+            queryParams.add("email", email);
+            queryParams.add("platform", oauthMember.getOauthPlatform().name());
+            getRedirectStrategy().sendRedirect(request, response, createURI(queryParams, "/login/oauth2/signup").toString());
+            return;
         }
+
+        // 3. 회원가입이 되어있는 유저라면 서버의 JWT 토큰을 만들어 전달
+        Member savedMember = optionalMember.get();
 
         savedMember.setLastLogin(LocalDateTime.now());
         memberRepository.save(savedMember);
@@ -94,7 +77,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         queryParams.add("access_token", String.format("Bearer %s", accessToken));
         queryParams.add("refresh_token", refreshToken);
 
-        String uri = createURI(queryParams).toString();
+        String uri = createURI(queryParams, "/").toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
@@ -117,13 +100,13 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return jwtTokenizer.generateRefreshToken(username, expiration, base64EncodedSecretKey);
     }
 
-    private URI createURI(MultiValueMap<String, String> queryParams) {
+    private URI createURI(MultiValueMap<String, String> queryParams, String path) {
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("13.125.30.88")
+                .host(frontendHost)
                 .port(8080)
-                .path("/")
+                .path(path)
                 .queryParams(queryParams)
                 .build()
                 .toUri();
