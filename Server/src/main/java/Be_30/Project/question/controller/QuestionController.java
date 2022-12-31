@@ -21,7 +21,6 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Slf4j
-@CrossOrigin(origins = "*", exposedHeaders = "*")
 @Validated
 @RequiredArgsConstructor
 @RestController

@@ -4,6 +4,8 @@ import Be_30.Project.auth.filter.JwtAuthenticationFilter;
 import Be_30.Project.auth.filter.JwtVerificationFilter;
 import Be_30.Project.auth.handler.*;
 import Be_30.Project.auth.jwt.JwtTokenizer;
+import Be_30.Project.auth.oauth.OAuth2MemberSuccessHandler;
+import Be_30.Project.auth.oauth.OauthMemberRepository;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
 
 import java.util.Arrays;
@@ -32,6 +34,7 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberRepository memberRepository;
+    private final OauthMemberRepository oauthMemberRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,7 +57,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberRepository)));
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberRepository, oauthMemberRepository)));
         return http.build();
     }
 
