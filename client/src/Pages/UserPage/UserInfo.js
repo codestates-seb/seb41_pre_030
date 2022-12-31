@@ -66,6 +66,7 @@ const EditProfile = styled.div`
 const UserInfo = ({ id, question }) => {
     let createDate = null;
     let modifiedDate = null;
+    let user = localStorage.getItem("user")
 
     if (question) {
         createDate = new window.Date(question.data.createdAt)
@@ -105,7 +106,7 @@ const UserInfo = ({ id, question }) => {
                     </ul>
                 </TopViewInfo>
                 <EditProfile> 
-                    <Link to={`/member/${id}/edit`}>⚙️ Edit profile</Link>
+                    {id == user && <Link to={`/member/${id}/edit`}>⚙️ Edit profile</Link>}
                 </EditProfile>
             </TopView>
         </TopViewContainer>
