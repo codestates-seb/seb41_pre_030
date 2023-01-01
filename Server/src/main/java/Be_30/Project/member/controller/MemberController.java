@@ -1,19 +1,14 @@
 package Be_30.Project.member.controller;
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
+import Be_30.Project.auth.jwt.refreshtoken.repository.RedisRepository;
 import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.dto.MultiResponseDto;
 import Be_30.Project.dto.SingleResponseDto;
-import Be_30.Project.exception.BusinessLogicException;
-import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.dto.MemberDto;
 import Be_30.Project.member.entity.Member;
-import Be_30.Project.member.entity.Member.MemberStatus;
 import Be_30.Project.member.mapper.MemberMapper;
-import Be_30.Project.member.repository.MemberRepository;
 import Be_30.Project.member.service.MemberService;
-import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -24,9 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -50,6 +43,7 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post memberDto){
+
         Member member = mapper.MemberPostDtoToMember(memberDto);
 
         Member createdMember = memberService.createMember(member);
@@ -140,12 +134,18 @@ public class MemberController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
+    @DeleteMapping("/logout")
+    public ResponseEntity logoutMember(HttpServletRequest request, @AuthenticationPrincipal MemberDetails memberDetails){
+        memberService.logout(request, memberDetails.getMemberId());
+
+        return new ResponseEntity<>("로그아웃 되었습니다",HttpStatus.OK);
+
+    }
+
 //    private String getEmailByRequest(HttpServletRequest request) {
 //
 //        String jws = request.getHeader("Authorization").replace("Bearer","");
 //        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-//        System.out.println(jwtTokenizer.getClaims(jws,base64EncodedSecretKey).getBody());
-//        System.out.println(jwtTokenizer.getClaims(jws,base64EncodedSecretKey).getBody().getSubject());
 //        return jwtTokenizer.getClaims(jws,base64EncodedSecretKey).getBody().getSubject();
 //
 //    }

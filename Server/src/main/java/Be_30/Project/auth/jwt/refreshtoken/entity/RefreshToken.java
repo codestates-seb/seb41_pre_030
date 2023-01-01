@@ -16,7 +16,6 @@ import org.springframework.data.redis.core.RedisHash;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@RedisHash
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

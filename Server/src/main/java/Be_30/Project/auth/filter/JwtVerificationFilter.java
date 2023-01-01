@@ -32,8 +32,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         //검증 실패했을 때 생기는 SignatureException 과 JWT가 만료될 경우에 생기는 ExpiredJwtException에대한 처리
         try {
             //refreshtoken repository에서 토큰 확인
-            String refreshToken = request.getHeader("Refresh");
-            jwtTokenizer.verifiedRefreshToken(refreshToken);
+            //redis -> refreshToken을 RefreshRepository에서 확인하는 절차 삭제
+//            String refreshToken = request.getHeader("Refresh");
+//            jwtTokenizer.verifiedRefreshToken(refreshToken);
 
             Map<String, Object> claims = verifyJws(request);
             setAuthenticationToContext(claims); //Authentication 객체를 securityContext에 저장하기 위한 메서드

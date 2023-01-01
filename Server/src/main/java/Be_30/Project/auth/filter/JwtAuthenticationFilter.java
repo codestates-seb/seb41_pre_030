@@ -1,6 +1,7 @@
 package Be_30.Project.auth.filter;
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
+import Be_30.Project.auth.jwt.refreshtoken.repository.RedisRepository;
 import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.dto.LoginDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +30,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
+    private final RedisRepository redisRepository;
 
     /**
      * 입력받은 username, password를 바탕으로 인증정보를 생성하는 로직
@@ -75,11 +77,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String accessToken = delegateAccessToken(member);
         String refreshToken = delegateRefreshToken(member);
 
-        /**
-         * =========수정사항============
-         * 쿠키를 써서 로그아웃을 처리하는것
-         */
-        jwtTokenizer.saveRefreshToken(refreshToken,member.getEmail(),member.getMemberId());
+        //redis에 refreshToken 저장
+        redisRepository.saveRefresh(member.getMemberId(),refreshToken);
+        //jwtTokenizer.saveRefreshToken(refreshToken,member.getEmail(),member.getMemberId());
 
 //        //쿠키에 담기 위해 encoding
 //        String encodedRefreshToken = URLEncoder.encode(refreshToken, "UTF-8");

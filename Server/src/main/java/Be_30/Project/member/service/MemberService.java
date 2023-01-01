@@ -1,6 +1,7 @@
 package Be_30.Project.member.service;
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
+import Be_30.Project.auth.jwt.refreshtoken.repository.RedisRepository;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
@@ -8,6 +9,8 @@ import Be_30.Project.member.entity.Member;
 import Be_30.Project.member.repository.MemberRepository;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -21,14 +24,14 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private CustomAuthorityUtils authorityUtils;
-    private final JwtTokenizer jwtTokenizer;
+    private final RedisRepository redisRepository;
 
-    public MemberService(@Lazy MemberRepository memberRepository, @Lazy PasswordEncoder passwordEncoder,
-        @Lazy CustomAuthorityUtils authorityUtils, @Lazy JwtTokenizer jwtTokenizer) {
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
+        CustomAuthorityUtils authorityUtils, RedisRepository redisRepository) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityUtils = authorityUtils;
-        this. jwtTokenizer = jwtTokenizer;
+        this.redisRepository = redisRepository;
     }
 
     public Member createMember(Member member) {
@@ -107,5 +110,13 @@ public class MemberService {
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+    }
+
+    public void logout(HttpServletRequest request,Long memberId){
+        String accessToken = request.getHeader("Authorization").replace("Bearer","");
+        redisRepository.setBlackList("access-token", accessToken, 0);
+
+        redisRepository.expireRefreshToken(memberId.toString());
+
     }
 }

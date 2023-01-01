@@ -18,21 +18,21 @@ public class RefreshTokenController {
         this.refreshTokenService = refreshTokenService;
     }
 
-    @DeleteMapping("/members/logout")
-    public void logoutMember(HttpServletRequest request, HttpServletResponse response){
-
-        //====================================
-        refreshTokenService.logoutMember(request.getHeader("Refresh"));
-
-//        Cookie cookie = new Cookie("RefreshToken", null);
-//        cookie.setMaxAge(0);
-//        cookie.setPath("/");
+//    @DeleteMapping("/members/logout")
+//    public void logoutMember(HttpServletRequest request, HttpServletResponse response){
 //
-//        Cookie mbCookie = new Cookie("MemberId", null);
-//        mbCookie.setMaxAge(0);
-//        mbCookie.setPath("/");
-
-        response.setHeader("memberId",null);
-        response.setHeader("Refresh", null);
-    }
+//        //====================================
+//        refreshTokenService.logoutMember(request.getHeader("Refresh"));
+//
+////        Cookie cookie = new Cookie("RefreshToken", null);
+////        cookie.setMaxAge(0);
+////        cookie.setPath("/");
+////
+////        Cookie mbCookie = new Cookie("MemberId", null);
+////        mbCookie.setMaxAge(0);
+////        mbCookie.setPath("/");
+//
+//        response.setHeader("memberId",null);
+//        response.setHeader("Refresh", null);
+//    }
 }

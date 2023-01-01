@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
 생성 - 발급 - 검증*/
 
 @Component
+@Getter
 public class JwtTokenizer {
 
     @Getter
@@ -142,11 +143,11 @@ public class JwtTokenizer {
         refreshTokenRepository.save(new RefreshToken(refreshToken,email,tokenId));
     }
 
-    public void verifiedRefreshToken(String refreshToken){
-        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByTokenValue(refreshToken);
-        if(!optionalRefreshToken.isPresent())
-            throw new BusinessLogicException(ExceptionCode.TOKEN_NOT_FOUND);
-    }
+//    public void verifiedRefreshToken(String refreshToken){
+//        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByTokenValue(refreshToken);
+//        if(!optionalRefreshToken.isPresent())
+//            throw new BusinessLogicException(ExceptionCode.TOKEN_NOT_FOUND);
+//    }
     
 
 
