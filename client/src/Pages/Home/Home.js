@@ -117,8 +117,6 @@ export const ContentsTitle = styled.span`
 
 export const Contents = styled.span`
     display: -webkit-box;
-    font-size: 15px;
-    color: black;
     height: 35px;
     text-overflow: ellipsis;
     white-space: pre-wrap;
@@ -126,6 +124,11 @@ export const Contents = styled.span`
     -webkit-box-orient: vertical;
     overflow: hidden;
     hyphens: auto !important;
+    * {
+        font-size: 15px;
+        color: black;
+        font-weight: normal;
+    }
 `
 
 const Home = ({questions}) => {

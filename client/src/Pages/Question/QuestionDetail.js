@@ -25,14 +25,16 @@ const At = styled.div`
   border-bottom: 1px solid gray;
   margin: 0 20px;
 `
-const Content = styled.span`
+const Content = styled.div`
   margin: 40px 10px 10px 0;
   font-size: 20px;
   min-height: 200px;
+  word-wrap: break-word;
 `
 
 const QuestionContentView = styled.div`
   display: flex;
+  max-width: 1100px;
 `
 
 const AnswerContentView = styled.div`
@@ -144,7 +146,8 @@ const Writer = styled.div`
   .edit{
     font-size: 13px;
     text-decoration: none;
-    color: #1f9315
+    color: #1f9315;
+    cursor: pointer;
   }
   p{
     font-size: 13px;
@@ -384,7 +387,7 @@ function QuestionDetail () {
             </Vote>
           </div>
           <Content>
-            <span dangerouslySetInnerHTML={{__html: question && question.data.content}} ></span>
+            <span dangerouslySetInnerHTML={{__html: question && question.data.content}} />
           </Content>
           </QuestionContentView>
         </Post>
@@ -476,7 +479,7 @@ function QuestionDetail () {
                   <Date>answered {timeForToday(answerCreateDate)}</Date>
                   <img style={{"width": "25px"}} src={question && answer.member.profileImageSrc} alt="유저 이미지"/>
                   <HyperLink to={`/member/${answer.member.memberId}`} style={{"fontSize" : "15px"}}>{question && answer.member.nickName}</HyperLink>
-                  {question && answer.member.memberId == userId && answerEdit === false ? <p onClick={answerEditStateChanger}>답변 수정</p> : null}
+                  {question && answer.member.memberId == userId && answerEdit === false ? <p className="edit" onClick={answerEditStateChanger}>답변 수정</p> : null}
                 </div>
               </Writer>
           </div>
@@ -487,5 +490,3 @@ function QuestionDetail () {
   )
 }
 export default QuestionDetail;
-
-//css 정리, 답변 post 요청, click 할때마다 views + 1

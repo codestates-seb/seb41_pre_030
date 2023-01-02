@@ -15,7 +15,7 @@ import AllUsers from './Pages/UserlistPage/AllUsers';
 import QuestionEditForm from './Pages/AskPages/QuestionEditForm';
 
 function App() {
-  const [question] = useFetch('http://13.125.30.88:8080/questions/')
+  const [question] = useFetch('http://13.125.30.88:8080/questions/?size=100')
   const location = useLocation();
   
   return (

@@ -164,7 +164,13 @@ const UserInfoEdit = ({question}) => {
                 "Authorization": localStorage.getItem("accessToken"),
                 "Refresh": localStorage.getItem("refreshToken")
             },
-        });
+            }).then(data => {
+            
+            })
+            .catch(err => {
+                console.log("err")
+                return
+            })
         localStorage.clear();
         window.location.reload();
         navigate(`/`);
