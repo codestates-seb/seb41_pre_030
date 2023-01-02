@@ -9,7 +9,10 @@ import Be_30.Project.member.dto.MemberDto;
 import Be_30.Project.member.entity.Member;
 import Be_30.Project.member.mapper.MemberMapper;
 import Be_30.Project.member.service.MemberService;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -140,6 +143,13 @@ public class MemberController {
 
         return new ResponseEntity<>("로그아웃 되었습니다",HttpStatus.OK);
 
+    }
+    @PostMapping("/reissue")
+    public ResponseEntity reissueMember(HttpServletRequest request,@AuthenticationPrincipal MemberDetails memberDetails){
+        String refreshToken = request.getHeader("Refresh");
+        String access = memberService.reissue(memberDetails,refreshToken);
+
+        return new ResponseEntity("재발급 되었습니다\n access :" + access,HttpStatus.OK);
     }
 
 //    private String getEmailByRequest(HttpServletRequest request) {

@@ -49,14 +49,14 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             request.setAttribute("exception", ee);
         }
             // 만료되었을 때 SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
-//        catch (BusinessLogicException be) {
-//            be.printStackTrace();
-//            request.setAttribute("exception", be);
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//            request.setAttribute("exception", e);
-//        }
+        catch (BusinessLogicException be) {
+            be.printStackTrace();
+            request.setAttribute("exception", be);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("exception", e);
+        }
 
         filterChain.doFilter(request, response);//다음 security filter를 호출한다.
     }

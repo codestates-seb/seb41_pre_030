@@ -24,9 +24,9 @@ public class RedisRepository {
 
     private final JwtTokenizer jwtTokenizer;
 
-    public void saveRefresh(Long memberId, String refreshToken) {
+    public void saveRefresh(String refreshToken, String value) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(memberId.toString(),refreshToken,jwtTokenizer.getRefreshTokenExpirationMinutes(),TimeUnit.MINUTES);
+        valueOperations.set(refreshToken,value,jwtTokenizer.getRefreshTokenExpirationMinutes(),TimeUnit.MINUTES);
             //timeout,timeunit
     }
 
@@ -44,5 +44,10 @@ public class RedisRepository {
     public boolean hasAccess(String access){
          boolean haskey =Boolean.TRUE.equals(redisBlackListTemplate.hasKey(access));
          return haskey;
+    }
+
+    public boolean hasRefresh(String refresh){
+        boolean haskey =Boolean.TRUE.equals(redisTemplate.hasKey(refresh));
+        return haskey;
     }
 }

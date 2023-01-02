@@ -78,7 +78,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String refreshToken = delegateRefreshToken(member);
 
         //redis에 refreshToken 저장
-        redisRepository.saveRefresh(member.getMemberId(),refreshToken);
+        redisRepository.saveRefresh(refreshToken,"True");
         //jwtTokenizer.saveRefreshToken(refreshToken,member.getEmail(),member.getMemberId());
 
 //        //쿠키에 담기 위해 encoding

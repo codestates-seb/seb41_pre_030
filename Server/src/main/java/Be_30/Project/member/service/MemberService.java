@@ -2,6 +2,7 @@ package Be_30.Project.member.service;
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
 import Be_30.Project.auth.jwt.refreshtoken.repository.RedisRepository;
+import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
@@ -10,7 +11,9 @@ import Be_30.Project.member.entity.Member.MemberStatus;
 import Be_30.Project.member.repository.MemberRepository;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +34,6 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private CustomAuthorityUtils authorityUtils;
     private final RedisRepository redisRepository;
-
     private final JwtTokenizer jwtTokenizer;
 
     public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
@@ -144,5 +146,28 @@ public class MemberService {
             expiration);
 
         redisRepository.expireRefreshToken(memberId.toString());
+    }
+    public String reissue(MemberDetails memberDetails, String refresh){
+        if(redisRepository.hasRefresh(refresh)) {
+            Map<String, Object> claims = new HashMap<>();
+
+            claims.put("memberId", memberDetails.getMemberId());
+            claims.put("username", memberDetails.getEmail());
+            claims.put("roles", memberDetails.getRoles());
+            String subject = memberDetails.getEmail();
+
+            Date expiration = jwtTokenizer.getTokenExpiration(
+                jwtTokenizer.getAccessTokenExpirationMinutes());
+
+            String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(
+                jwtTokenizer.getSecretKey());
+
+            String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration,
+                base64EncodedSecretKey);
+
+            return accessToken;
+        }else{
+            throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+        }
     }
 }
