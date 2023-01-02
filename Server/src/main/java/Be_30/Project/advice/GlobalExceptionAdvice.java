@@ -34,7 +34,8 @@ public class GlobalExceptionAdvice {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    public ErrorResponse handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+    public ErrorResponse handleHttpRequestMethodNotSupportedException(
+        HttpRequestMethodNotSupportedException e) {
         return ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED);
     }
 
