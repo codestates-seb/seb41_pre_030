@@ -1,17 +1,16 @@
-import React from "react"
+import React, { useState } from "react"
 import { NavLink, useSearchParams } from 'react-router-dom'
 import styled from "styled-components"
-import Pagenation from '../Home/Pagenation'
 import useFetch from '../../Components/util/useFetch';
+import Pagenation from './Pagenation';
 
 export const All = styled.main`
     font-size: 30px;
     margin-left: 280px;
     width: 100vh;
     border-left: 1px solid hsl(210,8%,85%);
-    display: flex;
-    flex-direction: column;
-    min-height: 1700px;
+    display: grid;
+    padding-bottom: 50px;
     ul {
         display: flex;
         flex-direction: row;
@@ -28,6 +27,9 @@ export const All = styled.main`
             border: 1px solid hsl(210,8%,85%);
             border-radius: 3px;
             cursor: pointer;
+            :hover {
+                background-color: hsl(210,8%,85%)
+            }
             :active {
                 color: white;
                 background: #F48225;
@@ -41,11 +43,11 @@ const QuestionList = styled.div`
     font-size: 30px;
     width: 100vh;
     display: grid;
-`
+    `
 
 export const AllQuestions = styled.div`
     width: 1100px;
-    height: 40px;
+    max-height: 40px;
     margin: 40px 40px 0px 40px;
     display: flex;
     justify-content: space-between;
@@ -77,8 +79,10 @@ export const AskQuestionButton = styled(NavLink)`
 `
 
 export const Questions = styled.div `
+    height: 150px;
     display: flex;
     border-top: 1px solid hsl(210,8%,85%);;
+    min-width: 1200px;
 `
 export const QuestionCount = styled.div`
     font-size: 15px;
@@ -114,8 +118,6 @@ export const ContentsTitle = styled.span`
 
 export const Contents = styled.span`
     display: -webkit-box;
-    font-size: 15px;
-    color: black;
     height: 35px;
     text-overflow: ellipsis;
     white-space: pre-wrap;
@@ -123,14 +125,39 @@ export const Contents = styled.span`
     -webkit-box-orient: vertical;
     overflow: hidden;
     hyphens: auto !important;
+    * {
+        font-size: 15px;
+        color: black;
+        font-weight: normal;
+    }
+`
+const UserBox = styled.div`
+display: flex;
+flex-grow: 1;
+margin-top: auto;
+justify-content: right;
+width: 150px;
+margin-bottom: 20px;
+margin-right: 30px;
+span{
+    margin-top: auto;
+    font-size: 15px;
+}
+img {
+    margin-right: 10px;
+    height: 25px;
+    width : 25px;
+    border-radius: 3px;
+}
 `
 
+
 const Search = () => {
-    const [questions] = useFetch('http://13.125.30.88:8080/questions');
+    const [limit, setLimit] = useState(localStorage.getItem("searchSize")? localStorage.getItem("searchSize"): 10);
+    const [page, setPage] = useState(localStorage.getItem("searchPage")? localStorage.getItem("searchPage") : 1);
     const [searchParams] = useSearchParams();
     let param = searchParams.get('keyword');
-    let searchResult = questions && questions.data.filter((el, idx) => {return el.subject.includes(param) || el.content.includes(param)})
-
+    const [question] = useFetch(`http://13.125.30.88:8080/questions/?q=${param}&page=${page}&size=${limit}`)
     return (
         <All>
             <QuestionList>
@@ -138,9 +165,49 @@ const Search = () => {
                     Search Result
                     <AskQuestionButton to='/AskQuestion'>Ask Question</AskQuestionButton>
                 </AllQuestions>
-                <CountQuestions>{searchResult && searchResult.length} questions</CountQuestions>
+                <CountQuestions>{question && question.pageInfo.totalElements} questions</CountQuestions>
             </QuestionList>
-            {searchResult && <Pagenation questions={searchResult} itemsPerPage={10} />}
+            {question &&  question.data && question.data.map(question => 
+                <Questions key={question.questionId}>
+                    <QuestionCount>
+                        <Count>{question.votes} votes</Count>
+                        <Count>{question.answerCount?question.answerCount : 0} answers</Count>
+                        <Count>{question.views} views</Count>
+                    </QuestionCount>
+                    <Question>
+                        <Detail to={`/questions/${question.questionId}`}>
+                        <ContentsTitle>{question.subject}</ContentsTitle><br/>
+                        </Detail>
+                        <Contents dangerouslySetInnerHTML={{__html: question.content}}></Contents>
+                    </Question>
+                    <UserBox>
+                        <img src={question.member.profileImageSrc} alt="유저 이미지" />
+                        <span>{question.member.nickName}</span>
+                    </UserBox>
+                </Questions>
+            )}
+            {question && 
+            <>
+                <label>
+                    contents:&nbsp;
+                    <select
+                    type="number"
+                    value={limit}
+                    onChange={({ target: { value } }) => setLimit(Number(value), localStorage.setItem("searchSize", value))}
+                    >
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    </select>
+                </label> 
+                <Pagenation
+                    total={question.pageInfo.totalElements}
+                    limit={limit}
+                    page={page}
+                    setPage={setPage}
+                />
+            </>}
         </All>
     )
 }

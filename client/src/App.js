@@ -4,7 +4,6 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Home from './Pages/Home/Home';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
-import useFetch from './Components/util/useFetch';
 import AskPage from './Pages/AskPages/AskForm';
 import LoginPage from './Pages/LoginPages/LoginPage';
 import Signup from './Pages/Signup/Signup';
@@ -15,7 +14,6 @@ import AllUsers from './Pages/UserlistPage/AllUsers';
 import QuestionEditForm from './Pages/AskPages/QuestionEditForm';
 
 function App() {
-  const [question] = useFetch('http://13.125.30.88:8080/questions')
   const location = useLocation();
   
   return (
@@ -31,7 +29,7 @@ function App() {
           <Route path='/login' element={<LoginPage />} />
           <Route path='/ask' element={<AskPage />}/>
           <Route path='/members' element={<AllUsers />}/>
-          <Route exact path='/' element={<Home questions={question}/>}/>
+          <Route exact path='/' element={<Home />}/>
         </Routes>
         {!['/signup', '/login'].includes(location.pathname) && <Footer />}
     </div>

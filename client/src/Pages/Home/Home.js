@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useState } from "react"
 import { NavLink } from 'react-router-dom'
 import styled from "styled-components"
+import useFetch from '../../Components/util/useFetch'
 import Pagenation from './Pagenation'
 
 export const All = styled.main`
@@ -130,8 +131,31 @@ export const Contents = styled.span`
         font-weight: normal;
     }
 `
+const UserBox = styled.div`
+display: flex;
+flex-grow: 1;
+margin-top: auto;
+justify-content: right;
+width: 150px;
+margin-bottom: 20px;
+margin-right: 30px;
+span{
+    margin-top: auto;
+    font-size: 15px;
+}
+img {
+    margin-right: 10px;
+    height: 25px;
+    width : 25px;
+    border-radius: 3px;
+}
+`
 
-const Home = ({questions}) => {
+const Home = () => {
+    const [limit, setLimit] = useState(localStorage.getItem("size") ? localStorage.getItem("size"): 10);
+    const [page, setPage] = useState(localStorage.getItem("page")? localStorage.getItem("page") : 1);
+    const [question] = useFetch(`http://13.125.30.88:8080/questions/?page=${page}&size=${limit}`)
+
     return (
         <All>
             <QuestionList>
@@ -139,9 +163,47 @@ const Home = ({questions}) => {
                     All Questions
                     <AskQuestionButton to={localStorage.getItem("isLogin") ? '/ask' : '/login'}>Ask Question</AskQuestionButton>
                 </AllQuestions>
-                <CountQuestions>{questions && questions.data.length} questions</CountQuestions>
+                <CountQuestions>{question && question.pageInfo.totalElements} questions</CountQuestions>
             </QuestionList>
-            {questions && <Pagenation questions={questions.data} itemsPerPage={10} />}
+            {question &&  question.data && question.data.map(question => 
+                <Questions key={question.questionId}>
+                    <QuestionCount>
+                        <Count>{question.votes} votes</Count>
+                        <Count>{question.answerCount?question.answerCount : 0} answers</Count>
+                        <Count>{question.views} views</Count>
+                    </QuestionCount>
+                    <Question>
+                        <Detail to={`/questions/${question.questionId}`}>
+                        <ContentsTitle>{question.subject}</ContentsTitle><br/>
+                        </Detail>
+                        <Contents dangerouslySetInnerHTML={{__html: question.content}}></Contents>
+                    </Question>
+                    <UserBox>
+                        <img src={question.member.profileImageSrc} alt="유저 이미지" />
+                        <span>{question.member.nickName}</span>
+                    </UserBox>
+                </Questions>
+            )}
+            <label>
+                contents:&nbsp;
+                <select
+                type="number"
+                value={limit}
+                onChange={({ target: { value } }) => setLimit(Number(value), localStorage.setItem("size", value))}
+                >
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+                </select>
+            </label>
+            {question &&  
+            <Pagenation
+                total={question.pageInfo.totalElements}
+                limit={limit}
+                page={page}
+                setPage={setPage}
+            />}
         </All>
     )
 }

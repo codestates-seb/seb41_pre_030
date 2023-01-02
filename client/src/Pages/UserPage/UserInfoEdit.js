@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
-import profileImage from "../../Image/profile.png";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -106,7 +105,7 @@ const UserInfoEdit = ({question}) => {
 
     const onImageReviewHandler = async (e) => {
         if(!e.target.files[0]){
-            setImage(profileImage);
+            setImage(question.data.profileImageSrc)
             return;
         }
 

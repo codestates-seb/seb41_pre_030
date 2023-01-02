@@ -154,7 +154,7 @@ const AskPage = () => {
 					<ul>
 						<li>Summarize your problem in a one-line title.</li>
 						<li>Describe your problem in more detail.</li>
-						<li>Describe what you tried and what you expected to happen.</li>₩
+						<li>Describe what you tried and what you expected to happen.</li>
 						<li>Review your question and post it to the site.</li>
 					</ul>
 					</InputHeaderDetail>

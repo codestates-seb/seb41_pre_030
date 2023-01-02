@@ -42,7 +42,7 @@ const Pagenation = ({ total, limit, page, setPage}) => {
     const numPages = Math.ceil(total / limit);
     const reloadHelper = (i) => {
         setPage(i);
-        localStorage.setItem("page", i);
+        localStorage.setItem("searchPage", i);
         window.location.reload();
     }
     return (
@@ -58,7 +58,7 @@ const Pagenation = ({ total, limit, page, setPage}) => {
                             <Button
                                 
                                 onClick={() => reloadHelper(i + 1)}
-                                aria-current={page === i + 1 || localStorage.getItem("page") == i + 1 ? "page" : null}
+                                aria-current={page === i + 1 || localStorage.getItem("searchPage") == i + 1 ? "page" : null}
                             >
                                 {i + 1}
                             </Button>
