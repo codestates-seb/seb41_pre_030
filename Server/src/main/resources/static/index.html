@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SEB_Pre_30 API 서버</title>
+</head>
+<body>
+    <h3>SEB_Pre_30 API 서버입니다 :D</h3>
+
+    <hr>
+    <h5>유저 프로필 사진 전송 테스트</h5>
+    <form method="post" action="/files" enctype="multipart/form-data">
+        <div class="mb-3">
+            <input class="form-control" type="file" id="file" name="file" multiple>
+            <input type="hidden" name="memberId" value="1">
+        </div>
+        <hr>
+        <button>등록</button>
+    </form>
+
+    <hr>
+
+    <br>
+    <a href="http://localhost:8080/oauth2/authorization/google">>>구글 OAUTH2 로그인 테스트 링크 (로컬) <<</a>
+    <br>
+    <a href="http://localhost:8080/oauth2/authorization/github">>>Github OAUTH2 로그인 테스트 링크 (로컬) <<</a>
+    <br>
+    <a href="http://ec2-13-125-30-88.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google">>>구글 OAUTH2 로그인 테스트 링크 (클라우드)<<</a>
+    <br>
+    <a href="http://ec2-13-125-30-88.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/github">>>Github OAUTH2 로그인 테스트 링크 (클라우드)<<</a>
+
+</body>
+</html>
