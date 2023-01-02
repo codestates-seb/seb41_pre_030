@@ -28,19 +28,21 @@ public class RedisRepository {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(memberId.toString(),refreshToken,jwtTokenizer.getRefreshTokenExpirationMinutes(),TimeUnit.MINUTES);
             //timeout,timeunit
-
-
     }
 
     public void setBlackList(String key, String value, int minutes) {
         redisBlackListTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(value.getClass()));
-        redisBlackListTemplate.opsForValue().set(key, value, minutes, TimeUnit.MINUTES);
+        String trimedKey = key.trim();
+        redisBlackListTemplate.opsForValue().set(trimedKey, value, minutes, TimeUnit.MINUTES);
     }
 
     public void expireRefreshToken(String key){
-        //redisTemplate.delete(key);
-        redisTemplate.opsForValue().getAndExpire(key,0, TimeUnit.MINUTES);
+        redisTemplate.delete(key);
+        //redisTemplate.opsForValue().getAndExpire(key,0, TimeUnit.MINUTES);
     }
 
-
+    public boolean hasAccess(String access){
+         boolean haskey =Boolean.TRUE.equals(redisBlackListTemplate.hasKey(access));
+         return haskey;
+    }
 }

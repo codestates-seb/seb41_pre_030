@@ -6,11 +6,15 @@ import Be_30.Project.auth.utils.CustomAuthorityUtils;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.entity.Member;
+import Be_30.Project.member.entity.Member.MemberStatus;
 import Be_30.Project.member.repository.MemberRepository;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.DateTime;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -18,20 +22,25 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private CustomAuthorityUtils authorityUtils;
     private final RedisRepository redisRepository;
 
+    private final JwtTokenizer jwtTokenizer;
+
     public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
-        CustomAuthorityUtils authorityUtils, RedisRepository redisRepository) {
+        CustomAuthorityUtils authorityUtils, RedisRepository redisRepository, JwtTokenizer jwtTokenizer) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityUtils = authorityUtils;
         this.redisRepository = redisRepository;
+        this.jwtTokenizer = jwtTokenizer;
     }
 
     public Member createMember(Member member) {
@@ -74,15 +83,22 @@ public class MemberService {
         if(!email.isEmpty()){
             return findVerifiedMember(memberId,email);
         }
-            return memberRepository.findById(memberId).orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND)
-            );
+            return memberRepository.findByMemberIdAndMemberStatus(memberId,MemberStatus.MEMBER_ACTIVE).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+//        Optional<Member> findMember = Optional.of(
+//            memberRepository.findById(memberId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND)));
+//
+//        if(findMember.get().equals(MemberStatus.MEMBER_QUIT)){
+//            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+//        }
+//
+//        return findMember.get();
     }
 
 
     public Page<Member> findMembers(int page, int size) {
-        return memberRepository.findAll(PageRequest.of(page, size,
-            Sort.by("memberId").descending()));
+        return memberRepository.findAllByMemberStatus(PageRequest.of(page, size,
+            Sort.by("memberId").descending()),MemberStatus.MEMBER_ACTIVE);
     }
 
 
@@ -90,7 +106,11 @@ public class MemberService {
     public void deleteMember(long memberId, String email) {
         Member findMember = findVerifiedMember(memberId,email);
 
-        memberRepository.delete(findMember);
+        findMember.setMemberStatus(MemberStatus.MEMBER_QUIT);
+        findMember.setEmail("");
+        findMember.setNickName("");
+
+
     }
 
     public Member findVerifiedMember(long memberId, String email) {
@@ -114,9 +134,15 @@ public class MemberService {
 
     public void logout(HttpServletRequest request,Long memberId){
         String accessToken = request.getHeader("Authorization").replace("Bearer","");
-        redisRepository.setBlackList("access-token", accessToken, 0);
+
+        int minutes = jwtTokenizer.getAccessTokenExpirationMinutes();
+        long now  = new Date().getTime();
+
+        int expiration = (int)(jwtTokenizer.getTokenExpiration(minutes).getTime() - now);
+
+        redisRepository.setBlackList(accessToken, "True",
+            expiration);
 
         redisRepository.expireRefreshToken(memberId.toString());
-
     }
 }

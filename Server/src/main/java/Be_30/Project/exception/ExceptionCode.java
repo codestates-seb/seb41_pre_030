@@ -12,10 +12,9 @@ public enum ExceptionCode {
 
     INVALID_MEMBER_STATUS(400, "Invalid member status"),
     QUESTION_NOT_FOUND(404, "Question not found"),
+
     QUESTION_EXISTS(409, "Question exists"),
-
     FILE_SAVE_FAILED(500, "File Save Failed"),
-
     NOT_AUTHORIZED(404, "not authorized"),
     TOKEN_NOT_FOUND(404, "token not found");
 

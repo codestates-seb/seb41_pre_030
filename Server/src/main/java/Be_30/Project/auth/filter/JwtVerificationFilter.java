@@ -1,8 +1,11 @@
 package Be_30.Project.auth.filter;
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
+import Be_30.Project.auth.jwt.refreshtoken.repository.RedisRepository;
 import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
+import Be_30.Project.exception.BusinessLogicException;
+import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.entity.Member;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -26,6 +29,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final RedisRepository redisRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -43,11 +47,16 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             // 서명 검증에 실패했을 때 SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
         } catch (ExpiredJwtException ee) {
             request.setAttribute("exception", ee);
-            // 만료되었을 때 SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("exception", e);
         }
+            // 만료되었을 때 SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
+//        catch (BusinessLogicException be) {
+//            be.printStackTrace();
+//            request.setAttribute("exception", be);
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//            request.setAttribute("exception", e);
+//        }
 
         filterChain.doFilter(request, response);//다음 security filter를 호출한다.
     }
@@ -80,8 +89,12 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     private Map<String, Object> verifyJws(HttpServletRequest request) {
-        String jws = request.getHeader("Authorization").replace("Bearer", " ");
+        String jws = request.getHeader("Authorization").replace("Bearer ", "");
+        if(redisRepository.hasAccess(jws)){
+            throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+        }
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
+
     }
 }
