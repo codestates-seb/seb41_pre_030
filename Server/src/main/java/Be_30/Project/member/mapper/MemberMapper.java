@@ -10,10 +10,9 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
     Member MemberPostDtoToMember(MemberDto.Post UserPostDto);
+    Member OauthMemberDtoToMember(MemberDto.OauthPost memberPostDto);
     Member MemberPatchDtoToMember(MemberDto.Patch UserPatchDto);
     MemberDto.Response MemberToMemberResponseDto(Member Member);
     List<Response> MembersToMemberResponseDtos(List<Member> members);
-
-
 
 }

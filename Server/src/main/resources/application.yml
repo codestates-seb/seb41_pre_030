@@ -8,6 +8,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: false
     show-sql: true
   output:
     ansi:
@@ -36,7 +39,8 @@ logging:
     org:
       springframework:
         orm:
-          jpa: DEBUG
+          jpa: warn
+    root: info
 server:
   servlet:
     encoding:
@@ -56,6 +60,9 @@ cloud:
     region.static: ap-northeast-2
     stack.auto: false
     s3.bucketName: my-springboot-build
+custom:
+  backend.host: localhost
+  frontend.host: localhost
 
 ---
 
@@ -71,6 +78,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update # 운영 서버에서는 create 하면 X
+    properties:
+      hibernate:
+        show_sql: false
   h2:
     console:
       enabled: false
@@ -90,10 +100,17 @@ spring:
             scope:
               - email
               - profile
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: warn
+    root: info
 jwt:
   secret-key: ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 420
+  access-token-expiration-minutes: 1440
+  refresh-token-expiration-minutes: 2880
 cloud:
   aws:
     credentials:
@@ -102,3 +119,6 @@ cloud:
     region.static: ap-northeast-2
     stack.auto: false
     s3.bucketName: my-springboot-build
+custom:
+  backend.host: ec2-13-125-30-88.ap-northeast-2.compute.amazonaws.com
+  frontend.host: ec2-13-125-30-88.ap-northeast-2.compute.amazonaws.com

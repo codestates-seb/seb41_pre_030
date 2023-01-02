@@ -5,6 +5,8 @@ import Be_30.Project.auth.filter.JwtVerificationFilter;
 import Be_30.Project.auth.handler.*;
 import Be_30.Project.auth.jwt.JwtTokenizer;
 import Be_30.Project.auth.jwt.refreshtoken.repository.RedisRepository;
+import Be_30.Project.auth.oauth.OAuth2MemberSuccessHandler;
+import Be_30.Project.auth.oauth.OauthMemberRepository;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
 
 import java.util.Arrays;
@@ -33,6 +35,7 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberRepository memberRepository;
+    private final OauthMemberRepository oauthMemberRepository;
 
     private final RedisRepository redisRepository;
 
@@ -57,7 +60,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberRepository)));
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberRepository, oauthMemberRepository)));
         return http.build();
     }
 
@@ -71,9 +74,9 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("*"));
         configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
-        configuration.setExposedHeaders(List.of("Authorization", "Refresh"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

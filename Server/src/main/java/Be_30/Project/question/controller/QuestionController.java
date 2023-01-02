@@ -8,6 +8,7 @@ import Be_30.Project.question.entity.Question;
 import Be_30.Project.question.mapper.QuestionMapper;
 import Be_30.Project.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+@Slf4j
 @Validated
 @RequiredArgsConstructor
 @RestController

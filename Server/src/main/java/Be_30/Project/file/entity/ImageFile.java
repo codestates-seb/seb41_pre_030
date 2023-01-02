@@ -16,8 +16,12 @@ import javax.persistence.*;
 public class ImageFile {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long imageId;
+
     private String fileName;
+
     private String src;
+
+    private boolean defaultImage; // 기본 이미지 유무
 
     @OneToOne(fetch = FetchType.LAZY)
     private Member member;

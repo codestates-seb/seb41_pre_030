@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
-
 
 @RequiredArgsConstructor
 @Transactional
@@ -45,12 +45,12 @@ public class FileService {
         try {
             // S3 버킷에 이미지 파일 업로드
             amazonS3Client.putObject(
-                    new PutObjectRequest(
-                            S3BucketName,
-                            saveFileName,
-                            file.getInputStream(),
-                            metadata)
-                            .withCannedAcl(CannedAccessControlList.PublicRead)
+                new PutObjectRequest(
+                    S3BucketName,
+                    saveFileName,
+                    file.getInputStream(),
+                    metadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead)
             );
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,9 +60,9 @@ public class FileService {
         String imagePath = amazonS3Client.getUrl(S3BucketName, saveFileName).toString(); // 업로드한 파일 요청 경로
         Member member = memberService.findMember(memberId, email); // 사진 업로드한 회원 정보
         ImageFile imageFile = ImageFile.builder() // 파일 엔티티 생성 및 저장
-                .member(member)
-                .fileName(saveFileName)
-                .src(imagePath).build();
+            .member(member)
+            .fileName(saveFileName)
+            .src(imagePath).build();
         member.setProfileImageSrc(imagePath); // 유저 프로필사진 등록
         return fileRepository.save(imageFile);
 
@@ -71,4 +71,15 @@ public class FileService {
     public Page<ImageFile> getFiles(int page, int size) {
         return fileRepository.findAll(PageRequest.of(page, size));
     }
+
+    // 기본 이미지 랜덤 선택
+    public String getRandomDefaultImageSrc() {
+        List<ImageFile> defaultImages = fileRepository.findByDefaultImageIsTrue();
+        if (defaultImages.isEmpty()) {
+            return null;
+        }
+        int randomImageID = (int) (Math.random() * (defaultImages.size() - 1)); // 인덱스는 0부터 시작
+        return defaultImages.get(randomImageID).getSrc();
+    }
+
 }

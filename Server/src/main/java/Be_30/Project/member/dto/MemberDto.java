@@ -36,6 +36,20 @@ public class MemberDto {
 
     }
 
+    @Getter @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OauthPost {
+        @NotBlank @Email
+        private String email;
+
+        @NotBlank(message = "이름을 정해주세요")
+        private String nickName;
+
+        @NotBlank
+        private String platform;
+    }
+
     @Getter
     @Setter
     @AllArgsConstructor
