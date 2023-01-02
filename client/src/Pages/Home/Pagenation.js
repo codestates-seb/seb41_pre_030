@@ -2,40 +2,44 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Nav = styled.nav`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  margin: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    margin: 16px;
+`;
+
+const ButtonLink=styled(Link)`
+    text-decoration: none;
 `;
 
 const Button = styled.button`
-  border: none;
-  border-radius: 8px;
-  padding: 8px;
-  margin: 0;
-  background: black;
-  color: white;
-  font-size: 1rem;
-
-  &:hover {
-    background: tomato;
+    display: grid;
+    font-size: 18px;
+    width: 30px;
+    height: 27px;
+    margin: 0 2px 0 2px;
+    padding: 2px 0 0 0 ;
+    text-align: center;
+    border: 1px solid hsl(210,8%,85%);
+    border-radius: 3px;
     cursor: pointer;
-    transform: translateY(-2px);
-  }
 
-  &[disabled] {
-    background: grey;
-    cursor: revert;
-    transform: revert;
-  }
+    :hover {
+        background-color: hsl(210,8%,85%)
+    }
 
-  &[aria-current] {
-    background: deeppink;
-    font-weight: bold;
-    cursor: revert;
-    transform: revert;
-  }
+    :active {
+        color: white;
+        background: #F48225;
+        border: 1px solid #F48225;
+    }
+
+    &[aria-current] {
+        color: #fff;
+        background: #F48225;
+        font-weight: bold;
+    }
 `;
 
 const Pagenation = ({ total, limit, page, setPage}) => {
@@ -54,15 +58,11 @@ const Pagenation = ({ total, limit, page, setPage}) => {
                 {Array(numPages)
                     .fill()
                     .map((_, i) => (
-                        <Link to={`/?page=${i+1}`} key={i + 1}>
-                            <Button
-                                
-                                onClick={() => reloadHelper(i + 1)}
-                                aria-current={page === i + 1 || localStorage.getItem("page") == i + 1 ? "page" : null}
-                            >
+                        <ButtonLink to={`/?page=${i+1}`} key={i + 1}>
+                            <Button onClick={() => reloadHelper(i + 1)} aria-current={page === i + 1 || localStorage.getItem("page") == i + 1 ? "page" : null}>
                                 {i + 1}
                             </Button>
-                        </Link>
+                        </ButtonLink>
                     ))}
                 <Button onClick={() => setPage(page + 1)} disabled={page === numPages}>
                     &gt;

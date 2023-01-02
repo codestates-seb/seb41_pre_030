@@ -46,6 +46,7 @@ const UserSearch = styled.input`
     padding: 13px;
     font-size: 15px;
     margin-top: 20px;
+    border: 1px solid #999;
     border-radius: 3px;
 `;
 const List = styled.div`
@@ -87,6 +88,13 @@ font-size: 18px;
 color: black;
 `;
 
+const ContentLabel = styled.label`
+    margin-top: 20px;
+    margin-left: 20px;
+    display: flex;
+    font-size: 23px;
+`;
+
 const AllUsers = () => {
     const [limit, setLimit] = useState(localStorage.getItem("userSize") ? localStorage.getItem("userSize"): 15);
     const [page, setPage] = useState(localStorage.getItem("userPage")? localStorage.getItem("userPage") : 1);
@@ -125,19 +133,18 @@ const AllUsers = () => {
                         </UserContainer>
                     )}
                 </List>
-                <label>
+                <ContentLabel>
                     contents:&nbsp;
                     <select
                     type="number"
                     value={limit}
                     onChange={({ target: { value } }) => setLimit(Number(value), localStorage.setItem("userSize", value))}
                     >
-                    <option value="10">10</option>
                     <option value="15">15</option>
                     <option value="30">30</option>
                     <option value="50">50</option>
                     </select>
-                </label>
+                </ContentLabel>
                 {question && <Pagenation 
                     total={question.pageInfo.totalElements}
                     limit={limit}

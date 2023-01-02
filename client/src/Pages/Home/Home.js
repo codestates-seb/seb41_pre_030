@@ -150,6 +150,12 @@ img {
     border-radius: 3px;
 }
 `
+const ContentLabel = styled.label`
+    margin-top: 20px;
+    margin-left: 20px;
+    display: flex;
+    font-size: 23px;
+`;
 
 const Home = () => {
     const [limit, setLimit] = useState(localStorage.getItem("size") ? localStorage.getItem("size"): 10);
@@ -184,7 +190,7 @@ const Home = () => {
                     </UserBox>
                 </Questions>
             )}
-            <label>
+            <ContentLabel>
                 contents:&nbsp;
                 <select
                 type="number"
@@ -196,7 +202,7 @@ const Home = () => {
                 <option value="30">30</option>
                 <option value="50">50</option>
                 </select>
-            </label>
+            </ContentLabel>
             {question &&  
             <Pagenation
                 total={question.pageInfo.totalElements}
