@@ -1,6 +1,7 @@
 package Be_30.Project.auth.jwt;
 
 import Be_30.Project.auth.jwt.refreshtoken.entity.RefreshToken;
+import Be_30.Project.auth.jwt.refreshtoken.repository.RedisRepository;
 import Be_30.Project.auth.jwt.refreshtoken.repository.RefreshTokenRepository;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.Getter;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +30,8 @@ import org.springframework.stereotype.Component;
 생성 - 발급 - 검증*/
 
 @Component
+@Getter
+@RequiredArgsConstructor
 public class JwtTokenizer {
 
     @Getter
@@ -47,11 +51,6 @@ public class JwtTokenizer {
 
     private final MemberRepository memberRepository;
 
-    public JwtTokenizer(RefreshTokenRepository refreshTokenRepository,
-        MemberRepository memberRepository) {
-        this.refreshTokenRepository = refreshTokenRepository;
-        this.memberRepository = memberRepository;
-    }
 
     /**
      * secretkey를 암호화한다.
@@ -142,10 +141,15 @@ public class JwtTokenizer {
         refreshTokenRepository.save(new RefreshToken(refreshToken,email,tokenId));
     }
 
-    public void verifiedRefreshToken(String refreshToken){
-        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByTokenValue(refreshToken);
-        if(!optionalRefreshToken.isPresent())
-            throw new BusinessLogicException(ExceptionCode.TOKEN_NOT_FOUND);
-    }
+
+
+
+//    public void verifiedRefreshToken(String refreshToken){
+//        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByTokenValue(refreshToken);
+//        if(!optionalRefreshToken.isPresent())
+//            throw new BusinessLogicException(ExceptionCode.TOKEN_NOT_FOUND);
+//    }
+    
+
 
 }

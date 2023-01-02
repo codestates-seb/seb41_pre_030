@@ -1,24 +1,40 @@
 package Be_30.Project.member.controller;
 
+import Be_30.Project.auth.jwt.JwtTokenizer;
 import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.dto.MultiResponseDto;
 import Be_30.Project.dto.SingleResponseDto;
+import Be_30.Project.exception.BusinessLogicException;
+import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.dto.MemberDto;
 import Be_30.Project.member.entity.Member;
+import Be_30.Project.member.entity.Member.MemberStatus;
 import Be_30.Project.member.mapper.MemberMapper;
+import Be_30.Project.member.repository.MemberRepository;
 import Be_30.Project.member.service.MemberService;
-
+import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/members")
@@ -26,12 +42,13 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 public class MemberController {
-
     private final MemberService memberService;
     private final MemberMapper mapper;
 
+    private final JwtTokenizer jwtTokenizer;
+
     @PostMapping("/signup")
-    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post memberDto) {
+    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post memberDto){
         Member member = mapper.MemberPostDtoToMember(memberDto);
 
         Member createdMember = memberService.createMember(member);
@@ -130,6 +147,21 @@ public class MemberController {
         MemberDto.Response response = mapper.MemberToMemberResponseDto(member);
 
         return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity logoutMember(HttpServletRequest request, @AuthenticationPrincipal MemberDetails memberDetails){
+        memberService.logout(request, memberDetails.getMemberId());
+
+        return new ResponseEntity<>("로그아웃 되었습니다",HttpStatus.OK);
+
+    }
+    @PostMapping("/reissue")
+    public ResponseEntity reissueMember(HttpServletRequest request,@AuthenticationPrincipal MemberDetails memberDetails){
+        String refreshToken = request.getHeader("Refresh");
+        String access = memberService.reissue(memberDetails,refreshToken);
+
+        return new ResponseEntity("재발급 되었습니다\n access :" + access,HttpStatus.OK);
     }
 
 //    private String getEmailByRequest(HttpServletRequest request) {

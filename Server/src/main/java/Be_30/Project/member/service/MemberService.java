@@ -1,18 +1,25 @@
 package Be_30.Project.member.service;
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
+import Be_30.Project.auth.jwt.refreshtoken.repository.RedisRepository;
 import Be_30.Project.auth.oauth.CustomOauthMember;
 import Be_30.Project.auth.oauth.OauthMemberRepository;
+import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
 import Be_30.Project.exception.BusinessLogicException;
 import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.file.service.FileService;
 import Be_30.Project.member.entity.Member;
+import Be_30.Project.member.entity.Member.MemberStatus;
 import Be_30.Project.member.repository.MemberRepository;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -29,16 +36,18 @@ public class MemberService {
     private final JwtTokenizer jwtTokenizer;
     private final FileService fileService;
     private final OauthMemberRepository oauthMemberRepository;
+    private final RedisRepository redisRepository;
 
     public MemberService(@Lazy MemberRepository memberRepository, @Lazy PasswordEncoder passwordEncoder,
-                         @Lazy CustomAuthorityUtils authorityUtils, @Lazy JwtTokenizer jwtTokenizer,
-                         @Lazy FileService fileService, @Lazy OauthMemberRepository oauthMemberRepository) {
+        @Lazy CustomAuthorityUtils authorityUtils, @Lazy JwtTokenizer jwtTokenizer,
+        @Lazy FileService fileService, @Lazy OauthMemberRepository oauthMemberRepository,@Lazy RedisRepository redisRepository) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityUtils = authorityUtils;
         this.jwtTokenizer = jwtTokenizer;
         this.fileService = fileService;
         this.oauthMemberRepository = oauthMemberRepository;
+        this.redisRepository = redisRepository;
     }
 
     public Member createMember(Member member) {
@@ -106,22 +115,34 @@ public class MemberService {
         if (!email.isEmpty()) {
             return findVerifiedMember(memberId, email);
         }
-        return memberRepository.findById(memberId).orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND)
-        );
+            return memberRepository.findByMemberIdAndMemberStatus(memberId, MemberStatus.MEMBER_ACTIVE).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+//        Optional<Member> findMember = Optional.of(
+//            memberRepository.findById(memberId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND)));
+//
+//        if(findMember.get().equals(MemberStatus.MEMBER_QUIT)){
+//            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+//        }
+//
+//        return findMember.get();
     }
 
 
     public Page<Member> findMembers(int page, int size) {
         return memberRepository.findAll(PageRequest.of(page, size,
-                Sort.by("memberId").descending()));
+            Sort.by("memberId").descending()));
     }
 
 
-    public void deleteMember(long memberId, String email) {
-        Member findMember = findVerifiedMember(memberId, email);
 
-        memberRepository.delete(findMember);
+    public void deleteMember(long memberId, String email) {
+        Member findMember = findVerifiedMember(memberId,email);
+
+        findMember.setMemberStatus(MemberStatus.MEMBER_QUIT);
+        findMember.setEmail("");
+        findMember.setNickName("");
+
+
     }
 
     public Member findVerifiedMember(long memberId, String email) {
@@ -141,5 +162,45 @@ public class MemberService {
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+    }
+
+
+
+
+    public void logout(HttpServletRequest request,Long memberId){
+        String accessToken = request.getHeader("Authorization").replace("Bearer","");
+
+        int minutes = jwtTokenizer.getAccessTokenExpirationMinutes();
+        long now  = new Date().getTime();
+
+        int expiration = (int)(jwtTokenizer.getTokenExpiration(minutes).getTime() - now);
+
+        redisRepository.setBlackList(accessToken, "True",
+            expiration);
+
+        redisRepository.expireRefreshToken(memberId.toString());
+    }
+    public String reissue(MemberDetails memberDetails, String refresh){
+        if(redisRepository.hasRefresh(refresh)) {
+            Map<String, Object> claims = new HashMap<>();
+
+            claims.put("memberId", memberDetails.getMemberId());
+            claims.put("username", memberDetails.getEmail());
+            claims.put("roles", memberDetails.getRoles());
+            String subject = memberDetails.getEmail();
+
+            Date expiration = jwtTokenizer.getTokenExpiration(
+                jwtTokenizer.getAccessTokenExpirationMinutes());
+
+            String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(
+                jwtTokenizer.getSecretKey());
+
+            String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration,
+                base64EncodedSecretKey);
+
+            return accessToken;
+        }else{
+            throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+        }
     }
 }

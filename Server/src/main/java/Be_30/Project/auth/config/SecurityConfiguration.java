@@ -4,6 +4,7 @@ import Be_30.Project.auth.filter.JwtAuthenticationFilter;
 import Be_30.Project.auth.filter.JwtVerificationFilter;
 import Be_30.Project.auth.handler.*;
 import Be_30.Project.auth.jwt.JwtTokenizer;
+import Be_30.Project.auth.jwt.refreshtoken.repository.RedisRepository;
 import Be_30.Project.auth.oauth.OAuth2MemberSuccessHandler;
 import Be_30.Project.auth.oauth.OauthMemberRepository;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
@@ -35,6 +36,8 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtils authorityUtils;
     private final MemberRepository memberRepository;
     private final OauthMemberRepository oauthMemberRepository;
+
+    private final RedisRepository redisRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -86,12 +89,12 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, redisRepository);
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(memberRepository)); //success 필터추가
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler()); //failure 필터추가
             jwtAuthenticationFilter.setFilterProcessesUrl("/members/login");
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils,redisRepository);
 
             builder.addFilter(jwtAuthenticationFilter)
                     .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class)

@@ -1,8 +1,11 @@
 package Be_30.Project.auth.filter;
 
 import Be_30.Project.auth.jwt.JwtTokenizer;
+import Be_30.Project.auth.jwt.refreshtoken.repository.RedisRepository;
 import Be_30.Project.auth.userdetails.MemberDetails;
 import Be_30.Project.auth.utils.CustomAuthorityUtils;
+import Be_30.Project.exception.BusinessLogicException;
+import Be_30.Project.exception.ExceptionCode;
 import Be_30.Project.member.entity.Member;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -28,14 +31,16 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final RedisRepository redisRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //검증 실패했을 때 생기는 SignatureException 과 JWT가 만료될 경우에 생기는 ExpiredJwtException에대한 처리
         try {
             //refreshtoken repository에서 토큰 확인
-            String refreshToken = request.getHeader("Refresh");
-            jwtTokenizer.verifiedRefreshToken(refreshToken);
+            //redis -> refreshToken을 RefreshRepository에서 확인하는 절차 삭제
+//            String refreshToken = request.getHeader("Refresh");
+//            jwtTokenizer.verifiedRefreshToken(refreshToken);
 
             Map<String, Object> claims = verifyJws(request);
             setAuthenticationToContext(claims); //Authentication 객체를 securityContext에 저장하기 위한 메서드
@@ -46,8 +51,13 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         } catch (ExpiredJwtException ee) {
             ee.printStackTrace();
             request.setAttribute("exception", ee);
+        }
             // 만료되었을 때 SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
-        } catch (Exception e) {
+        catch (BusinessLogicException be) {
+            be.printStackTrace();
+            request.setAttribute("exception", be);
+        }
+        catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("exception", e);
         }
@@ -84,8 +94,12 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     private Map<String, Object> verifyJws(HttpServletRequest request) {
-        String jws = request.getHeader("Authorization").replace("Bearer", " ");
+        String jws = request.getHeader("Authorization").replace("Bearer ", "");
+        if(redisRepository.hasAccess(jws)){
+            throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+        }
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
+
     }
 }
