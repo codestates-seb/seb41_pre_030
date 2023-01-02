@@ -49,7 +49,7 @@ const UserSearch = styled.input`
 `;
 
 const AllUsers = () => {
-    const [question, setQuestion] = useFetch('http://13.125.30.88:8080/members?size=100');
+    const [question, setQuestion] = useFetch('http://13.125.30.88:8080/members');
 
     const [search, setSearch] = useState("");
 

@@ -126,7 +126,7 @@ export const Contents = styled.span`
 `
 
 const Search = () => {
-    const [questions] = useFetch('http://13.125.30.88:8080/questions/?size=200');
+    const [questions] = useFetch('http://13.125.30.88:8080/questions');
     const [searchParams] = useSearchParams();
     let param = searchParams.get('keyword');
     let searchResult = questions && questions.data.filter((el, idx) => {return el.subject.includes(param) || el.content.includes(param)})
